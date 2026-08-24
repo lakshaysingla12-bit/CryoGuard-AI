@@ -48,6 +48,12 @@ export default function Sidebar() {
           );
         })}
       </nav>
+      <div className="connection-box">
+        <span className="status-dot"></span>
+        <p>
+          Cold-chain link <span>stable</span>
+          </p>
+      </div>
     </aside>
   );
 }
