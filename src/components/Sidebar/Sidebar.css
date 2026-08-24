@@ -32,3 +32,49 @@
 .logo-text span {
   color: #38bdf8;
 }
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 12px;
+}
+
+.nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 10px 12px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: transparent;
+  color: #94a3b8;
+
+  font-size: 14px;
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.nav-item:hover {
+  background-color: #10283b;
+  color: white;
+}
+
+.nav-label {
+  flex: 1;
+}
+
+.badge {
+  padding: 2px 6px;
+  border-radius: 999px;
+
+  font-size: 11px;
+
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
