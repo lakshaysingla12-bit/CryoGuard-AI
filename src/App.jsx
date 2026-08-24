@@ -1,21 +1,14 @@
 import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import './App.css'
+import Sidebar from './components/Sidebar/Sidebar'
 
 function App() {
   return (
-    <div className="app">
-      <Sidebar/>
+    <div className="app-layout">
+      <Sidebar />
 
-      <main className="main-content">
-        <TopNavbar/>
-
-        <div className="dashboard-content">
-          <h1>Manager Dashboard</h1>
-          <p>CryoGuard AI Fleet Management</p>
-        </div>
+      <main>
+        <h1>Dashboard</h1>
       </main>
     </div>
   );
