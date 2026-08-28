@@ -1,6 +1,6 @@
-import { useState } from 'react'
 import './App.css'
 import Sidebar from './components/Sidebar/Sidebar'
+import Worker from './components/Worker/Worker'
 
 function App() {
   return (
@@ -8,10 +8,10 @@ function App() {
       <Sidebar />
 
       <main>
-        <h1>Dashboard</h1>
+        <Worker />
       </main>
     </div>
-  );
+  )
 }
 
 export default App
