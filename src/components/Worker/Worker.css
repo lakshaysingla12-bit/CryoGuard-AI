@@ -1,0 +1,11 @@
+.worker-dashboard {
+  padding: 20px;
+}
+
+.worker-dashboard h1 {
+  margin-bottom: 10px;
+}
+
+.worker-dashboard p {
+  font-size: 16px;
+}
