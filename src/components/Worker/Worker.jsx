@@ -1,20 +1,10 @@
 import "./Worker.css";
-
+import WorkerHeader from "./WorkerHeader";
 function Worker() {
   return (
     <div className="worker-dashboard">
 
-      <header className="worker-header">
-        <div>
-          <h2>Worker Portal</h2>
-        </div>
-
-        <div className="worker-profile">
-          <span>🔔</span>
-          <span>EN</span>
-          <span>👤 Rohit Kumar</span>
-        </div>
-      </header>
+      <WorkerHeader />
 
       <main className="worker-main">
 
