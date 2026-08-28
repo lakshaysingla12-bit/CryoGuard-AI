@@ -1,11 +1,81 @@
 .worker-dashboard {
-  padding: 20px;
+  min-height: 100vh;
+  background: #f7f9fc;
+  color: #1f2937;
 }
 
-.worker-dashboard h1 {
+.worker-header {
+  height: 70px;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+
+.worker-profile {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.worker-main {
+  padding: 25px;
+}
+
+.welcome-section {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.welcome-card,
+.score-card,
+.summary-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 25px;
+}
+
+.welcome-card {
+  min-height: 150px;
+}
+
+.welcome-card h1 {
   margin-bottom: 10px;
 }
 
-.worker-dashboard p {
-  font-size: 16px;
+.welcome-card p {
+  color: #6b7280;
+}
+
+.score-card {
+  text-align: center;
+}
+
+.score {
+  font-size: 42px;
+  font-weight: bold;
+  margin: 15px 0;
+}
+
+.summary-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.summary-card h3 {
+  margin-bottom: 15px;
+}
+
+.summary-card strong {
+  font-size: 30px;
+}
+
+.summary-card p {
+  color: #6b7280;
 }
