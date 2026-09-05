@@ -1,17 +1,19 @@
-import { useState } from 'react'
 import './App.css'
-import Sidebar from './components/Sidebar/Sidebar'
+import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
 
 function App() {
   return (
     <div className="app-layout">
       <Sidebar />
 
-      <main>
+      <main className="main-content">
+        <Header />
+
         <h1>Dashboard</h1>
       </main>
     </div>
   );
 }
 
-export default App
+export default App;
