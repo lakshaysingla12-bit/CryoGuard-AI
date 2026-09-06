@@ -123,7 +123,37 @@ function Worker() {
             </div>
           </button>
 
-        </section>
+                </section>
+
+
+        {/* Selected Summary Section */}
+        {activeSection === "tasks" && (
+          <div className="section-panel">
+            <h2>My Tasks</h2>
+            <p>You have 5 pending tasks.</p>
+          </div>
+        )}
+
+        {activeSection === "shipments" && (
+          <div className="section-panel">
+            <h2>Active Shipments</h2>
+            <p>You have 3 shipments currently in progress.</p>
+          </div>
+        )}
+
+        {activeSection === "alerts" && (
+          <div className="section-panel">
+            <h2>Alerts</h2>
+            <p>You have 1 alert requiring attention.</p>
+          </div>
+        )}
+
+        {activeSection === "completed" && (
+          <div className="section-panel">
+            <h2>Completed Today</h2>
+            <p>You have completed 12 tasks today.</p>
+          </div>
+        )}
 
 
         {/* Lower Dashboard */}
