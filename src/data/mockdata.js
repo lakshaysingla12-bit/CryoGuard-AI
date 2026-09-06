@@ -50,3 +50,19 @@ export const statCards = [
     tone: "ok"
   }
 ]
+
+// data for temperature chart
+export const temperatureSeries = [
+  { time: '00:00', temp: 4 },
+  { time: '02:00', temp: 5 },
+  { time: '04:00', temp: 4 },
+  { time: '06:00', temp: 6 },
+  { time: '08:00', temp: 5 },
+  { time: '10:00', temp: 7 },
+  { time: '12:00', temp: 6 },
+  { time: '14:00', temp: 8 },
+  { time: '16:00', temp: 7 },
+  { time: '18:00', temp: 5 },
+  { time: '20:00', temp: 4 },
+  { time: '22:00', temp: 6 }
+]
