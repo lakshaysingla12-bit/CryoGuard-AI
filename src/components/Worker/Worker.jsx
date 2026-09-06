@@ -1,4 +1,8 @@
 import "./Worker.css";
+import Assignments from "./Assignments";
+import Temperature from "./Temperature";
+import TrainingProgress from "./TrainingProgress";
+import Messages from "./Messages";
 import WorkerHeader from "./WorkerHeader";
 
 function Worker() {
@@ -76,7 +80,17 @@ function Worker() {
           </div>
 
         </section>
+<section className="dashboard-grid">
 
+  <Assignments />
+
+  <Temperature />
+
+  <TrainingProgress />
+
+  <Messages />
+
+</section>
       </main>
     </div>
   );
