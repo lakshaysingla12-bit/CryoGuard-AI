@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./Worker.css";
 import Assignments from "./Assignments";
 import Temperature from "./Temperature";
@@ -6,8 +7,11 @@ import Messages from "./Messages";
 import WorkerHeader from "./WorkerHeader";
 
 function Worker() {
+  const [activeSection, setActiveSection] = useState("dashboard");
+
   return (
     <div className="worker-dashboard">
+
       <WorkerHeader />
 
       <main className="worker-main">
@@ -40,58 +44,103 @@ function Worker() {
 
         </section>
 
+
         {/* Summary Cards */}
         <section className="summary-section">
 
-          <div className="summary-card">
+          {/* My Tasks */}
+          <button
+            className={`summary-card ${
+              activeSection === "tasks"
+                ? "active-summary-card"
+                : ""
+            }`}
+            onClick={() => setActiveSection("tasks")}
+          >
             <div className="summary-icon">☑️</div>
+
             <div>
               <h3>My Tasks</h3>
               <strong>5</strong>
               <p>Pending</p>
             </div>
-          </div>
+          </button>
 
-          <div className="summary-card">
+
+          {/* Active Shipments */}
+          <button
+            className={`summary-card ${
+              activeSection === "shipments"
+                ? "active-summary-card"
+                : ""
+            }`}
+            onClick={() => setActiveSection("shipments")}
+          >
             <div className="summary-icon">🚚</div>
+
             <div>
               <h3>Active Shipments</h3>
               <strong>3</strong>
               <p>In Progress</p>
             </div>
-          </div>
+          </button>
 
-          <div className="summary-card">
+
+          {/* Alerts */}
+          <button
+            className={`summary-card ${
+              activeSection === "alerts"
+                ? "active-summary-card"
+                : ""
+            }`}
+            onClick={() => setActiveSection("alerts")}
+          >
             <div className="summary-icon">⚠️</div>
+
             <div>
               <h3>Alerts</h3>
               <strong>1</strong>
               <p>Requires Attention</p>
             </div>
-          </div>
+          </button>
 
-          <div className="summary-card">
+
+          {/* Completed Today */}
+          <button
+            className={`summary-card ${
+              activeSection === "completed"
+                ? "active-summary-card"
+                : ""
+            }`}
+            onClick={() => setActiveSection("completed")}
+          >
             <div className="summary-icon">✓</div>
+
             <div>
               <h3>Completed Today</h3>
               <strong>12</strong>
               <p>Tasks Done</p>
             </div>
-          </div>
+          </button>
 
         </section>
-<section className="dashboard-grid">
 
-  <Assignments />
 
-  <Temperature />
+        {/* Lower Dashboard */}
+        <section className="dashboard-grid">
 
-  <TrainingProgress />
+          <Assignments />
 
-  <Messages />
+          <Temperature />
 
-</section>
+          <TrainingProgress />
+
+          <Messages />
+
+        </section>
+
       </main>
+
     </div>
   );
 }
