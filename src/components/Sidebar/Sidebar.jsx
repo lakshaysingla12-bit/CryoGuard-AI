@@ -1,7 +1,28 @@
-import {LayoutDashboard,Snowflake,Radar,Package2,Truck,Bell,FileBarChart2,Users,Settings}from "lucide-react";
+import {
+  LayoutDashboard,
+  Snowflake,
+  Radar,
+  Package2,
+  Truck,
+  Bell,
+  FileBarChart2,
+  Users,
+  Settings
+} from "lucide-react";
+
 import "./Sidebar.css";
-const icons = {LayoutDashboard,Radar,Package2,Truck,Bell,FileBarChart2,Users,Settings
+
+const icons = {
+  LayoutDashboard,
+  Radar,
+  Package2,
+  Truck,
+  Bell,
+  FileBarChart2,
+  Users,
+  Settings
 };
+
 const navItems = [
   { id: "dashboard", label: "Dashboard", icon: "LayoutDashboard" },
   { id: "monitoring", label: "Monitoring", icon: "Radar" },
@@ -13,7 +34,7 @@ const navItems = [
   { id: "settings", label: "Settings", icon: "Settings" }
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ activePage, setActivePage }) {
   return (
     <aside className="sidebar">
 
@@ -28,17 +49,24 @@ export default function Sidebar() {
       </div>
 
       <nav className="sidebar-nav">
+
         {navItems.map((item) => {
           const Icon = icons[item.icon];
+
           return (
             <button
               key={item.id}
-              className="nav-item"
+              className={`nav-item ${
+                activePage === item.id ? "active-nav-item" : ""
+              }`}
+              onClick={() => setActivePage(item.id)}
             >
               <Icon size={17} />
+
               <span className="nav-label">
                 {item.label}
               </span>
+
               {item.badge && (
                 <span className="badge">
                   {item.badge}
@@ -47,13 +75,17 @@ export default function Sidebar() {
             </button>
           );
         })}
+
       </nav>
+
       <div className="connection-box">
         <span className="status-dot"></span>
+
         <p>
           Cold-chain link <span>stable</span>
-          </p>
+        </p>
       </div>
+
     </aside>
   );
 }
