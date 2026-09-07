@@ -1,24 +1,38 @@
-import { useState } from "react";
 import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Sidebar from "./components/Sidebar/Sidebar";
 import Worker from "./components/Worker/Worker";
+import Monitoring from "./pages/Monitoring";
 
 function App() {
-  const [activePage, setActivePage] = useState("dashboard");
-
   return (
-    <div className="app-layout">
+    <BrowserRouter>
 
-      <Sidebar
-        activePage={activePage}
-        setActivePage={setActivePage}
-      />
+      <div className="app-layout">
 
-      <main>
-        <Worker activePage={activePage} />
-      </main>
+        <Sidebar />
 
-    </div>
+        <main>
+
+          <Routes>
+
+            <Route path="/" element={<Worker />} />
+
+            <Route path="/dashboard" element={<Worker />} />
+
+            <Route
+              path="/monitoring"
+              element={<Monitoring />}
+            />
+
+          </Routes>
+
+        </main>
+
+      </div>
+
+    </BrowserRouter>
   );
 }
 

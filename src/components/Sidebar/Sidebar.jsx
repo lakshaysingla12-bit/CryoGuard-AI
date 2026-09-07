@@ -10,6 +10,8 @@ import {
   Settings
 } from "lucide-react";
 
+import { useNavigate, useLocation } from "react-router-dom";
+
 import "./Sidebar.css";
 
 const icons = {
@@ -24,20 +26,24 @@ const icons = {
 };
 
 const navItems = [
-  { id: "dashboard", label: "Dashboard", icon: "LayoutDashboard" },
-  { id: "monitoring", label: "Monitoring", icon: "Radar" },
-  { id: "inventory", label: "Inventory", icon: "Package2" },
-  { id: "shipments", label: "Shipments", icon: "Truck" },
-  { id: "alerts", label: "Alerts", icon: "Bell", badge: "3" },
-  { id: "reports", label: "Reports", icon: "FileBarChart2" },
-  { id: "users", label: "Users", icon: "Users" },
-  { id: "settings", label: "Settings", icon: "Settings" }
+  { id: "dashboard", label: "Dashboard", icon: "LayoutDashboard", path: "/dashboard" },
+  { id: "monitoring", label: "Monitoring", icon: "Radar", path: "/monitoring" },
+  { id: "inventory", label: "Inventory", icon: "Package2", path: "/inventory" },
+  { id: "shipments", label: "Shipments", icon: "Truck", path: "/shipments" },
+  { id: "alerts", label: "Alerts", icon: "Bell", badge: "3", path: "/alerts" },
+  { id: "reports", label: "Reports", icon: "FileBarChart2", path: "/reports" },
+  { id: "users", label: "Users", icon: "Users", path: "/users" },
+  { id: "settings", label: "Settings", icon: "Settings", path: "/settings" }
 ];
 
-export default function Sidebar({ activePage, setActivePage }) {
+export default function Sidebar() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   return (
     <aside className="sidebar">
 
+      {/* Logo */}
       <div className="sidebar-header">
         <span className="logo-icon">
           <Snowflake size={18} />
@@ -48,19 +54,26 @@ export default function Sidebar({ activePage, setActivePage }) {
         </span>
       </div>
 
+
+      {/* Navigation */}
       <nav className="sidebar-nav">
 
         {navItems.map((item) => {
           const Icon = icons[item.icon];
 
+          const isActive =
+            location.pathname === item.path ||
+            (item.id === "dashboard" && location.pathname === "/");
+
           return (
             <button
               key={item.id}
               className={`nav-item ${
-                activePage === item.id ? "active-nav-item" : ""
+                isActive ? "active-nav-item" : ""
               }`}
-              onClick={() => setActivePage(item.id)}
+              onClick={() => navigate(item.path)}
             >
+
               <Icon size={17} />
 
               <span className="nav-label">
@@ -72,18 +85,23 @@ export default function Sidebar({ activePage, setActivePage }) {
                   {item.badge}
                 </span>
               )}
+
             </button>
           );
         })}
 
       </nav>
 
+
+      {/* Connection Status */}
       <div className="connection-box">
+
         <span className="status-dot"></span>
 
         <p>
           Cold-chain link <span>stable</span>
         </p>
+
       </div>
 
     </aside>
