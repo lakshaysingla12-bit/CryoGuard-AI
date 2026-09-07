@@ -1,4 +1,4 @@
-.counter {
+/* .counter {
   font-size: 16px;
   padding: 5px 10px;
   border-radius: 5px;
@@ -181,11 +181,16 @@
     right: 0;
     border-right-color: var(--border);
   }
-}
+} */
 
 .app-layout {
   display: flex;
   min-height: 100vh;
+}
+.main-content {
+  flex: 1;
+  padding: 1rem;
+  min-width: 0;
 }
 
 /* sidebar css */
@@ -303,6 +308,12 @@
   border-bottom: 1px solid #243447;
   background: #0b1f33;
 }
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+}
+
 
 /* Search */
 
@@ -411,8 +422,8 @@
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  height: 100%;
   background: var(--base-800);
+  margin-top: 1rem;
   border: 1px solid var(--base-700);
   border-radius: var(--radius-md);
 }
@@ -478,12 +489,20 @@
 }
 .prediction-cta:hover { color: var(--frost-200); }
 
+.prediction-section {
+  grid-column: 2;
+}
+
 /* ============ Stats row ======== */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 0.75rem;
 }
+.stats-section {
+  grid-column: 1 / -1;
+}
+
 
 .stat-card {
   padding: 1rem;
@@ -590,8 +609,12 @@
 
 .chart-panel {
   padding: 1rem;
-  min-height: 320px;
   margin-top: 1rem;
+}
+
+.chart-body {
+  width: 100%;
+  height: 220px;
 }
 
 .chart-header {
@@ -629,9 +652,8 @@
   border-color: var(--frost-400);
 }
 
-.chart-body {
-  width: 100%;
-  height: 240px;
+.chart-section {
+  grid-column: 1;
 }
 
 /* Recent Alerts */
@@ -639,7 +661,7 @@
 
 .alerts-panel {
   padding: 1rem;
-  min-height: 250px;
+  margin-top: 1rem;
 }
 
 .alerts-header {
@@ -665,6 +687,9 @@
   color: var(--text-100);
 }
 
+.alerts-section {
+  grid-column: 2;
+}
 .alerts-list {
   display: flex;
   flex-direction: column;
@@ -732,4 +757,222 @@
 .alert-badge.ok {
   color: var(--signal-ok);
   background: rgba(34, 197, 94, 0.1);
+}
+
+/* ============ Live Fleet Map ============ */
+
+.map-panel {
+  padding: 1rem;
+  min-height: 380px;
+}
+
+.map-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.map-title {
+  margin: 0;
+  color: var(--text-100);
+  font-size: 0.9rem;
+}
+.map-section {
+  grid-column: 1;
+}
+.map-legend {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  color: var(--text-500);
+  font-size: 0.65rem;
+}
+
+.map-legend span {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.legend-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.legend-dot.normal {
+  background: var(--signal-ok);
+}
+
+.legend-dot.warning {
+  background: var(--signal-warn);
+}
+
+.legend-dot.critical {
+  background: var(--signal-crit);
+}
+
+.map-controls {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.map-controls button {
+  background: var(--base-900);
+  border: 1px solid var(--base-700);
+  color: var(--text-500);
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.4rem;
+  font-size: 0.65rem;
+  cursor: pointer;
+}
+
+.map-controls button.active {
+  color: var(--frost-400);
+  border-color: var(--frost-400);
+}
+
+/* Map area */
+
+.map-canvas {
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 0.6rem;
+  background: #0d1726;
+  border: 1px solid var(--base-700);
+}
+
+.map-grid {
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    linear-gradient(#1b293d 1px, transparent 1px),
+    linear-gradient(90deg, #1b293d 1px, transparent 1px);
+
+  background-size: 45px 45px;
+  opacity: 0.35;
+}
+
+.map-city {
+  position: absolute;
+  left: 45%;
+  top: 45%;
+
+  color: var(--text-500);
+  font-size: 0.75rem;
+}
+
+/* Markers */
+
+.map-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.map-marker > span {
+  display: block;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.15);
+}
+
+.map-marker.normal > span {
+  background: var(--signal-ok);
+}
+
+.map-marker.warning > span {
+  background: var(--signal-warn);
+}
+
+.map-marker.critical > span {
+  background: var(--signal-crit);
+}
+
+.marker-label {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  color: var(--text-300);
+  font-size: 0.6rem;
+  white-space: nowrap;
+}
+
+/* Zoom */
+
+.zoom-controls {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.zoom-controls button {
+  width: 30px;
+  height: 30px;
+
+  background: var(--base-800);
+  border: 1px solid var(--base-700);
+  color: var(--text-300);
+
+  cursor: pointer;
+}
+
+.zoom-controls button:first-child {
+  border-radius: 0.4rem 0.4rem 0 0;
+}
+
+.zoom-controls button:last-child {
+  border-radius: 0 0 0.4rem 0.4rem;
+}
+
+/* Temperature legend */
+
+.temperature-legend {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+
+  width: 150px;
+  padding: 0.6rem;
+
+  background: rgba(11, 18, 32, 0.9);
+  border: 1px solid var(--base-700);
+  border-radius: 0.5rem;
+}
+
+.temperature-legend p {
+  margin: 0 0 0.4rem;
+  color: var(--text-500);
+  font-size: 0.6rem;
+}
+
+.temperature-bar {
+  height: 6px;
+  border-radius: 10px;
+
+  background: linear-gradient(
+    to right,
+    #3b82f6,
+    #2dd4bf,
+    #eab308,
+    #ef4444
+  );
+}
+
+.temperature-scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.25rem;
+
+  color: var(--text-500);
+  font-size: 0.55rem;
 }
