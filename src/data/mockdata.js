@@ -91,3 +91,65 @@ export const recentAlerts = [
     tone: "ok"
   }
 ]
+
+//  live fleet map
+export const fleetMarkers = [
+  {
+    id: "TRK-021",
+    x: "25%",
+    y: "35%",
+    status: "normal"
+  },
+  {
+    id: "TRK-014",
+    x: "48%",
+    y: "50%",
+    status: "warning"
+  },
+  {
+    id: "TRK-008",
+    x: "70%",
+    y: "30%",
+    status: "normal"
+  },
+  {
+    id: "TRK-032",
+    x: "62%",
+    y: "70%",
+    status: "critical"
+  },
+  {
+    id: "TRK-019",
+    x: "82%",
+    y: "65%",
+    status: "normal"
+  }
+]
+
+// Shipments
+export const shipmentsByStatus = [
+  {
+    name: "In Transit",
+    value: 68,
+    pct: "53%",
+    color: "#38bdf8"
+  },
+  {
+    name: "Delivered",
+    value: 42,
+    pct: "33%",
+    color: "#22c55e"
+  },
+  {
+    name: "Delayed",
+    value: 12,
+    pct: "9%",
+    color: "#eab308"
+  },
+  {
+    name: "At Risk",
+    value: 6,
+    pct: "5%",
+    color: "#ef4444"
+  }
+];
