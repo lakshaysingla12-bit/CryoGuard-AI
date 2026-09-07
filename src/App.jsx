@@ -8,7 +8,7 @@ import Inventory from "./pages/Inventory";
 import Alerts from "./pages/Alerts";
 import Reports from "./pages/Reports";
 import Users from "./pages/Users";
-
+import Settings from "./pages/Settings";
 
 function App() {
   return (
@@ -39,6 +39,7 @@ function App() {
 <Route path="/alerts" element={<Alerts />} />
 <Route path="/reports" element={<Reports />} />
 <Route path="/users" element={<Users />} />
+<Route path="/settings" element={<Settings />} />
           </Routes>
 
         </main>

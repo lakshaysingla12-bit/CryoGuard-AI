@@ -1,0 +1,284 @@
+.monitoring-page {
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  background: #f7f9fc;
+  padding: 30px 40px;
+  color: #1f2937;
+}
+
+
+/* Header */
+
+.monitoring-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.monitoring-header h1 {
+  margin: 0 0 6px;
+  font-size: 26px;
+  color: #172033;
+}
+
+.monitoring-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.monitoring-live {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.monitoring-live span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+
+/* Summary */
+
+.monitoring-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.monitoring-summary-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.monitoring-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #eef6ff;
+  color: #1684c4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.warning-icon {
+  background: #fff4e5;
+  color: #d97706;
+}
+
+.monitoring-summary-card span {
+  display: block;
+  color: #6b7280;
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+
+.monitoring-summary-card strong {
+  font-size: 23px;
+  color: #172033;
+}
+
+
+/* Main card */
+
+.monitoring-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.monitoring-card-header {
+  padding: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.monitoring-card-header h2 {
+  margin: 0 0 5px;
+  font-size: 17px;
+  color: #172033;
+}
+
+.monitoring-card-header p {
+  margin: 0;
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+
+/* Table */
+
+.monitoring-table {
+  width: 100%;
+}
+
+.monitoring-table-header,
+.monitoring-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1.5fr 0.8fr;
+  align-items: center;
+  gap: 15px;
+  padding: 16px 20px;
+}
+
+.monitoring-table-header {
+  background: #f8fafc;
+  color: #6b7280;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.monitoring-row {
+  border-top: 1px solid #f0f2f5;
+  font-size: 12px;
+  color: #4b5563;
+  transition: background 0.2s ease;
+}
+
+.monitoring-row:hover {
+  background: #f8fafc;
+}
+
+.shipment-name,
+.temperature-value,
+.location-value {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.shipment-name {
+  color: #172033;
+}
+
+.temperature-value {
+  color: #374151;
+}
+
+.location-value {
+  color: #6b7280;
+}
+
+.monitoring-status {
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.monitoring-status.normal {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.monitoring-status.warning {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .monitoring-page {
+    padding: 22px;
+  }
+
+  .monitoring-summary {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .monitoring-page {
+    padding: 15px;
+  }
+
+  .monitoring-header h1 {
+    font-size: 21px;
+  }
+
+  .monitoring-header p {
+    font-size: 12px;
+  }
+
+  .monitoring-table {
+    overflow-x: auto;
+  }
+
+  .monitoring-table-header,
+  .monitoring-row {
+    min-width: 650px;
+  }
+
+  .monitoring-card-header {
+    padding: 17px;
+  }
+}
+
+
+.temperature-button {
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  color: #374151;
+  font-size: 12px;
+  padding: 5px;
+  border-radius: 6px;
+}
+
+.temperature-button:hover {
+  background: #eef6ff;
+  color: #1684c4;
+}
+
+.temperature-edit {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.temperature-edit input {
+  width: 65px;
+  padding: 6px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.temperature-edit button {
+  border: none;
+  background: #2563eb;
+  color: white;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.temperature-edit .cancel-btn {
+  background: #6b7280;
+}
