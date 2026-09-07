@@ -218,7 +218,6 @@
   margin-top: auto;
   padding: 16px;
 }
-
 .logo-icon {
   width: 32px;
   height: 32px;
@@ -307,63 +306,59 @@
 
 /* fleet helath score */
 .fleet-health {
-  padding: 18px 12px;
   text-align: center;
-  border: 1px solid var(--base-700);
-  border-radius: 10px;
-  background: var(--base-800);
+  padding: 16px;
 }
 
 .fleet-health p {
   margin: 0 0 12px;
-  color: var(--text-300);
-  font-size: 13px;
-}
-
-.fleet-health h2 {
-  width: 85px;
-  height: 85px;
-
-  margin: 0 auto 10px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-  border: 7px solid #22c55e;
-
   color: white;
-  font-size: 24px;
-  font-weight: 600;
-
-  box-shadow: 0 0 12px rgba(34, 197, 94, 0.2);
+  font-size: 16px;
 }
 
-.fleet-health span {
-  color: #22c55e;
-  font-size: 12px;
+.health-circle {
+  width: 115px;
+  height: 115px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.health-circle-inner {
+  width: 91px;
+  height: 91px;
+  border-radius: 50%;
+  background: #071a2b;
+  display: grid;
+  place-items: center;
+  color: white;
+  font-size: 30px;
   font-weight: 500;
+}
+
+.fleet-health > span {
+  color: #22c55e;
+  font-size: 15px;
 }
 
 .help-box {
   margin-top: 12px;
   padding: 14px;
 
-  border: 1px solid var(--base-700);
+  border: 1px solid #1e3448;
   border-radius: 10px;
-
-  background: var(--base-800);
+  background: #0b2032;
 }
 
 .help-box p {
   margin: 0 0 4px;
-  color: var(--text-300);
+  color: #e2e8f0;
   font-size: 12px;
 }
 
 .help-box span {
-  color: var(--text-500);
+  color: #94a3b8;
   font-size: 11px;
 }
 /* manager_dashboard header */
@@ -816,7 +811,6 @@
 }
 /* ============ Live Fleet Map ============ */
 
-/* ============ Live Fleet Map ============ */
 
 .map-panel {
   padding: 16px;
@@ -1044,4 +1038,91 @@
 
   color: var(--text-500);
   font-size: 9px;
+}
+
+/* shipments */
+/* Shipment Status */
+
+.shipment-section {
+  grid-column: 1;
+}
+
+.donut-panel {
+  padding: 16px;
+}
+
+.donut-title {
+  margin: 0;
+  color: var(--text-100);
+  font-size: 15px;
+}
+
+.donut-chart-wrap {
+  position: relative;
+  width: 170px;
+  height: 170px;
+  margin: 10px auto;
+}
+
+.donut-center {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+}
+
+.donut-total {
+  margin: 0;
+  color: var(--text-100);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.donut-total-label {
+  margin: 2px 0 0;
+  color: var(--text-500);
+  font-size: 11px;
+}
+
+.donut-legend {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.donut-legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  color: var(--text-300);
+  font-size: 11px;
+}
+
+.donut-legend-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.donut-legend-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.donut-legend-value {
+  color: var(--text-100);
 }
