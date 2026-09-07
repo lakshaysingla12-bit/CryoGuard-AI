@@ -66,3 +66,28 @@ export const temperatureSeries = [
   { time: '20:00', temp: 4 },
   { time: '22:00', temp: 6 }
 ]
+
+// recent alerts
+export const recentAlerts = [
+  {
+    id: 1,
+    title: "Temperature above limit",
+    truck: "TRK-021",
+    time: "2 min ago",
+    tone: "crit"
+  },
+  {
+    id: 2,
+    title: "Vehicle door opened",
+    truck: "TRK-014",
+    time: "8 min ago",
+    tone: "warn"
+  },
+  {
+    id: 3,
+    title: "Shipment delivered",
+    truck: "TRK-008",
+    time: "15 min ago",
+    tone: "ok"
+  }
+]
