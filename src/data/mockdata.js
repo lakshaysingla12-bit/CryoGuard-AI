@@ -153,3 +153,50 @@ export const shipmentsByStatus = [
     color: "#ef4444"
   }
 ];
+
+// active shipments
+export const activeShipments = [
+  {
+    id: "SHP-1024",
+    vehicle: "TRK-021",
+    route: "Chandigarh → Delhi",
+    temperature: "8.4°C",
+    status: "Critical"
+  },
+  {
+    id: "SHP-1025",
+    vehicle: "TRK-014",
+    route: "Delhi → Jaipur",
+    temperature: "6.2°C",
+    status: "Warning"
+  },
+  {
+    id: "SHP-1026",
+    vehicle: "TRK-008",
+    route: "Chandigarh → Amritsar",
+    temperature: "4.8°C",
+    status: "On Track"
+  },
+  {
+    id: "SHP-1027",
+    vehicle: "TRK-032",
+    route: "Delhi → Lucknow",
+    temperature: "7.1°C",
+    status: "On Track"
+  }
+];
+
+// fleet health
+export const selectedVehicle = {
+  truckId: "TRK-021",
+  driver: "Rahul Sharma",
+  status: "Critical",
+  route: "Chandigarh → Delhi",
+  cargo: "Frozen Vaccines",
+  eta: "2h 15m",
+  distanceLeft: "142 km",
+  temperature: "8.4°C",
+  humidity: "68%",
+  battery: "82%",
+  riskScore: "78%"
+};

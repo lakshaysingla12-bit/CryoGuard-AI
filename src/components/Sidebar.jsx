@@ -11,7 +11,17 @@ const navItems = [
   { id: "users", label: "Users", icon: "Users" },
   { id: "settings", label: "Settings", icon: "Settings" }
 ];
+const healthScore = 80;
 
+let healthColor;
+
+if (healthScore >= 80) {
+  healthColor = "#22c55e"; // green
+} else if (healthScore >= 50) {
+  healthColor = "#eab308"; // yellow
+} else {
+  healthColor = "#ef4444"; // red
+}
 export default function Sidebar() {
   return (
     <aside className="sidebar">
@@ -53,6 +63,39 @@ export default function Sidebar() {
           Cold-chain link <span>stable</span>
           </p>
       </div>
+      <div className="sidebar-bottom">
+
+  <div className="fleet-health">
+  <p>Fleet Health Score</p>
+
+  <div
+  className="health-circle"
+  style={{
+    background: `conic-gradient(
+      ${healthColor} ${healthScore}%,
+      #1e3448 ${healthScore}%
+    )`
+  }}
+>
+  <div className="health-circle-inner">
+    {healthScore}%
+  </div>
+</div>
+        <span style={{ color: healthColor }}>
+  {healthScore >= 80
+    ? "Excellent"
+    : healthScore >= 50
+    ? "Good"
+    : "Critical"}
+</span>
+      </div>
+
+  <div className="help-box">
+    <p>Need Help?</p>
+    <span>Contact Support</span>
+  </div>
+
+</div>
     </aside>
   );
 }
