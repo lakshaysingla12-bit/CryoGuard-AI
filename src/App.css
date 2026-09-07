@@ -633,3 +633,103 @@
   width: 100%;
   height: 240px;
 }
+
+/* Recent Alerts */
+/* ============ Recent Alerts ============ */
+
+.alerts-panel {
+  padding: 1rem;
+  min-height: 250px;
+}
+
+.alerts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.alerts-header h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-100);
+}
+
+.view-all {
+  font-size: 0.7rem;
+  color: var(--frost-400);
+  cursor: pointer;
+}
+
+.view-all:hover {
+  color: var(--text-100);
+}
+
+.alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.alert-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem;
+  background: var(--base-900);
+  border: 1px solid var(--base-700);
+  border-radius: 0.5rem;
+}
+
+.alert-icon {
+  flex-shrink: 0;
+}
+
+.alert-icon.crit {
+  color: var(--signal-crit);
+}
+
+.alert-icon.warn {
+  color: var(--signal-warn);
+}
+
+.alert-icon.ok {
+  color: var(--signal-ok);
+}
+
+.alert-info {
+  flex: 1;
+}
+
+.alert-title {
+  margin: 0;
+  color: var(--text-300);
+  font-size: 0.75rem;
+}
+
+.alert-meta {
+  margin: 0.25rem 0 0;
+  color: var(--text-500);
+  font-size: 0.65rem;
+}
+
+.alert-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.35rem;
+  font-size: 0.6rem;
+}
+
+.alert-badge.crit {
+  color: var(--signal-crit);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.alert-badge.warn {
+  color: var(--signal-warn);
+  background: rgba(234, 179, 8, 0.1);
+}
+
+.alert-badge.ok {
+  color: var(--signal-ok);
+  background: rgba(34, 197, 94, 0.1);
+}
