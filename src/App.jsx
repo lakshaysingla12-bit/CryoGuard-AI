@@ -4,6 +4,9 @@ import Shipments from "./pages/Shipments";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Worker from "./components/Worker/Worker";
 import Monitoring from "./pages/Monitoring";
+import Inventory from "./pages/Inventory";
+import Alerts from "./pages/Alerts";
+
 
 function App() {
   return (
@@ -29,6 +32,9 @@ function App() {
               path="/shipments"
               element={<Shipments />}
             />
+            <Route path="/inventory" 
+            element={<Inventory />} />
+<Route path="/alerts" element={<Alerts />} />
           </Routes>
 
         </main>
