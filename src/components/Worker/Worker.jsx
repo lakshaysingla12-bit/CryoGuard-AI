@@ -5,10 +5,10 @@ import Temperature from "./Temperature";
 import TrainingProgress from "./TrainingProgress";
 import Messages from "./Messages";
 import WorkerHeader from "./WorkerHeader";
-
+import { useNavigate } from "react-router-dom";
 function Worker() {
   const [activeSection, setActiveSection] = useState("dashboard");
-
+const navigate = useNavigate();
   return (
     <div className="worker-dashboard">
 
@@ -68,14 +68,10 @@ function Worker() {
 
 
           {/* Active Shipments */}
-          <button
-            className={`summary-card ${
-              activeSection === "shipments"
-                ? "active-summary-card"
-                : ""
-            }`}
-            onClick={() => setActiveSection("shipments")}
-          >
+          <button 
+  className="summary-card"
+  onClick={() => navigate("/shipments")}
+>
             <div className="summary-icon">🚚</div>
 
             <div>
