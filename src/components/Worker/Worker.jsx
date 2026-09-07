@@ -16,34 +16,46 @@ const navigate = useNavigate();
 
       <main className="worker-main">
 
+        
         {/* Welcome + Worker Score */}
-        <section className="welcome-section">
+<section className="welcome-section">
 
-          <div className="welcome-card">
-            <div className="welcome-content">
-              <h1>Welcome back, Rohit! 👋</h1>
-              <p>Stay safe and keep the cold chain unbroken.</p>
-            </div>
+  {/* Welcome Banner */}
+  <div className="welcome-card">
 
-            <div className="welcome-image">
-              <span>❄️</span>
-              <div className="worker-illustration">👷</div>
-            </div>
-          </div>
+    <div className="welcome-content">
+      <h1>Welcome back, Rohit! 👋</h1>
+      <p>Stay safe and keep the cold chain unbroken.</p>
+    </div>
 
-          <div className="score-card">
-            <h3>Worker Score</h3>
+    <div className="welcome-image">
+      <img
+        src="/ChatGPT Image Sep 7, 2026, 05_43_28 PM.png"
+        alt="Cold chain worker"
+      />
+    </div>
 
-            <div className="score-circle">
-              <div className="score">92%</div>
-            </div>
+  </div>
 
-            <p className="score-message">Great Job!</p>
-            <span className="score-subtext">Keep it up 🚀</span>
-          </div>
 
-        </section>
+  {/* Worker Score */}
+  <div className="score-card">
 
+    <h3>Worker Score</h3>
+
+    <div className="score-circle">
+      <div className="score">92%</div>
+    </div>
+
+    <p className="score-message">Great Job!</p>
+
+    <span className="score-subtext">
+      Keep it up 🚀
+    </span>
+
+  </div>
+
+</section>
 
         {/* Summary Cards */}
         <section className="summary-section">
