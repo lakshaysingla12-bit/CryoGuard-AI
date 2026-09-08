@@ -17,7 +17,7 @@ import {
   Clock3,
 } from "lucide-react";
 
-import "./Interactive.css";
+
 
 export default function ReviewsWhyUs() {
   const [currentReview, setCurrentReview] = useState(0);
