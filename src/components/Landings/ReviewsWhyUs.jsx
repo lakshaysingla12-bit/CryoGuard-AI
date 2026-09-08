@@ -1,10 +1,324 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
+import {
+  ShieldCheck,
+  Zap,
+  LockKeyhole,
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  Snowflake,
+  ArrowRight,
+  Database,
+  BrainCircuit,
+  BellRing,
+  Eye,
+  Clock3,
+} from "lucide-react";
+
 import "./Interactive.css";
 
 export default function ReviewsWhyUs() {
+  const [currentReview, setCurrentReview] = useState(0);
+
+  const reviews = [
+    {
+      quote:
+        "CryoGuard helped us identify temperature risks before they became expensive shipment failures.",
+      name: "Operations Manager",
+      company: "Regional Pharma Distributor",
+      initials: "OM",
+    },
+    {
+      quote:
+        "The live fleet visibility completely changed how our team handles cold-chain operations.",
+      name: "Fleet Operations Lead",
+      company: "Healthcare Logistics",
+      initials: "FL",
+    },
+    {
+      quote:
+        "Instead of reacting to temperature breaches, our team can now act before the shipment is compromised.",
+      name: "Supply Chain Director",
+      company: "Cold Storage Network",
+      initials: "SC",
+    },
+  ];
+
+  const reasons = [
+    {
+      icon: Zap,
+      title: "Prevent problems, don't just report them",
+      body:
+        "Traditional monitoring tells you what already happened. CryoGuard focuses on what is likely to happen next.",
+    },
+    {
+      icon: Eye,
+      title: "Complete operational visibility",
+      body:
+        "Temperature, location, shipment status and alerts come together in one simple interface.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Protect high-value cargo",
+      body:
+        "Reduce the risk of spoiled pharmaceutical, food and temperature-sensitive shipments.",
+    },
+    {
+      icon: Clock3,
+      title: "Act while there is still time",
+      body:
+        "Early warnings give operations teams valuable time to intervene before cargo is compromised.",
+    },
+  ];
+
+  const steps = [
+    {
+      number: "01",
+      icon: Database,
+      title: "Connect your sensors",
+      body:
+        "Connect existing cold-chain IoT sensors and start sending shipment data to CryoGuard.",
+    },
+    {
+      number: "02",
+      icon: BrainCircuit,
+      title: "AI analyzes every reading",
+      body:
+        "Our intelligence layer continuously evaluates temperature, route and shipment conditions.",
+    },
+    {
+      number: "03",
+      icon: BellRing,
+      title: "Receive an early warning",
+      body:
+        "When risk increases, your team receives an alert with the relevant shipment information.",
+    },
+    {
+      number: "04",
+      icon: CheckCircle2,
+      title: "Take action",
+      body:
+        "Intervene before the shipment crosses its safe operating limits.",
+    },
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentReview((prev) => (prev + 1) % reviews.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, [reviews.length]);
+
   return (
-    <section>
-      <h2>Why CryoGuard?</h2>
-      <p>Protect your temperature-sensitive shipments.</p>
-    </section>
+    <>
+      {/* WHY US */}
+      <section id="why-us" className="lp-section lp-why">
+        <div className="lp-why-visual">
+          <div className="lp-why-card">
+            <div className="lp-why-header">
+              <div>
+                <span>SHIPMENT HEALTH</span>
+                <h3>TRK-1042</h3>
+              </div>
+
+              <ShieldCheck size={25} />
+            </div>
+
+            <div className="lp-health-score">
+              <strong>94</strong>
+              <span>/100</span>
+            </div>
+
+            <div className="lp-progress">
+              <span></span>
+            </div>
+
+            <div className="lp-health-items">
+              <div>
+                <CheckCircle2 size={16} />
+                Temperature
+              </div>
+
+              <div>
+                <CheckCircle2 size={16} />
+                Route
+              </div>
+
+              <div>
+                <CheckCircle2 size={16} />
+                Sensor
+              </div>
+            </div>
+          </div>
+
+          <div className="lp-small-glass lp-small-one">
+            <Zap size={16} />
+            Early intervention
+          </div>
+
+          <div className="lp-small-glass lp-small-two">
+            <LockKeyhole size={16} />
+            Secure data
+          </div>
+        </div>
+
+        <div className="lp-why-copy">
+          <span className="lp-section-label">WHY CRYOGUARD</span>
+
+          <h2>Don't wait for a temperature breach.</h2>
+
+          <p className="lp-why-intro">
+            Most monitoring systems tell you what went wrong. CryoGuard is
+            designed to tell you what is likely to go wrong next.
+          </p>
+
+          <div className="lp-reasons">
+            {reasons.map(({ icon: Icon, title, body }) => (
+              <div className="lp-reason" key={title}>
+                <div className="lp-reason-icon">
+                  <Icon size={19} />
+                </div>
+
+                <div>
+                  <h3>{title}</h3>
+                  <p>{body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section id="how-it-works" className="lp-section lp-how">
+        <div className="lp-section-heading">
+          <span className="lp-section-label">HOW IT WORKS</span>
+
+          <h2>From sensor data to smarter decisions.</h2>
+
+          <p>
+            A simple workflow designed around real-world cold-chain
+            operations.
+          </p>
+        </div>
+
+        <div className="lp-steps-grid">
+          {steps.map(({ number, icon: Icon, title, body }) => (
+            <div className="lp-step" key={number}>
+              <div className="lp-step-number">{number}</div>
+
+              <div className="lp-step-icon">
+                <Icon size={22} />
+              </div>
+
+              <h3>{title}</h3>
+
+              <p>{body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* REVIEWS */}
+      <section id="reviews" className="lp-section lp-reviews">
+        <div className="lp-section-heading">
+          <span className="lp-section-label">
+            WHAT OPERATIONS TEAMS SAY
+          </span>
+
+          <h2>Built to make operations calmer.</h2>
+        </div>
+
+        <div className="lp-review-window">
+          <button
+            className="lp-review-arrow left"
+            onClick={() =>
+              setCurrentReview(
+                (prev) => (prev - 1 + reviews.length) % reviews.length
+              )
+            }
+            aria-label="Previous review"
+          >
+            <ChevronLeft size={21} />
+          </button>
+
+          <div className="lp-review-content">
+            <div className="lp-stars">★ ★ ★ ★ ★</div>
+
+            <blockquote>
+              "{reviews[currentReview].quote}"
+            </blockquote>
+
+            <div className="lp-review-person">
+              <div className="lp-review-avatar">
+                {reviews[currentReview].initials}
+              </div>
+
+              <div>
+                <strong>{reviews[currentReview].name}</strong>
+                <span>{reviews[currentReview].company}</span>
+              </div>
+            </div>
+          </div>
+
+          <button
+            className="lp-review-arrow right"
+            onClick={() =>
+              setCurrentReview(
+                (prev) => (prev + 1) % reviews.length
+              )
+            }
+            aria-label="Next review"
+          >
+            <ChevronRight size={21} />
+          </button>
+        </div>
+
+        <div className="lp-review-dots">
+          {reviews.map((_, index) => (
+            <button
+              key={index}
+              className={index === currentReview ? "active" : ""}
+              onClick={() => setCurrentReview(index)}
+              aria-label={`Review ${index + 1}`}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* FINAL CTA */}
+      <section className="lp-final-cta">
+        <div className="lp-cta-glow"></div>
+
+        <div className="lp-cta-content">
+          <div className="lp-cta-icon">
+            <Snowflake size={27} />
+          </div>
+
+          <span className="lp-section-label">START MONITORING</span>
+
+          <h2>
+            Keep your cold chain
+            <span> one step ahead.</span>
+          </h2>
+
+          <p>
+            See how CryoGuard AI can help your team detect risks before
+            they become losses.
+          </p>
+
+          <Link
+            to="/login"
+            className="lp-btn lp-btn-primary lp-cta-button"
+          >
+            Explore the dashboard
+            <ArrowRight size={17} />
+          </Link>
+        </div>
+      </section>
+    </>
   );
 }
