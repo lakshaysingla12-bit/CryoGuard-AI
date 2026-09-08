@@ -3491,3 +3491,405 @@ a {
     min-height: auto;
   }
 }
+
+/* ==========================================================
+   REVIEWS / TESTIMONIALS
+   ========================================================== */
+
+.lp-reviews {
+  position: relative;
+  padding: 110px 8%;
+  background: transparent;
+  overflow: hidden;
+}
+
+.lp-reviews::before {
+  content: "";
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  left: 50%;
+  top: 35%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.1);
+  filter: blur(110px);
+  pointer-events: none;
+}
+
+.lp-reviews .lp-section-heading {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.lp-reviews .lp-section-label {
+  color: #60a5fa;
+}
+
+.lp-reviews .lp-section-heading h2 {
+  color: #f4f8ff;
+  margin-top: 14px;
+}
+
+/* Review window */
+
+.lp-review-window {
+  position: relative;
+  z-index: 1;
+
+  max-width: 850px;
+  min-height: 300px;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+
+  border-radius: 24px;
+
+  background: rgba(16, 34, 59, 0.58);
+  border: 1px solid rgba(125, 211, 252, 0.14);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(37, 99, 235, 0.07);
+
+  overflow: hidden;
+}
+
+/* Content */
+
+.lp-review-content {
+  width: 100%;
+  padding: 55px 80px;
+  text-align: center;
+}
+
+.lp-stars {
+  margin-bottom: 22px;
+
+  color: #fbbf24;
+  font-size: 18px;
+  letter-spacing: 4px;
+}
+
+.lp-review-content blockquote {
+  margin: 0 auto 30px;
+
+  max-width: 650px;
+
+  color: #e8f1fa;
+
+  font-size: 20px;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+/* Person */
+
+.lp-review-person {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 13px;
+}
+
+.lp-review-avatar {
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(96, 165, 250, 0.25);
+
+  color: #7dd3fc;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.lp-review-person > div:last-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.lp-review-person strong {
+  color: #f1f5f9;
+  font-size: 14px;
+}
+
+.lp-review-person span {
+  margin-top: 3px;
+
+  color: #8198b4;
+  font-size: 12px;
+}
+
+/* Arrows */
+
+.lp-review-arrow {
+  position: absolute;
+  z-index: 2;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(125, 211, 252, 0.14);
+
+  color: #9fc2df;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.lp-review-arrow:hover {
+  background: rgba(59, 130, 246, 0.15);
+  color: #7dd3fc;
+  transform: scale(1.08);
+}
+
+.lp-review-arrow.left {
+  left: 20px;
+}
+
+.lp-review-arrow.right {
+  right: 20px;
+}
+
+/* Dots */
+
+.lp-review-dots {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+
+  margin-top: 25px;
+}
+
+.lp-review-dots button {
+  width: 7px;
+  height: 7px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 50%;
+
+  background: rgba(148, 163, 184, 0.35);
+
+  cursor: pointer;
+
+  transition:
+    width 0.25s ease,
+    background 0.25s ease;
+}
+
+.lp-review-dots button.active {
+  width: 22px;
+  border-radius: 10px;
+
+  background: #60a5fa;
+}
+
+/* Responsive */
+
+@media (max-width: 700px) {
+  .lp-reviews {
+    padding: 80px 5%;
+  }
+
+  .lp-review-content {
+    padding: 45px 55px;
+  }
+
+  .lp-review-content blockquote {
+    font-size: 17px;
+  }
+
+  .lp-review-arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .lp-review-arrow.left {
+    left: 12px;
+  }
+
+  .lp-review-arrow.right {
+    right: 12px;
+  }
+}
+
+/* ==========================================================
+   REVIEWS ANIMATIONS
+   ========================================================== */
+
+/* Glass card slowly floats */
+
+.lp-review-window {
+  animation: reviewFloat 5s ease-in-out infinite;
+}
+
+@keyframes reviewFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+/* Soft glowing border */
+
+.lp-review-window::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  border-radius: inherit;
+
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(96, 165, 250, 0.12),
+    transparent
+  );
+
+  background-size: 200% 100%;
+
+  animation: reviewShimmer 5s linear infinite;
+
+  pointer-events: none;
+}
+
+@keyframes reviewShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Stars gently glow */
+
+.lp-stars {
+  animation: starGlow 2.5s ease-in-out infinite;
+}
+
+@keyframes starGlow {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+/* Avatar pulse */
+
+.lp-review-avatar {
+  animation: avatarPulse 3s ease-in-out infinite;
+}
+
+@keyframes avatarPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(96, 165, 250, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 22px rgba(96, 165, 250, 0.18);
+  }
+}
+
+/* Arrows */
+
+.lp-review-arrow {
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.lp-review-arrow.left:hover {
+  transform: translateX(-4px) scale(1.08);
+}
+
+.lp-review-arrow.right:hover {
+  transform: translateX(4px) scale(1.08);
+}
+
+/* Dots */
+
+.lp-review-dots button {
+  transition:
+    width 0.3s ease,
+    transform 0.3s ease,
+    background 0.3s ease;
+}
+
+.lp-review-dots button:hover {
+  transform: scale(1.3);
+}
+
+/* Review content */
+
+.lp-review-content {
+  animation: reviewContentIn 0.6s ease;
+}
+
+@keyframes reviewContentIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Respect reduced-motion preference */
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-review-window,
+  .lp-stars,
+  .lp-review-avatar,
+  .lp-review-content,
+  .lp-review-window::before {
+    animation: none;
+  }
+}
