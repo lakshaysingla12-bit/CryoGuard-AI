@@ -67,6 +67,49 @@ export default function HeroFeatures() {
         <div className="lp-dashboard-card">
 
   <div className="lp-dashboard-top">
+    <div className="lp-floating-card lp-ai-floating">
+
+  <div className="lp-floating-icon ai">
+    <BrainCircuit size={19} />
+  </div>
+
+  <div>
+    <span>AI Prediction</span>
+    <strong>Risk detected</strong>
+    <small>Breach possible in ~45 min</small>
+  </div>
+
+</div>
+
+
+<div className="lp-floating-card lp-temperature-floating">
+
+  <div className="lp-floating-icon temp">
+    <Thermometer size={18} />
+  </div>
+
+  <div>
+    <span>Temperature</span>
+    <strong>7.2°C</strong>
+    <small>Within safe range</small>
+  </div>
+
+</div>
+
+
+<div className="lp-floating-card lp-fleet-floating">
+
+  <div className="lp-floating-icon fleet">
+    <Activity size={18} />
+  </div>
+
+  <div>
+    <span>Fleet status</span>
+    <strong>24 Active</strong>
+    <small>2 need attention</small>
+  </div>
+
+</div>
 
     <div>
       <p>LIVE SHIPMENT</p>
@@ -133,5 +176,6 @@ export default function HeroFeatures() {
     </div>
 
     </section>
+
   );
 }
