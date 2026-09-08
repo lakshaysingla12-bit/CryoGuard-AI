@@ -2,92 +2,135 @@ import {
   Snowflake,
   ShieldCheck,
   Activity,
-  MapPin
+  MapPin,
+  BrainCircuit,
+  Thermometer,
+  CheckCircle2,
+  Truck,
+  ArrowRight,
+  CircleCheck
 } from "lucide-react";
 
 export default function HeroFeatures() {
   return (
     <section className="lp-hero">
 
-      <div className="lp-hero-copy">
+     <div className="lp-hero-copy">
 
-        <span className="lp-section-label">
-          AI-POWERED COLD CHAIN INTELLIGENCE
-        </span>
+    <div className="lp-status-pill">
+      <span className="lp-status-dot"></span>
+       AI-powered cold-chain intelligence
+    </div>
 
-        <h1>
-          Keep your cold chain
-          <span>one step ahead.</span>
-        </h1>
+  <p className="lp-kicker">
+    COLD-CHAIN MONITORING REIMAGINED
+  </p>
 
-        <p>
-          CryoGuard AI helps logistics teams predict temperature
-          risks, monitor shipments in real time, and protect
-          temperature-sensitive cargo before losses happen.
-        </p>
+  <h1>
+    Protect every shipment
+    <span> before it's too late.</span>
+  </h1>
 
-        <div className="lp-hero-actions">
-          <a href="#reviews" className="lp-btn lp-btn-primary">
-            Explore CryoGuard
-          </a>
+  <p className="lp-hero-sub">
+    CryoGuard AI continuously monitors your fleet, predicts
+    temperature breaches and gives your team time to act
+    before valuable cargo is compromised.
+  </p>
 
-          <a href="#why-us" className="lp-btn">
-            See how it works
-          </a>
-        </div>
+  <div className="lp-hero-actions">
 
-      </div>
+    <a href="#features" className="lp-btn lp-btn-primary">
+      Start monitoring
+      <ArrowRight size={17} />
+    </a>
 
+    <a href="#how-it-works" className="lp-btn lp-btn-glass">
+      See how it works
+    </a>
+
+  </div>
+
+  <div className="lp-trust-line">
+    <CircleCheck size={17} />
+    No hardware lock-in
+    <span>•</span>
+    Real-time monitoring
+    <span>•</span>
+    AI predictions
+  </div>
+
+</div>
 
       <div className="lp-hero-visual">
-
+        <div className="lp-orbit lp-orbit-one"></div>
+<div className="lp-orbit lp-orbit-two"></div>
         <div className="lp-dashboard-card">
 
-          <div className="lp-dashboard-header">
+  <div className="lp-dashboard-top">
 
-            <div>
-              <span>SHIPMENT HEALTH</span>
-              <h3>TRK-1042</h3>
-            </div>
+    <div>
+      <p>LIVE SHIPMENT</p>
+      <h3>TRK-1042</h3>
+    </div>
 
-            <ShieldCheck size={25} />
+    <span className="lp-live-badge">
+      <span></span>
+      LIVE
+    </span>
 
-          </div>
-
-
-          <div className="lp-dashboard-score">
-            <strong>94</strong>
-            <span>/100</span>
-          </div>
+  </div>
 
 
-          <div className="lp-dashboard-progress">
-            <span></span>
-          </div>
+  <div className="lp-temperature">
+
+    <div>
+      <span>Current temperature</span>
+      <strong>7.2°C</strong>
+    </div>
+
+    <div className="lp-temperature-status">
+      <CheckCircle2 size={15} />
+      Safe range
+    </div>
+
+  </div>
 
 
-          <div className="lp-dashboard-items">
+  <div className="lp-mini-chart">
 
-            <div>
-              <Activity size={16} />
-              Temperature
-            </div>
+    <div className="lp-chart-line"></div>
 
-            <div>
-              <MapPin size={16} />
-              Route
-            </div>
+    <div className="lp-chart-limit"></div>
 
-            <div>
-              <Snowflake size={16} />
-              Sensor
-            </div>
+    <span className="lp-chart-label">
+      8°C limit
+    </span>
 
-          </div>
+    <span className="lp-chart-dot lp-dot-one"></span>
+    <span className="lp-chart-dot lp-dot-two"></span>
+    <span className="lp-chart-dot lp-dot-three"></span>
 
-        </div>
+  </div>
 
-      </div>
+
+  <div className="lp-dashboard-footer">
+
+    <div>
+      <MapPin size={15} />
+      Delhi → Chandigarh
+    </div>
+
+    <div>
+      <Truck size={15} />
+      In transit
+    </div>
+
+  </div>
+
+  </div>
+      
+
+    </div>
 
     </section>
   );
