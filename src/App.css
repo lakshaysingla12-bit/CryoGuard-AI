@@ -3892,3 +3892,169 @@ a {
     animation: none;
   }
 }
+
+/* ==========================================================
+   FINAL CTA
+   ========================================================== */
+
+.lp-final-cta {
+  position: relative;
+  padding: 120px 8%;
+  text-align: center;
+  overflow: hidden;
+  background: transparent;
+}
+
+.lp-cta-glow {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.14);
+  filter: blur(120px);
+  animation: ctaGlow 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.lp-cta-content {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 55px 40px;
+  border-radius: 28px;
+
+  background: rgba(16, 34, 59, 0.55);
+  border: 1px solid rgba(125, 211, 252, 0.15);
+
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.35),
+    0 0 60px rgba(37, 99, 235, 0.08);
+
+  animation: ctaFloat 5s ease-in-out infinite;
+}
+
+.lp-cta-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 17px;
+
+  background: rgba(59, 130, 246, 0.13);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+
+  color: #7dd3fc;
+
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.12);
+
+  animation: snowflakePulse 3s ease-in-out infinite;
+}
+
+.lp-final-cta .lp-section-label {
+  color: #60a5fa;
+}
+
+.lp-final-cta h2 {
+  margin: 15px 0 18px;
+
+  color: #f4f8ff;
+
+  font-size: clamp(38px, 5vw, 64px);
+  line-height: 1.05;
+}
+
+.lp-final-cta h2 span {
+  display: block;
+  color: #60c7ff;
+}
+
+.lp-final-cta p {
+  max-width: 570px;
+  margin: 0 auto 32px;
+
+  color: #91a6bf;
+
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.lp-cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.lp-cta-button:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 15px 35px rgba(37, 99, 235, 0.3),
+    0 0 25px rgba(96, 165, 250, 0.15);
+}
+
+@keyframes ctaFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes ctaGlow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+}
+
+@keyframes snowflakePulse {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  50% {
+    transform: rotate(8deg) scale(1.08);
+  }
+}
+
+@media (max-width: 600px) {
+  .lp-final-cta {
+    padding: 80px 5%;
+  }
+
+  .lp-cta-content {
+    padding: 45px 22px;
+  }
+
+  .lp-final-cta h2 {
+    font-size: 38px;
+  }
+
+  .lp-final-cta p {
+    font-size: 14px;
+  }
+}
