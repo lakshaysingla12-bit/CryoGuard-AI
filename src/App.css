@@ -4178,3 +4178,45 @@ body {
   color: var(--white);
   cursor: pointer;
 }
+/* =========================================================
+   4. FOOTER
+   ========================================================= */
+.lp-footer {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid var(--border);
+  padding: 55px 7% 25px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 50px;
+}
+.lp-footer-brand p {
+  max-width: 280px;
+  margin: 15px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+.lp-footer-links {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+.lp-footer-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 11px;
+  transition: color 0.25s ease;
+}
+.lp-footer-links a:hover {
+  color: var(--cyan);
+}
+.lp-footer-bottom {
+  grid-column: 1 / -1;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  color: #526a80;
+  font-size: 10px;
+}
