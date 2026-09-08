@@ -4220,3 +4220,52 @@ body {
   color: #526a80;
   font-size: 10px;
 }
+/* =========================================================
+   5. MOBILE RESPONSIVENESS (NAV & FOOTER)
+   ========================================================= */
+@media (max-width: 768px) {
+  .lp-nav {
+    padding: 0 20px;
+  }
+  .lp-nav-toggle {
+    display: flex;
+  }
+  .lp-nav-links {
+    position: fixed;
+    top: 72px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 30px 25px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 5px;
+    background: rgba(3, 8, 20, 0.95);
+    backdrop-filter: blur(25px);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+  .lp-nav-links.open {
+    transform: translateX(0);
+  }
+  .lp-nav-links a {
+    padding: 16px 5px;
+    border-bottom: 1px solid var(--border);
+  }
+  .lp-nav-cta {
+    text-align: center;
+    margin-top: 12px;
+    border-bottom: none !important;
+  }
+  .lp-footer {
+    grid-template-columns: 1fr;
+    padding: 45px 20px 25px;
+  }
+  .lp-footer-links {
+    flex-wrap: wrap;
+  }
+  .lp-footer-bottom {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
