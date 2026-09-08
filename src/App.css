@@ -4058,3 +4058,80 @@ a {
     font-size: 14px;
   }
 }
+
+/* ==========================================================
+   LANDING PAGE - FINAL GLOBAL POLISH
+   ========================================================== */
+
+.lp-hero,
+.lp-trust-stats,
+.lp-features,
+.lp-why,
+.lp-how,
+.lp-reviews,
+.lp-final-cta {
+  background: transparent;
+}
+
+/* Keep sections visually connected */
+
+.lp-hero {
+  min-height: 90vh;
+}
+
+.lp-features,
+.lp-why,
+.lp-how,
+.lp-reviews {
+  position: relative;
+}
+
+/* Consistent section spacing */
+
+.lp-features {
+  padding-top: 100px;
+  padding-bottom: 110px;
+}
+
+.lp-why,
+.lp-how,
+.lp-reviews {
+  padding-top: 110px;
+  padding-bottom: 110px;
+}
+
+/* Smooth page feel */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Better glass interaction */
+
+.lp-feature-card,
+.lp-step,
+.lp-reason,
+.lp-review-window,
+.lp-cta-content,
+.lp-dashboard-card,
+.lp-floating-card,
+.lp-why-card {
+  will-change: transform;
+}
+
+/* Make links feel smoother */
+
+.lp-btn,
+.lp-feature-card,
+.lp-step,
+.lp-reason {
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
