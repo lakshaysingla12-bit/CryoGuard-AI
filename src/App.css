@@ -4101,3 +4101,80 @@ body {
     transform: translate(70px, 50px);
   }
 }
+/* =========================================================
+   3. NAVIGATION BAR
+   ========================================================= */
+.lp-nav {
+  position: sticky;
+  top: 0;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 7%;
+  border-bottom: 1px solid var(--border);
+  background: rgba(3, 8, 20, 0.62);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  z-index: 100;
+}
+
+.lp-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--white);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+}
+.lp-logo b {
+  color: var(--cyan);
+}
+.lp-logo-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  color: var(--cyan);
+  background: linear-gradient(
+    135deg,
+    rgba(56, 189, 248, 0.2),
+    rgba(45, 212, 191, 0.08)
+  );
+  border: 1px solid var(--border-bright);
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.12);
+}
+.lp-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.lp-nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+.lp-nav-links a:hover {
+  color: var(--white);
+  transform: translateY(-1px);
+}
+.lp-nav-cta {
+  padding: 9px 18px;
+  border-radius: 9px;
+  color: #03101b !important;
+  background: var(--cyan);
+  font-weight: 600;
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
+}
+.lp-nav-toggle {
+  display: none;
+  border: none;
+  background: transparent;
+  color: var(--white);
+  cursor: pointer;
+}
