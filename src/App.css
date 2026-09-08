@@ -2233,3 +2233,695 @@ a {
   }
 
 }
+/* =========================================
+   CRYOGUARD HERO GLASS EFFECT
+========================================= */
+
+.lp-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+
+/* =========================================
+   STATUS PILL
+========================================= */
+
+.lp-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 14px;
+
+  border-radius: 30px;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  color: #8edcff;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.lp-status-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #52d6ff;
+
+  box-shadow: 0 0 12px rgba(82, 214, 255, 0.8);
+
+  animation: lp-pulse 2s infinite;
+}
+
+@keyframes lp-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(0.75);
+  }
+}
+
+
+/* =========================================
+   HERO KICKER
+========================================= */
+
+.lp-kicker {
+  margin-top: 25px;
+
+  color: #58c8f5;
+
+  font-size: 11px !important;
+  font-weight: 800;
+
+  letter-spacing: 2px;
+}
+
+
+/* =========================================
+   HERO SUBTEXT
+========================================= */
+
+.lp-hero-sub {
+  max-width: 580px;
+
+  color: #8da2b3 !important;
+
+  font-size: 16px !important;
+  line-height: 1.7 !important;
+}
+
+
+/* =========================================
+   HERO BUTTON GLASS
+========================================= */
+
+.lp-btn-glass {
+  color: #dceefa;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.lp-btn-glass:hover {
+  background: rgba(255, 255, 255, 0.09);
+
+  border-color: rgba(91, 203, 255, 0.25);
+}
+
+
+/* =========================================
+   TRUST LINE
+========================================= */
+
+.lp-trust-line {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  margin-top: 22px;
+
+  color: #7890a2;
+
+  font-size: 12px;
+}
+
+.lp-trust-line svg {
+  color: #55c8f5;
+}
+
+
+/* =========================================
+   HERO DASHBOARD
+========================================= */
+
+.lp-dashboard-card {
+  position: relative;
+  z-index: 5;
+
+  width: min(460px, 100%);
+
+  padding: 27px;
+
+  border-radius: 24px;
+
+  background: rgba(255, 255, 255, 0.055);
+
+  border: 1px solid rgba(255, 255, 255, 0.13);
+
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+
+  animation: dashboard-float 6s ease-in-out infinite;
+}
+
+@keyframes dashboard-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+
+/* =========================================
+   DASHBOARD HEADER
+========================================= */
+
+.lp-dashboard-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lp-dashboard-top p {
+  margin: 0;
+
+  color: #6f8799;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+.lp-dashboard-top h3 {
+  margin: 5px 0 0;
+
+  color: #eaf7ff;
+
+  font-size: 19px;
+}
+
+
+/* =========================================
+   LIVE BADGE
+========================================= */
+
+.lp-live-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 10px;
+
+  border-radius: 20px;
+
+  background: rgba(52, 211, 153, 0.08);
+
+  border: 1px solid rgba(52, 211, 153, 0.18);
+
+  color: #67e3b2;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.lp-live-badge > span {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #4ade80;
+
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.8);
+}
+
+
+/* =========================================
+   TEMPERATURE
+========================================= */
+
+.lp-temperature {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  margin-top: 32px;
+}
+
+.lp-temperature > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.lp-temperature span {
+  color: #7890a2;
+
+  font-size: 11px;
+}
+
+.lp-temperature strong {
+  color: #f0faff;
+
+  font-size: 46px;
+
+  line-height: 1;
+}
+
+.lp-temperature-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  padding: 7px 10px;
+
+  border-radius: 20px;
+
+  background: rgba(52, 211, 153, 0.07);
+
+  color: #66dcae;
+
+  font-size: 10px !important;
+}
+
+
+/* =========================================
+   MINI CHART
+========================================= */
+
+.lp-mini-chart {
+  position: relative;
+
+  height: 115px;
+
+  margin-top: 30px;
+
+  overflow: hidden;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px
+    );
+
+  background-size: 40px 30px;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+
+/* Temperature line */
+
+.lp-chart-line {
+  position: absolute;
+
+  left: 5%;
+  right: 5%;
+  top: 58%;
+
+  height: 2px;
+
+  background: #55c8f5;
+
+  transform: rotate(-3deg);
+
+  box-shadow:
+    0 0 10px rgba(85, 200, 245, 0.5);
+}
+
+
+/* Limit line */
+
+.lp-chart-limit {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  top: 28%;
+
+  border-top: 1px dashed rgba(255, 100, 100, 0.35);
+}
+
+.lp-chart-label {
+  position: absolute;
+
+  top: 8px;
+  right: 10px;
+
+  color: #9a7880;
+
+  font-size: 9px;
+}
+
+
+/* Chart dots */
+
+.lp-chart-dot {
+  position: absolute;
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #65d4ff;
+
+  box-shadow: 0 0 12px rgba(101, 212, 255, 0.8);
+}
+
+.lp-dot-one {
+  left: 20%;
+  top: 62%;
+}
+
+.lp-dot-two {
+  left: 52%;
+  top: 52%;
+}
+
+.lp-dot-three {
+  left: 82%;
+  top: 45%;
+}
+
+
+/* =========================================
+   DASHBOARD FOOTER
+========================================= */
+
+.lp-dashboard-footer {
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 20px;
+  padding-top: 18px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.lp-dashboard-footer div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  color: #7890a2;
+
+  font-size: 11px;
+}
+
+.lp-dashboard-footer svg {
+  color: #55c8f5;
+}
+
+
+/* =========================================
+   ORBITS
+========================================= */
+
+.lp-orbit {
+  position: absolute;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(75, 190, 240, 0.12);
+
+  pointer-events: none;
+}
+
+.lp-orbit-one {
+  width: 520px;
+  height: 520px;
+
+  animation: orbit-spin 25s linear infinite;
+}
+
+.lp-orbit-two {
+  width: 390px;
+  height: 390px;
+
+  border-color: rgba(255, 255, 255, 0.07);
+
+  animation: orbit-spin-reverse 20s linear infinite;
+}
+
+@keyframes orbit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit-spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+
+/* =========================================
+   FLOATING GLASS CARDS
+========================================= */
+
+.lp-floating-card {
+  position: absolute;
+
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  min-width: 190px;
+
+  padding: 13px 15px;
+
+  border-radius: 15px;
+
+  background: rgba(18, 31, 44, 0.72);
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+
+/* Floating icon */
+
+.lp-floating-icon {
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+}
+
+.lp-floating-icon.ai {
+  color: #a58cff;
+
+  background: rgba(145, 110, 255, 0.12);
+}
+
+.lp-floating-icon.temp {
+  color: #55c8f5;
+
+  background: rgba(70, 190, 245, 0.10);
+}
+
+.lp-floating-icon.fleet {
+  color: #65e0b1;
+
+  background: rgba(65, 220, 170, 0.10);
+}
+
+
+/* Floating text */
+
+.lp-floating-card > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lp-floating-card span {
+  color: #8298aa;
+
+  font-size: 9px;
+}
+
+.lp-floating-card strong {
+  color: #eaf7ff;
+
+  font-size: 12px;
+}
+
+.lp-floating-card small {
+  color: #647c8e;
+
+  font-size: 9px;
+}
+
+
+/* =========================================
+   FLOATING CARD POSITIONS
+========================================= */
+
+.lp-ai-floating {
+  top: 65px;
+  right: -15px;
+
+  animation: floating-ai 5s ease-in-out infinite;
+}
+
+.lp-temperature-floating {
+  bottom: 75px;
+  left: -30px;
+
+  animation: floating-temp 6s ease-in-out infinite;
+}
+
+.lp-fleet-floating {
+  bottom: 15px;
+  right: 20px;
+
+  animation: floating-fleet 5.5s ease-in-out infinite;
+}
+
+
+@keyframes floating-ai {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes floating-temp {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(9px);
+  }
+}
+
+@keyframes floating-fleet {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 900px) {
+
+  .lp-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-hero-copy {
+    max-width: 700px;
+  }
+
+  .lp-hero-visual {
+    min-height: 520px;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .lp-hero {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .lp-hero-visual {
+    min-height: 470px;
+  }
+
+  .lp-dashboard-card {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .lp-floating-card {
+    transform: scale(0.82);
+  }
+
+  .lp-ai-floating {
+    right: -35px;
+  }
+
+  .lp-temperature-floating {
+    left: -45px;
+  }
+
+  .lp-fleet-floating {
+    right: -15px;
+  }
+
+  .lp-trust-line {
+    flex-wrap: wrap;
+  }
+
+}
