@@ -25,7 +25,6 @@ if (healthScore >= 80) {
 export default function Sidebar() {
   return (
     <aside className="sidebar">
-
       <div className="sidebar-header">
         <span className="logo-icon">
           <Snowflake size={18} />
