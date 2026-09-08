@@ -13,6 +13,7 @@ import {
 
 export default function HeroFeatures() {
   return (
+    <>
     <section className="lp-hero">
 
      <div className="lp-hero-copy">
@@ -176,6 +177,33 @@ export default function HeroFeatures() {
     </div>
 
     </section>
+    {/* =========================================
+    TRUST STATS
+========================================= */}
 
+<section className="lp-trust-stats">
+
+  <div className="lp-trust-stat">
+    <strong>99.2%</strong>
+    <span>Compliance rate</span>
+  </div>
+
+  <div className="lp-trust-stat">
+    <strong>45 min</strong>
+    <span>Average lead time</span>
+  </div>
+
+  <div className="lp-trust-stat">
+    <strong>3.2M+</strong>
+    <span>KM monitored</span>
+  </div>
+
+  <div className="lp-trust-stat">
+    <strong>24/7</strong>
+    <span>AI monitoring</span>
+  </div>
+
+</section>
+</>
   );
 }
