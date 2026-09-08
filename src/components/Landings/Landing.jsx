@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Snowflake, Menu, X } from "lucide-react";
-import "./Landing.css";
+import "./App.css";
 import HeroFeatures from "./HeroFeatures";
 import ReviewsWhyUs from "./ReviewsWhyUs";
 
