@@ -18,8 +18,6 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  background: #06111f;
-  color: #f4f8ff;
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -33,7 +31,6 @@ a {
   color: inherit;
 }
 
-
 /* =========================================
    LANDING PAGE
 ========================================= */
@@ -43,7 +40,6 @@ a {
   min-height: 100vh;
   overflow-x: hidden;
 }
-
 
 /* =========================================
    NAVBAR
@@ -106,18 +102,20 @@ a {
   opacity: 0.6;
 }
 
-
 /* =========================================
    HERO
 ========================================= */
 
 .lp-hero {
   min-height: 100vh;
+
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
+
   align-items: center;
+
   gap: 60px;
-  background: transparent;
+
   padding: 140px 6% 80px;
 }
 
@@ -163,7 +161,6 @@ a {
   margin-top: 30px;
 }
 
-
 /* =========================================
    BUTTONS
 ========================================= */
@@ -200,7 +197,6 @@ a {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-
 /* =========================================
    HERO VISUAL
 ========================================= */
@@ -215,7 +211,6 @@ a {
   justify-content: center;
 }
 
-
 /* Main dashboard card */
 
 .lp-dashboard-card {
@@ -229,8 +224,7 @@ a {
 
   border: 1px solid rgba(0, 0, 0, 0.08);
 
-  box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.12);
 }
 
 .lp-dashboard-header {
@@ -252,7 +246,6 @@ a {
   font-size: 18px;
 }
 
-
 /* Score */
 
 .lp-dashboard-score {
@@ -271,7 +264,6 @@ a {
 .lp-dashboard-score span {
   font-size: 15px;
 }
-
 
 /* Progress */
 
@@ -293,7 +285,6 @@ a {
 
   border-radius: inherit;
 }
-
 
 /* Dashboard items */
 
@@ -319,7 +310,6 @@ a {
 
   font-size: 12px;
 }
-
 
 /* =========================================
    TRUST / STATS
@@ -353,14 +343,13 @@ a {
   font-size: 13px;
 }
 
-
 /* =========================================
    FEATURES
 ========================================= */
 
 .lp-features-grid {
   display: grid;
-  background: transparent;
+
   grid-template-columns: repeat(3, 1fr);
 
   gap: 20px;
@@ -383,8 +372,7 @@ a {
 .lp-feature-card:hover {
   transform: translateY(-6px);
 
-  box-shadow:
-    0 20px 45px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
 }
 
 .lp-feature-icon {
@@ -413,7 +401,6 @@ a {
 
   font-size: 14px;
 }
-
 
 /* =========================================
    REVIEWS
@@ -445,7 +432,6 @@ a {
   line-height: 1.7;
 }
 
-
 /* Review window */
 
 .lp-review-window {
@@ -468,14 +454,12 @@ a {
 
   border: 1px solid rgba(0, 0, 0, 0.08);
 
-  box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.07);
 
   transition:
     opacity 0.3s ease,
     transform 0.3s ease;
 }
-
 
 /* Stars */
 
@@ -486,7 +470,6 @@ a {
 
   letter-spacing: 4px;
 }
-
 
 /* Quote */
 
@@ -501,7 +484,6 @@ a {
 
   font-weight: 500;
 }
-
 
 /* Person */
 
@@ -542,7 +524,6 @@ a {
   opacity: 0.7;
 }
 
-
 /* Review arrows */
 
 .lp-review-arrow {
@@ -569,8 +550,7 @@ a {
 .lp-review-arrow:hover {
   transform: scale(1.08);
 
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* =========================================
@@ -767,7 +747,6 @@ a {
   line-height: 1.6;
 }
 
-
 /* =========================================
    HOW IT WORKS
 ========================================= */
@@ -803,7 +782,9 @@ a {
   border: 1px solid #e0edf4;
   border-radius: 20px;
   background: #fbfdff;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .lp-step:hover {
@@ -844,7 +825,6 @@ a {
   font-size: 14px;
   line-height: 1.65;
 }
-
 
 /* =========================================
    REVIEWS
@@ -971,7 +951,6 @@ a {
   background: #2999d1;
 }
 
-
 /* =========================================
    FINAL CTA
 ========================================= */
@@ -1045,7 +1024,6 @@ a {
   gap: 9px;
   text-decoration: none;
 }
-
 
 /* =========================================
    RESPONSIVE
@@ -1148,7 +1126,6 @@ a {
   animation: lp-status-pulse 2s infinite;
 }
 
-
 /* Kicker */
 
 .lp-kicker {
@@ -1162,7 +1139,6 @@ a {
   letter-spacing: 2px;
 }
 
-
 /* Hero subtitle */
 
 .lp-hero-sub {
@@ -1174,7 +1150,6 @@ a {
 
   line-height: 1.7;
 }
-
 
 /* Trust line */
 
@@ -1200,7 +1175,6 @@ a {
   color: #b0c2cc;
 }
 
-
 /* Glass button */
 
 .lp-btn-glass {
@@ -1216,10 +1190,8 @@ a {
 .lp-btn-glass:hover {
   background: rgba(232, 246, 252, 0.9);
 
-  box-shadow:
-    0 10px 25px rgba(26, 76, 110, 0.08);
+  box-shadow: 0 10px 25px rgba(26, 76, 110, 0.08);
 }
-
 
 /* =========================================
    NEW DASHBOARD
@@ -1250,7 +1222,6 @@ a {
   font-size: 20px;
 }
 
-
 /* Live badge */
 
 .lp-live-badge {
@@ -1280,7 +1251,6 @@ a {
 
   animation: lp-status-pulse 1.5s infinite;
 }
-
 
 /* Temperature */
 
@@ -1324,7 +1294,6 @@ a {
   font-size: 11px;
 }
 
-
 /* =========================================
    MINI CHART
 ========================================= */
@@ -1351,12 +1320,7 @@ a {
 
   height: 3px;
 
-  background: linear-gradient(
-    90deg,
-    #54bfe9,
-    #35a9df,
-    #4bc89a
-  );
+  background: linear-gradient(90deg, #54bfe9, #35a9df, #4bc89a);
 
   border-radius: 10px;
 
@@ -1385,7 +1349,6 @@ a {
   font-size: 9px;
 }
 
-
 /* Chart dots */
 
 .lp-chart-dot {
@@ -1398,8 +1361,7 @@ a {
 
   background: #35a9df;
 
-  box-shadow:
-    0 0 0 3px rgba(53, 169, 223, 0.12);
+  box-shadow: 0 0 0 3px rgba(53, 169, 223, 0.12);
 }
 
 .lp-dot-one {
@@ -1416,7 +1378,6 @@ a {
   left: 78%;
   top: 55%;
 }
-
 
 /* =========================================
    DASHBOARD FOOTER
@@ -1445,7 +1406,6 @@ a {
 .lp-dashboard-footer svg {
   color: #2999d1;
 }
-
 
 /* =========================================
    ORBITS
@@ -1477,7 +1437,6 @@ a {
   animation: lp-orbit-rotate-reverse 18s linear infinite;
 }
 
-
 /* =========================================
    FLOATING CARDS
 ========================================= */
@@ -1502,8 +1461,7 @@ a {
 
   border: 1px solid rgba(41, 153, 209, 0.12);
 
-  box-shadow:
-    0 15px 40px rgba(26, 76, 110, 0.12);
+  box-shadow: 0 15px 40px rgba(26, 76, 110, 0.12);
 
   backdrop-filter: blur(15px);
 
@@ -1537,7 +1495,6 @@ a {
   font-size: 9px;
 }
 
-
 /* Floating icons */
 
 .lp-floating-icon {
@@ -1568,7 +1525,6 @@ a {
   background: #eaf8f1;
 }
 
-
 /* Floating positions */
 
 .lp-ai-floating {
@@ -1589,7 +1545,6 @@ a {
 
   animation-delay: 2s;
 }
-
 
 /* =========================================
    ANIMATIONS
@@ -1639,13 +1594,11 @@ a {
   }
 }
 
-
 /* =========================================
    HERO MOBILE
 ========================================= */
 
 @media (max-width: 900px) {
-
   .lp-hero {
     grid-template-columns: 1fr;
 
@@ -1659,12 +1612,9 @@ a {
   .lp-hero-visual {
     min-height: 520px;
   }
-
 }
 
-
 @media (max-width: 600px) {
-
   .lp-hero {
     padding: 110px 6% 60px;
   }
@@ -1715,9 +1665,7 @@ a {
     width: 300px;
     height: 300px;
   }
-
 }
-
 
 /* ----------------Trust/Stats-------------------- */
 
@@ -1765,7 +1713,7 @@ a {
   /* glass depth */
   box-shadow:
     0 12px 35px rgba(0, 0, 0, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.10);
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 
   overflow: hidden;
 
@@ -1775,7 +1723,6 @@ a {
     background 0.3s ease,
     box-shadow 0.3s ease;
 }
-
 
 /* subtle light reflection */
 
@@ -1797,7 +1744,6 @@ a {
     transparent
   );
 }
-
 
 /* blue glass glow */
 
@@ -1821,7 +1767,6 @@ a {
   pointer-events: none;
 }
 
-
 /* hover */
 
 .lp-trust-stat:hover {
@@ -1836,7 +1781,6 @@ a {
     0 0 25px rgba(50, 170, 240, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
-
 
 /* number */
 
@@ -1856,7 +1800,6 @@ a {
   letter-spacing: -0.5px;
 }
 
-
 /* description */
 
 .lp-trust-stat span {
@@ -1870,22 +1813,17 @@ a {
   font-size: 12px;
 }
 
-
 /* =========================================
    TRUST CARDS RESPONSIVE
 ========================================= */
 
 @media (max-width: 850px) {
-
   .lp-trust-stats {
     grid-template-columns: repeat(2, 1fr);
   }
-
 }
 
-
 @media (max-width: 500px) {
-
   .lp-trust-stats {
     width: 90%;
     grid-template-columns: 1fr;
@@ -1899,7 +1837,6 @@ a {
   .lp-trust-stat strong {
     font-size: 26px;
   }
-
 }
 
 /* =========================================
@@ -1907,7 +1844,6 @@ a {
 ========================================= */
 
 @media (max-width: 800px) {
-
   .lp-trust-stats {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1920,12 +1856,9 @@ a {
   .lp-trust-stat:nth-child(2) {
     border-bottom: 1px solid rgba(41, 153, 209, 0.1);
   }
-
 }
 
-
 @media (max-width: 500px) {
-
   .lp-trust-stats {
     width: 90%;
   }
@@ -1941,7 +1874,6 @@ a {
   .lp-trust-stat span {
     font-size: 10px;
   }
-
 }
 
 /* =========================================
@@ -1955,7 +1887,6 @@ a {
   margin: 0 auto;
   padding: 80px 0 110px;
 }
-
 
 /* Heading */
 
@@ -2000,7 +1931,6 @@ a {
   line-height: 1.7;
 }
 
-
 /* =========================================
    FEATURE GRID
 ========================================= */
@@ -2012,7 +1942,6 @@ a {
 
   gap: 18px;
 }
-
 
 /* Glass feature card */
 
@@ -2029,7 +1958,7 @@ a {
 
   background: rgba(255, 255, 255, 0.045);
 
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
@@ -2044,7 +1973,6 @@ a {
     background 0.3s ease,
     box-shadow 0.3s ease;
 }
-
 
 /* Glow inside card */
 
@@ -2061,13 +1989,12 @@ a {
 
   border-radius: 50%;
 
-  background: rgba(60, 190, 255, 0.10);
+  background: rgba(60, 190, 255, 0.1);
 
   filter: blur(25px);
 
   transition: transform 0.4s ease;
 }
-
 
 /* Top reflection */
 
@@ -2090,7 +2017,6 @@ a {
   );
 }
 
-
 /* Hover */
 
 .lp-feature-card:hover {
@@ -2109,7 +2035,6 @@ a {
 .lp-feature-card:hover::before {
   transform: scale(1.6);
 }
-
 
 /* =========================================
    FEATURE ICON
@@ -2147,7 +2072,6 @@ a {
   background: rgba(65, 190, 255, 0.14);
 }
 
-
 /* =========================================
    FEATURE TEXT
 ========================================= */
@@ -2178,7 +2102,6 @@ a {
   line-height: 1.7;
 }
 
-
 /* =========================================
    FEATURE ARROW
 ========================================= */
@@ -2202,22 +2125,17 @@ a {
   transform: translateX(5px);
 }
 
-
 /* =========================================
    FEATURES RESPONSIVE
 ========================================= */
 
 @media (max-width: 900px) {
-
   .lp-features-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-
 }
 
-
 @media (max-width: 600px) {
-
   .lp-features {
     width: 90%;
     padding: 60px 0 80px;
@@ -2230,7 +2148,6 @@ a {
   .lp-feature-card {
     min-height: 220px;
   }
-
 }
 /* =========================================
    CRYOGUARD HERO GLASS EFFECT
@@ -2240,7 +2157,6 @@ a {
   position: relative;
   overflow: hidden;
 }
-
 
 /* =========================================
    STATUS PILL
@@ -2297,7 +2213,6 @@ a {
   }
 }
 
-
 /* =========================================
    HERO KICKER
 ========================================= */
@@ -2313,7 +2228,6 @@ a {
   letter-spacing: 2px;
 }
 
-
 /* =========================================
    HERO SUBTEXT
 ========================================= */
@@ -2326,7 +2240,6 @@ a {
   font-size: 16px !important;
   line-height: 1.7 !important;
 }
-
 
 /* =========================================
    HERO BUTTON GLASS
@@ -2349,7 +2262,6 @@ a {
   border-color: rgba(91, 203, 255, 0.25);
 }
 
-
 /* =========================================
    TRUST LINE
 ========================================= */
@@ -2369,7 +2281,6 @@ a {
 .lp-trust-line svg {
   color: #55c8f5;
 }
-
 
 /* =========================================
    HERO DASHBOARD
@@ -2410,7 +2321,6 @@ a {
   }
 }
 
-
 /* =========================================
    DASHBOARD HEADER
 ========================================= */
@@ -2439,7 +2349,6 @@ a {
 
   font-size: 19px;
 }
-
 
 /* =========================================
    LIVE BADGE
@@ -2474,7 +2383,6 @@ a {
 
   box-shadow: 0 0 10px rgba(74, 222, 128, 0.8);
 }
-
 
 /* =========================================
    TEMPERATURE
@@ -2524,7 +2432,6 @@ a {
   font-size: 10px !important;
 }
 
-
 /* =========================================
    MINI CHART
 ========================================= */
@@ -2541,21 +2448,13 @@ a {
   border-radius: 14px;
 
   background:
-    linear-gradient(
-      rgba(255, 255, 255, 0.025) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.025) 1px,
-      transparent 1px
-    );
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
 
   background-size: 40px 30px;
 
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
-
 
 /* Temperature line */
 
@@ -2572,10 +2471,8 @@ a {
 
   transform: rotate(-3deg);
 
-  box-shadow:
-    0 0 10px rgba(85, 200, 245, 0.5);
+  box-shadow: 0 0 10px rgba(85, 200, 245, 0.5);
 }
-
 
 /* Limit line */
 
@@ -2599,7 +2496,6 @@ a {
 
   font-size: 9px;
 }
-
 
 /* Chart dots */
 
@@ -2631,7 +2527,6 @@ a {
   top: 45%;
 }
 
-
 /* =========================================
    DASHBOARD FOOTER
 ========================================= */
@@ -2659,7 +2554,6 @@ a {
 .lp-dashboard-footer svg {
   color: #55c8f5;
 }
-
 
 /* =========================================
    ORBITS
@@ -2711,7 +2605,6 @@ a {
   }
 }
 
-
 /* =========================================
    FLOATING GLASS CARDS
 ========================================= */
@@ -2744,7 +2637,6 @@ a {
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-
 /* Floating icon */
 
 .lp-floating-icon {
@@ -2769,15 +2661,14 @@ a {
 .lp-floating-icon.temp {
   color: #55c8f5;
 
-  background: rgba(70, 190, 245, 0.10);
+  background: rgba(70, 190, 245, 0.1);
 }
 
 .lp-floating-icon.fleet {
   color: #65e0b1;
 
-  background: rgba(65, 220, 170, 0.10);
+  background: rgba(65, 220, 170, 0.1);
 }
-
 
 /* Floating text */
 
@@ -2805,7 +2696,6 @@ a {
   font-size: 9px;
 }
 
-
 /* =========================================
    FLOATING CARD POSITIONS
 ========================================= */
@@ -2830,7 +2720,6 @@ a {
 
   animation: floating-fleet 5.5s ease-in-out infinite;
 }
-
 
 @keyframes floating-ai {
   0%,
@@ -2865,13 +2754,11 @@ a {
   }
 }
 
-
 /* =========================================
    MOBILE
 ========================================= */
 
 @media (max-width: 900px) {
-
   .lp-hero {
     grid-template-columns: 1fr;
   }
@@ -2883,12 +2770,9 @@ a {
   .lp-hero-visual {
     min-height: 520px;
   }
-
 }
 
-
 @media (max-width: 600px) {
-
   .lp-hero {
     padding-left: 5%;
     padding-right: 5%;
@@ -2922,7 +2806,6 @@ a {
   .lp-trust-line {
     flex-wrap: wrap;
   }
-
 }
 
 /* ==========================================================
@@ -3068,11 +2951,7 @@ a {
 
   border-radius: inherit;
 
-  background: linear-gradient(
-    90deg,
-    #38bdf8,
-    #22c55e
-  );
+  background: linear-gradient(90deg, #38bdf8, #22c55e);
 
   box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
 }
@@ -3232,8 +3111,7 @@ a {
 
   color: #60a5fa;
 
-  box-shadow:
-    0 0 20px rgba(59, 130, 246, 0.08);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.08);
 }
 
 .lp-reason h3 {
@@ -3450,8 +3328,7 @@ a {
 
   color: #60a5fa;
 
-  box-shadow:
-    0 0 25px rgba(59, 130, 246, 0.08);
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.08);
 }
 
 .lp-step h3 {
@@ -4134,4 +4011,93 @@ body {
     background 0.3s ease,
     border-color 0.3s ease,
     box-shadow 0.3s ease;
+}
+/* =========================================================
+   BASE & VARIABLES
+   ========================================================= */
+.lp {
+  --bg: #030814;
+  --bg-light: #071221;
+  --glass: rgba(10, 25, 43, 0.55);
+  --glass-light: rgba(17, 38, 62, 0.45);
+  --white: #f2f8ff;
+  --text: #dce9f5;
+  --muted: #8ca2b9;
+  --cyan: #38bdf8;
+  --cyan-light: #67d5ff;
+  --teal: #2dd4bf;
+  --blue: #3b82f6;
+  --border: rgba(148, 190, 220, 0.14);
+  --border-bright: rgba(56, 189, 248, 0.35);
+
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(14, 165, 233, 0.13),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 85% 30%,
+      rgba(45, 212, 191, 0.08),
+      transparent 30%
+    ),
+    var(--bg);
+  color: var(--white);
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+.lp-grid-background {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(56, 189, 248, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.025) 1px, transparent 1px);
+  background-size: 70px 70px;
+  mask-image: linear-gradient(to bottom, black, transparent 75%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lp-bg-glow {
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  opacity: 0.2;
+  animation: lp-glow-move 10s ease-in-out infinite alternate;
+}
+
+.lp-bg-glow-one {
+  top: 200px;
+  left: -200px;
+  background: var(--cyan);
+}
+
+.lp-bg-glow-two {
+  top: 600px;
+  right: -200px;
+  background: var(--teal);
+  animation-delay: 2s;
+}
+
+@keyframes lp-glow-move {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(70px, 50px);
+  }
 }
