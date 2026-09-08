@@ -1718,3 +1718,229 @@ a {
   }
 
 }
+
+
+/* ----------------Trust/Stats-------------------- */
+
+/* =========================================
+   HERO FEATURES - TRUST STATS
+========================================= */
+
+/* =========================================
+   GLASS TRUST STAT CARDS
+========================================= */
+
+.lp-trust-stats {
+  width: 88%;
+  max-width: 1200px;
+
+  margin: 20px auto 100px;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+
+  background: transparent;
+  border: none;
+
+  backdrop-filter: none;
+}
+
+.lp-trust-stat {
+  position: relative;
+
+  padding: 30px 20px;
+
+  text-align: center;
+
+  border-radius: 20px;
+
+  /* glass effect */
+  background: rgba(255, 255, 255, 0.055);
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  /* glass depth */
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+/* subtle light reflection */
+
+.lp-trust-stat::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 15%;
+
+  width: 70%;
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+}
+
+
+/* blue glass glow */
+
+.lp-trust-stat::after {
+  content: "";
+
+  position: absolute;
+
+  width: 100px;
+  height: 100px;
+
+  top: -60px;
+  right: -40px;
+
+  border-radius: 50%;
+
+  background: rgba(55, 180, 255, 0.12);
+
+  filter: blur(25px);
+
+  pointer-events: none;
+}
+
+
+/* hover */
+
+.lp-trust-stat:hover {
+  transform: translateY(-7px);
+
+  background: rgba(255, 255, 255, 0.085);
+
+  border-color: rgba(90, 195, 255, 0.3);
+
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.3),
+    0 0 25px rgba(50, 170, 240, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+
+/* number */
+
+.lp-trust-stat strong {
+  position: relative;
+  z-index: 1;
+
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #eaf7ff;
+
+  font-size: 30px;
+  font-weight: 700;
+
+  letter-spacing: -0.5px;
+}
+
+
+/* description */
+
+.lp-trust-stat span {
+  position: relative;
+  z-index: 1;
+
+  display: block;
+
+  color: #8da5b8;
+
+  font-size: 12px;
+}
+
+
+/* =========================================
+   TRUST CARDS RESPONSIVE
+========================================= */
+
+@media (max-width: 850px) {
+
+  .lp-trust-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .lp-trust-stats {
+    width: 90%;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .lp-trust-stat {
+    padding: 24px 18px;
+  }
+
+  .lp-trust-stat strong {
+    font-size: 26px;
+  }
+
+}
+
+/* =========================================
+   TRUST STATS RESPONSIVE
+========================================= */
+
+@media (max-width: 800px) {
+
+  .lp-trust-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lp-trust-stat:nth-child(2) {
+    border-right: none;
+  }
+
+  .lp-trust-stat:nth-child(1),
+  .lp-trust-stat:nth-child(2) {
+    border-bottom: 1px solid rgba(41, 153, 209, 0.1);
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .lp-trust-stats {
+    width: 90%;
+  }
+
+  .lp-trust-stat {
+    padding: 22px 10px;
+  }
+
+  .lp-trust-stat strong {
+    font-size: 22px;
+  }
+
+  .lp-trust-stat span {
+    font-size: 10px;
+  }
+
+}
