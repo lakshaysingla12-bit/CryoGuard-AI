@@ -5077,3 +5077,59 @@ body {
     transform: translateY(0);
   }
 }
+
+/* =========================
+   CONTACT US
+========================= */
+
+.lp-contact {
+  padding: 90px 24px;
+  text-align: center;
+  background: #f8fbff;
+}
+
+.lp-contact-content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.lp-contact h2 {
+  margin: 14px 0 12px;
+  font-size: 42px;
+  font-weight: 700;
+}
+
+.lp-contact p {
+  max-width: 580px;
+  margin: 0 auto 32px;
+  color: #64748b;
+  line-height: 1.7;
+}
+
+.lp-contact-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.lp-contact-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 130px;
+  padding: 13px 22px;
+  border: 1px solid #dbe5ef;
+  border-radius: 12px;
+  background: white;
+  color: #0f172a;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.lp-contact-link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+}
