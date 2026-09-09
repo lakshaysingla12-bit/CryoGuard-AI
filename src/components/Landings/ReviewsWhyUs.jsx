@@ -331,7 +331,7 @@ export default function ReviewsWhyUs() {
 
     <div className="lp-contact-links">
       <a
-        href="https://instagram.com/YOUR_INSTAGRAM"
+        href="https:/www.instagram.com/yashikaaaguptaa_/"
         target="_blank"
         rel="noopener noreferrer"
         className="lp-contact-link"
