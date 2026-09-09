@@ -5016,3 +5016,64 @@ body {
     font-size: 26px;
   }
 }
+
+
+/* =========================================================
+   AUTH VALIDATION & ERROR STATES
+   ========================================================= */
+
+.auth-error {
+  display: block;
+  margin-top: 2px;
+
+  color: #ff7b7b;
+
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Error state for inputs */
+
+.auth-input-error {
+  border-color: rgba(255, 95, 95, 0.75) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(255, 95, 95, 0.08),
+    0 0 18px rgba(255, 95, 95, 0.05) !important;
+}
+
+/* Error state for select */
+
+.auth-field select.auth-input-error {
+  border-color: rgba(255, 95, 95, 0.75) !important;
+}
+
+/* Error state when focused */
+
+.auth-input-error:focus,
+.auth-field select.auth-input-error:focus {
+  border-color: rgba(255, 95, 95, 0.9) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(255, 95, 95, 0.1),
+    0 0 20px rgba(255, 95, 95, 0.06) !important;
+}
+
+/* Smooth error appearance */
+
+.auth-error {
+  animation: authErrorAppear 0.2s ease;
+}
+
+@keyframes authErrorAppear {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
