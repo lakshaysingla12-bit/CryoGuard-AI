@@ -4658,3 +4658,30 @@ body {
     flex-direction: column;
   }
 }
+
+
+
+/* =========================================================
+   AUTH VALIDATION
+   ========================================================= */
+
+.auth-error {
+  display: block;
+  margin-top: 2px;
+
+  color: #ff7b7b;
+
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.auth-input-error {
+  border-color: rgba(255, 95, 95, 0.75) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(255, 95, 95, 0.08) !important;
+}
+
+.auth-input-error:focus {
+  border-color: rgba(255, 95, 95, 0.9) !important;
+}
