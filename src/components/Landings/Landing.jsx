@@ -42,7 +42,7 @@ export default function Landing() {
             className="lp-nav-cta"
             onClick={() => setNavOpen(false)}
           >
-            Sign in
+            Login
           </Link>
         </nav>
 
@@ -73,7 +73,7 @@ export default function Landing() {
           <a href="#why-us">Why CryoGuard</a>
           <a href="#how-it-works">How it works</a>
           <a href="#reviews">Reviews</a>
-          <Link to="/login">Sign in</Link>
+          <Link to="/login">Login</Link>
         </div>
 
         <div className="lp-footer-bottom">

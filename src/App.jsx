@@ -4,7 +4,7 @@ import { Snowflake, Menu, X } from "lucide-react";
 import "./App.css";
 import HeroFeatures from "./components/Landings/HeroFeatures";
 import ReviewsWhyUs from "./components/Landings/ReviewsWhyUs";
-
+import Login from "./components/Auth/Login";
 function App() {
   const [navOpen, setNavOpen] = useState(false);
 
@@ -49,7 +49,7 @@ function App() {
                     className="lp-nav-cta"
                     onClick={() => setNavOpen(false)}
                   >
-                    Sign in
+                    Login
                   </Link>
                 </nav>
 
@@ -96,7 +96,9 @@ function App() {
               </footer>
             </div>
           }
+          
         />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
