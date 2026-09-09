@@ -5,6 +5,7 @@ import "./App.css";
 import HeroFeatures from "./components/Landings/HeroFeatures";
 import ReviewsWhyUs from "./components/Landings/ReviewsWhyUs";
 import Login from "./components/Auth/Login";
+import Signup from "./components/Auth/Signup";
 function App() {
   const [navOpen, setNavOpen] = useState(false);
 
@@ -51,6 +52,13 @@ function App() {
                   >
                     Login
                   </Link>
+                  <Link
+                    to="/signup"
+                    className="lp-nav-cta"
+                    onClick={() => setNavOpen(false)}
+                  >
+                    Sign up
+                  </Link>
                 </nav>
 
                 <button
@@ -86,7 +94,8 @@ function App() {
                   <a href="#why-us">Why CryoGuard</a>
                   <a href="#how-it-works">How it works</a>
                   <a href="#reviews">Reviews</a>
-                  <Link to="/login">Sign in</Link>
+                  <Link to="/login">Login</Link>
+                  <Link to="/signup">Sign up</Link>
                 </div>
 
                 <div className="lp-footer-bottom">
@@ -96,9 +105,10 @@ function App() {
               </footer>
             </div>
           }
-          
+
         />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
     </BrowserRouter>
   );
