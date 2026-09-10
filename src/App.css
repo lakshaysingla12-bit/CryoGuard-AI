@@ -5851,3 +5851,306 @@ right: 25px;
 bottom: 25px;
 }
 }
+
+
+/* =========================================================
+FINAL CTA - PREMIUM ANIMATIONS
+========================================================= */
+
+.lp-cta-animated {
+position: relative;
+overflow: hidden;
+}
+
+/* -------------------------
+CTA CONTENT ENTRANCE
+------------------------- */
+
+.lp-cta-animated .lp-cta-content {
+animation: ctaContentReveal 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes ctaContentReveal {
+from {
+opacity: 0;
+transform: translateY(35px);
+}
+
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+/* -------------------------
+GLOW ANIMATION
+------------------------- */
+
+.lp-cta-animated .lp-cta-glow {
+animation:
+ctaGlowPulse 5s ease-in-out infinite,
+ctaGlowFloat 9s ease-in-out infinite;
+}
+
+@keyframes ctaGlowPulse {
+0%,
+100% {
+opacity: 0.45;
+transform: scale(1);
+}
+
+50% {
+opacity: 0.8;
+transform: scale(1.12);
+}
+}
+
+@keyframes ctaGlowFloat {
+0%,
+100% {
+margin-left: 0;
+}
+
+50% {
+margin-left: 25px;
+}
+}
+
+/* -------------------------
+SNOWFLAKE FLOAT
+------------------------- */
+
+.lp-cta-float {
+animation:
+ctaIconFloat 3.5s ease-in-out infinite,
+ctaIconGlow 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes ctaIconFloat {
+0%,
+100% {
+transform: translateY(0) rotate(0deg);
+}
+
+50% {
+transform: translateY(-8px) rotate(6deg);
+}
+}
+
+@keyframes ctaIconGlow {
+from {
+filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.25));
+}
+
+to {
+filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.75));
+}
+}
+
+/* -------------------------
+LABEL
+------------------------- */
+
+.lp-cta-label {
+display: inline-block;
+
+animation: ctaLabelReveal 0.8s 0.2s
+cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes ctaLabelReveal {
+from {
+opacity: 0;
+transform: translateY(15px);
+letter-spacing: 5px;
+}
+
+to {
+opacity: 1;
+transform: translateY(0);
+letter-spacing: inherit;
+}
+}
+
+/* -------------------------
+HEADING
+------------------------- */
+
+.lp-cta-title {
+animation: ctaHeadingReveal 0.9s 0.35s
+cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes ctaHeadingReveal {
+from {
+opacity: 0;
+transform: translateY(25px);
+filter: blur(6px);
+}
+
+to {
+opacity: 1;
+transform: translateY(0);
+filter: blur(0);
+}
+}
+
+/* -------------------------
+HIGHLIGHTED HEADING TEXT
+------------------------- */
+
+.lp-cta-title span {
+display: inline-block;
+
+animation: ctaHighlightReveal 1s 0.65s
+cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes ctaHighlightReveal {
+from {
+opacity: 0;
+transform: translateX(15px);
+}
+
+to {
+opacity: 1;
+transform: translateX(0);
+}
+}
+
+/* -------------------------
+DESCRIPTION
+------------------------- */
+
+.lp-cta-description {
+animation: ctaDescriptionReveal 0.8s 0.55s
+cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes ctaDescriptionReveal {
+from {
+opacity: 0;
+transform: translateY(18px);
+}
+
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+/* -------------------------
+BUTTON
+------------------------- */
+
+.lp-cta-button-animated {
+position: relative;
+overflow: hidden;
+
+animation:
+ctaButtonReveal 0.8s 0.75s
+cubic-bezier(0.22, 1, 0.36, 1) both,
+ctaButtonGlow 3s 1.8s ease-in-out infinite;
+}
+
+@keyframes ctaButtonReveal {
+from {
+opacity: 0;
+transform: translateY(20px) scale(0.96);
+}
+
+to {
+opacity: 1;
+transform: translateY(0) scale(1);
+}
+}
+
+@keyframes ctaButtonGlow {
+0%,
+100% {
+box-shadow: 0 0 0 rgba(56, 189, 248, 0);
+}
+
+50% {
+box-shadow: 0 0 25px rgba(56, 189, 248, 0.22);
+}
+}
+
+/* -------------------------
+BUTTON SHIMMER
+------------------------- */
+
+.lp-cta-button-animated::before {
+content: "";
+
+position: absolute;
+top: 0;
+left: -120%;
+
+width: 70%;
+height: 100%;
+
+background: linear-gradient(
+90deg,
+transparent,
+rgba(255, 255, 255, 0.2),
+transparent
+);
+
+transform: skewX(-20deg);
+
+transition: left 0.7s ease;
+}
+
+.lp-cta-button-animated:hover::before {
+left: 140%;
+}
+
+/* -------------------------
+BUTTON HOVER
+------------------------- */
+
+.lp-cta-button-animated {
+transition:
+transform 0.3s ease,
+box-shadow 0.3s ease;
+}
+
+.lp-cta-button-animated:hover {
+transform: translateY(-4px);
+}
+
+.lp-cta-button-animated svg {
+transition: transform 0.3s ease;
+}
+
+.lp-cta-button-animated:hover svg {
+transform: translateX(5px);
+}
+
+/* -------------------------
+CTA HOVER DEPTH
+------------------------- */
+
+.lp-cta-animated .lp-cta-content {
+transition: transform 0.5s ease;
+}
+
+.lp-cta-animated:hover .lp-cta-content {
+transform: translateY(-2px);
+}
+
+/* -------------------------
+ACCESSIBILITY
+------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+.lp-cta-animated *,
+.lp-cta-animated,
+.lp-cta-animated::before,
+.lp-cta-animated::after {
+animation: none !important;
+transition: none !important;
+}
+}
