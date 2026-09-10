@@ -4,6 +4,7 @@ import Button from "../UI/Button";
 import SectionHeading from "../UI/SectionHeading";
 import IconBox from "../UI/IconBox";
 import WhyUs from "./WhyUs";
+import HowItWorks from "./HowItWorks";
 import {
   ShieldCheck,
   Zap,
@@ -12,9 +13,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Snowflake,
-  Database,
-  BrainCircuit,
-  BellRing,
   Eye,
   Clock3,
 } from "lucide-react";
@@ -73,49 +71,15 @@ export default function ReviewsWhyUs() {
     },
   ];
 
-  const steps = [
-    {
-      number: "01",
-      icon: Database,
-      title: "Connect your sensors",
-      body:
-        "Connect existing cold-chain IoT sensors and start sending shipment data to CryoGuard.",
-    },
-    {
-      number: "02",
-      icon: BrainCircuit,
-      title: "AI analyzes every reading",
-      body:
-        "Our intelligence layer continuously evaluates temperature, route and shipment conditions.",
-    },
-    {
-      number: "03",
-      icon: BellRing,
-      title: "Receive an early warning",
-      body:
-        "When risk increases, your team receives an alert with the relevant shipment information.",
-    },
-    {
-      number: "04",
-      icon: CheckCircle2,
-      title: "Take action",
-      body:
-        "Intervene before the shipment crosses its safe operating limits.",
-    },
-  ];
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentReview((prev) => (prev + 1) % reviews.length);
-    }, 5000);
 
-    return () => clearInterval(timer);
-  }, [reviews.length]);
+    
+
 
   return (
     <>
       <WhyUs />
-
+<HowItWorks />
 {/* REVIEWS */}
 
 <section id="reviews" className="cg-testimonials">
