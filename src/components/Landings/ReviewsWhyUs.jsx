@@ -323,35 +323,42 @@ export default function ReviewsWhyUs() {
 
 
       {/* FINAL CTA */}
-      <section className="lp-final-cta">
-        <div className="lp-cta-glow"></div>
+<section className="lp-final-cta lp-cta-animated">
+  <div className="lp-cta-glow"></div>
 
-        <div className="lp-cta-content">
-          <div className="lp-cta-icon">
-            <Snowflake size={27} />
-          </div>
+  <div className="lp-cta-content">
 
-          <span className="lp-section-label">START MONITORING</span>
 
-          <h2>
-            Keep your cold chain
-            <span> one step ahead.</span>
-          </h2>
+<div className="lp-cta-icon lp-cta-float">
+  <Snowflake size={27} />
+</div>
 
-          <p>
-            See how CryoGuard AI can help your team detect risks before
-            they become losses.
-          </p>
+<span className="lp-section-label lp-cta-label">
+  START MONITORING
+</span>
 
-          <Link
-            to="/login"
-            className="lp-btn lp-btn-primary lp-cta-button"
-          >
-            Explore the dashboard
-            <ArrowRight size={17} />
-          </Link>
-        </div>
-      </section>
+<h2 className="lp-cta-title">
+  Keep your cold chain
+  <span> one step ahead.</span>
+</h2>
+
+<p className="lp-cta-description">
+  See how CryoGuard AI can help your team detect risks before
+  they become losses.
+</p>
+
+<Link
+  to="/login"
+  className="lp-btn lp-btn-primary lp-cta-button lp-cta-button-animated"
+>
+  Explore the dashboard
+  <ArrowRight size={17} />
+</Link>
+
+
+  </div>
+</section>
+
       {/* FAQ */}
 <section id="faq" className="lp-section lp-faq">
   <div className="lp-section-heading">
