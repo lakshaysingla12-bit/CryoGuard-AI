@@ -229,18 +229,18 @@ export default function ReviewsWhyUs() {
       <h2>Trusted by teams<br />that keep things moving.</h2>
     </div>
 
-```
+
 <p>
   Real feedback from operations teams using CryoGuard AI
   to monitor cold-chain performance with confidence.
 </p>
-```
+
 
   </div>
 
   <div className="cg-testimonial-card">
 
-```
+
 <div className="cg-testimonial-number">
   <span>0{currentReview + 1}</span>
   <div className="cg-testimonial-line"></div>
@@ -250,7 +250,7 @@ export default function ReviewsWhyUs() {
 <div className="cg-testimonial-main">
 
   <div className="cg-testimonial-quote">
-    “
+    
   </div>
 
   <blockquote>
@@ -305,7 +305,7 @@ export default function ReviewsWhyUs() {
   </button>
 
 </div>
-```
+
 
   </div>
 
