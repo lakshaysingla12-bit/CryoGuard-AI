@@ -220,72 +220,107 @@ export default function ReviewsWhyUs() {
         </div>
       </section>
 
-      {/* REVIEWS */}
-      <section id="reviews" className="lp-section lp-reviews">
-        <div className="lp-section-heading">
-          <span className="lp-section-label">
-            WHAT OPERATIONS TEAMS SAY
-          </span>
+{/* REVIEWS */}
 
-          <h2>Built to make operations calmer.</h2>
-        </div>
+<section id="reviews" className="cg-testimonials">
+  <div className="cg-testimonials-header">
+    <div>
+      <span className="cg-testimonials-tag">CUSTOMER VOICES</span>
+      <h2>Trusted by teams<br />that keep things moving.</h2>
+    </div>
 
-        <div className="lp-review-window">
-          <button
-            className="lp-review-arrow left"
-            onClick={() =>
-              setCurrentReview(
-                (prev) => (prev - 1 + reviews.length) % reviews.length
-              )
-            }
-            aria-label="Previous review"
-          >
-            <ChevronLeft size={21} />
-          </button>
+```
+<p>
+  Real feedback from operations teams using CryoGuard AI
+  to monitor cold-chain performance with confidence.
+</p>
+```
 
-          <div className="lp-review-content">
-            <div className="lp-stars">★ ★ ★ ★ ★</div>
+  </div>
 
-            <blockquote>
-              "{reviews[currentReview].quote}"
-            </blockquote>
+  <div className="cg-testimonial-card">
 
-            <div className="lp-review-person">
-              <div className="lp-review-avatar">
-                {reviews[currentReview].initials}
-              </div>
+```
+<div className="cg-testimonial-number">
+  <span>0{currentReview + 1}</span>
+  <div className="cg-testimonial-line"></div>
+  <span>0{reviews.length}</span>
+</div>
 
-              <div>
-                <strong>{reviews[currentReview].name}</strong>
-                <span>{reviews[currentReview].company}</span>
-              </div>
-            </div>
-          </div>
+<div className="cg-testimonial-main">
 
-          <button
-            className="lp-review-arrow right"
-            onClick={() =>
-              setCurrentReview(
-                (prev) => (prev + 1) % reviews.length
-              )
-            }
-            aria-label="Next review"
-          >
-            <ChevronRight size={21} />
-          </button>
-        </div>
+  <div className="cg-testimonial-quote">
+    “
+  </div>
 
-        <div className="lp-review-dots">
-          {reviews.map((_, index) => (
-            <button
-              key={index}
-              className={index === currentReview ? "active" : ""}
-              onClick={() => setCurrentReview(index)}
-              aria-label={`Review ${index + 1}`}
-            />
-          ))}
-        </div>
-      </section>
+  <blockquote>
+    {reviews[currentReview].quote}
+  </blockquote>
+
+  <div className="cg-testimonial-footer">
+
+    <div className="cg-testimonial-profile">
+      <div className="cg-testimonial-avatar">
+        {reviews[currentReview].initials}
+      </div>
+
+      <div className="cg-testimonial-info">
+        <strong>{reviews[currentReview].name}</strong>
+        <span>{reviews[currentReview].company}</span>
+      </div>
+    </div>
+
+    <div className="cg-testimonial-rating">
+      <span>★★★★★</span>
+      <small>Verified experience</small>
+    </div>
+
+  </div>
+</div>
+
+<div className="cg-testimonial-controls">
+
+  <button
+    className="cg-testimonial-btn"
+    onClick={() =>
+      setCurrentReview(
+        (prev) => (prev - 1 + reviews.length) % reviews.length
+      )
+    }
+    aria-label="Previous review"
+  >
+    <ChevronLeft size={20} />
+  </button>
+
+  <button
+    className="cg-testimonial-btn"
+    onClick={() =>
+      setCurrentReview(
+        (prev) => (prev + 1) % reviews.length
+      )
+    }
+    aria-label="Next review"
+  >
+    <ChevronRight size={20} />
+  </button>
+
+</div>
+```
+
+  </div>
+
+  <div className="cg-testimonial-dots">
+    {reviews.map((_, index) => (
+      <button
+        key={index}
+        className={index === currentReview ? "active" : ""}
+        onClick={() => setCurrentReview(index)}
+        aria-label={`Review ${index + 1}`}
+      />
+    ))}
+  </div>
+</section>
+
 
       {/* FINAL CTA */}
       <section className="lp-final-cta">
