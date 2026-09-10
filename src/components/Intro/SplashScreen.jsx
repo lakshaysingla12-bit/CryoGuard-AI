@@ -17,6 +17,17 @@ export default function SplashScreen({
       className={`cg-splash cg-splash-${phase}`}
       role="status"
       aria-live="polite"
-    ></div>
+    >
+      <div className="cg-splash-grid" aria-hidden="true" />
+      <div className="cg-splash-glow" aria-hidden="true" />
+
+      <div className="cg-splash-content">
+        <div className="cg-splash-mark">
+          <Snowflake size={32} />
+        </div>
+
+        <p className="cg-splash-word">…</p>
+      </div>
+    </div>
   );
 }
