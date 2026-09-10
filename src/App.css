@@ -6154,3 +6154,27 @@ animation: none !important;
 transition: none !important;
 }
 }
+
+
+/* =========================
+   FOOTER NAVIGATION ICONS
+   ========================= */
+
+.lp-footer-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lp-footer-links a svg {
+  font-size: 13px;
+  color: #38bdf8;
+  transition:
+    transform 0.25s ease,
+    color 0.25s ease;
+}
+
+.lp-footer-links a:hover svg {
+  transform: translateY(-2px);
+  color: #7dd3fc;
+}
