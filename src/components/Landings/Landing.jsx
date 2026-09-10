@@ -4,9 +4,28 @@ import { Snowflake, Menu, X } from "lucide-react";
 import "../../App.css";
 import HeroFeatures from "./HeroFeatures";
 import ReviewsWhyUs from "./ReviewsWhyUs";
+import AuthModal from "./src/components/Auth/Signup"; // Path check kar lena agar folder structure alag ho
 
 export default function Landing() {
   const [navOpen, setNavOpen] = useState(false);
+
+  // Popup Modal State
+  const [authModal, setAuthModal] = useState({
+    isOpen: false,
+    mode: "login", // 'login' or 'signup'
+  });
+
+  const handleOpenAuth = (mode = "login") => {
+    setAuthModal({
+      isOpen: true,
+      mode,
+    });
+    setNavOpen(false);
+  };
+
+  const handleCloseAuth = () => {
+    setAuthModal((prev) => ({ ...prev, isOpen: false }));
+  };
 
   return (
     <div className="lp">
@@ -32,18 +51,19 @@ export default function Landing() {
             Why CryoGuard
           </a>
           <a href="#how-it-works" onClick={() => setNavOpen(false)}>
-            How it works
+            How It Works
           </a>
           <a href="#reviews" onClick={() => setNavOpen(false)}>
             Reviews
           </a>
-          <Link
-            to="/login"
+
+          <button
+            type="button"
             className="lp-nav-cta"
-            onClick={() => setNavOpen(false)}
+            onClick={() => handleOpenAuth("login")}
           >
-            Login
-          </Link>
+            Sign In
+          </button>
         </nav>
 
         <button className="lp-nav-toggle" onClick={() => setNavOpen(!navOpen)}>
@@ -52,7 +72,7 @@ export default function Landing() {
       </header>
 
       {/* Team Components */}
-      <HeroFeatures />
+      <HeroFeatures onOpenSignup={() => handleOpenAuth("signup")} />
       <ReviewsWhyUs />
 
       <footer className="lp-footer">
@@ -73,7 +93,15 @@ export default function Landing() {
           <a href="#why-us">Why CryoGuard</a>
           <a href="#how-it-works">How it works</a>
           <a href="#reviews">Reviews</a>
-          <Link to="/login">Login</Link>
+
+          {/* Footer link button */}
+          <button
+            type="button"
+            className="lp-footer-auth-btn"
+            onClick={() => handleOpenAuth("login")}
+          >
+            Login
+          </button>
         </div>
 
         <div className="lp-footer-bottom">
@@ -81,6 +109,13 @@ export default function Landing() {
           <span>Intelligent cold-chain monitoring</span>
         </div>
       </footer>
+
+      {/* Background Blur Popup Auth Card */}
+      <AuthModal
+        isOpen={authModal.isOpen}
+        initialMode={authModal.mode}
+        onClose={handleCloseAuth}
+      />
     </div>
   );
 }

@@ -4,7 +4,6 @@ import { Snowflake, Menu, X } from "lucide-react";
 import "./App.css";
 import HeroFeatures from "./components/Landings/HeroFeatures";
 import ReviewsWhyUs from "./components/Landings/ReviewsWhyUs";
-import Login from "./components/Auth/Login";
 import Signup from "./components/Auth/Signup";
 import IntroGate from "./components/Intro/IntroGate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,6 +18,24 @@ import {
 
 function App() {
   const [navOpen, setNavOpen] = useState(false);
+
+  // Popup Modal state
+  const [authModal, setAuthModal] = useState({
+    isOpen: false,
+    mode: "signup", // 'login' | 'signup'
+  });
+
+  const handleOpenAuth = (mode) => {
+    setAuthModal({
+      isOpen: true,
+      mode,
+    });
+    setNavOpen(false);
+  };
+
+  const handleCloseAuth = () => {
+    setAuthModal((prev) => ({ ...prev, isOpen: false }));
+  };
 
   return (
     <BrowserRouter>
@@ -57,20 +74,15 @@ function App() {
                     <a href="#reviews" onClick={() => setNavOpen(false)}>
                       Reviews
                     </a>
-                    <Link
-                      to="/login"
+
+                    {/* Nav Modal Buttons */}
+                    <button
+                      type="button"
                       className="lp-nav-cta"
-                      onClick={() => setNavOpen(false)}
+                      onClick={() => handleOpenAuth("login")}
                     >
-                      Login
-                    </Link>
-                    <Link
-                      to="/signup"
-                      className="lp-nav-cta"
-                      onClick={() => setNavOpen(false)}
-                    >
-                      Sign up
-                    </Link>
+                      Sign In
+                    </button>
                   </nav>
 
                   <button
@@ -82,8 +94,8 @@ function App() {
                 </header>
 
                 {/* 3. Team Components */}
-                <HeroFeatures />
-                <ReviewsWhyUs />
+                <HeroFeatures onOpenSignup={() => handleOpenAuth("signup")} />
+                <ReviewsWhyUs onOpenLogin={() => handleOpenAuth("login")} />
 
                 {/* 4. Footer */}
                 <footer className="lp-footer">
@@ -123,15 +135,15 @@ function App() {
                       <span>Reviews</span>
                     </a>
 
-                    <Link to="/login">
+                    {/* Single Footer Auth Button */}
+                    <button
+                      type="button"
+                      className="lp-footer-btn"
+                      onClick={() => handleOpenAuth("login")}
+                    >
                       <FontAwesomeIcon icon={faRightToBracket} />
-                      <span>Login</span>
-                    </Link>
-
-                    <Link to="/signup">
-                      <FontAwesomeIcon icon={faUserPlus} />
-                      <span>Sign up</span>
-                    </Link>
+                      <span>Sign In</span>
+                    </button>
                   </div>
 
                   <div className="lp-footer-bottom">
@@ -139,11 +151,16 @@ function App() {
                     <span>Intelligent cold-chain monitoring</span>
                   </div>
                 </footer>
+
+                {/* Background Blur Popup Auth Modal */}
+                <Signup
+                  isOpen={authModal.isOpen}
+                  initialMode={authModal.mode}
+                  onClose={handleCloseAuth}
+                />
               </div>
             }
           />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
         </Routes>
       </IntroGate>
     </BrowserRouter>

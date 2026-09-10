@@ -17,6 +17,7 @@
     "lucide-react": "^1.43.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-fontawesome": "^1.7.1",
     "react-router-dom": "^7.18.3"
   },
   "devDependencies": {
