@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import Button from "../UI/Button";
 import {
   ShieldCheck,
   Zap,
@@ -9,7 +9,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Snowflake,
-  ArrowRight,
   Database,
   BrainCircuit,
   BellRing,
@@ -347,13 +346,12 @@ export default function ReviewsWhyUs() {
   they become losses.
 </p>
 
-<Link
+<Button
   to="/login"
-  className="lp-btn lp-btn-primary lp-cta-button lp-cta-button-animated"
+  className="lp-cta-button lp-cta-button-animated"
 >
   Explore the dashboard
-  <ArrowRight size={17} />
-</Link>
+</Button>
 
 
   </div>
