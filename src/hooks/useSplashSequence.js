@@ -73,4 +73,18 @@ export default function useSplashSequence({
   }, [phase, stepIndex]);
 
   useEffect(() => clearTimers, [clearTimers]);
+
+  const progress = useMemo(() => {
+    if (phase === "done") return 100;
+    return Math.round(((stepIndex + 1) / steps.length) * 100);
+  }, [phase, stepIndex, steps.length]);
+
+  return {
+    phase,
+    steps,
+    stepIndex,
+    currentStep: steps[stepIndex],
+    progress,
+    skipIntro,
+  };
 }
