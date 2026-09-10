@@ -357,11 +357,7 @@ export default function ReviewsWhyUs() {
         answer:
           "CryoGuard is designed to work with cold-chain IoT sensor data, allowing existing monitoring infrastructure to be connected to the platform.",
       },
-      {
-        question: "Who can use CryoGuard?",
-        answer:
-          "CryoGuard can support pharmaceutical distributors, healthcare logistics teams, cold-storage networks, and businesses handling temperature-sensitive shipments.",
-      },
+      
     ].map((faq, index) => (
       <details className="lp-faq-item" key={index}>
         <summary className="lp-faq-question">
