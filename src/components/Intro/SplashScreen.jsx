@@ -11,4 +11,12 @@ export default function SplashScreen({
   stepIndex,
   progress,
   onSkip,
-}) {}
+}) {
+  return (
+    <div
+      className={`cg-splash cg-splash-${phase}`}
+      role="status"
+      aria-live="polite"
+    ></div>
+  );
+}
