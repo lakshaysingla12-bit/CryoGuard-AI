@@ -37,4 +37,40 @@ export default function useSplashSequence({
     timers.current.forEach(clearTimeout);
     timers.current = [];
   }, []);
+
+  const skipIntro = useCallback(() => {
+    clearTimers();
+    setPhase((prev) => (prev === "done" ? prev : "exiting"));
+    const holdFor = prefersReducedMotion ? 150 : exitDuration;
+    const t = setTimeout(() => {
+      setPhase("done");
+      try {
+        sessionStorage.setItem(SESSION_KEY, "true");
+      } catch {
+        /* sessionStorage unavailable */
+      }
+    }, holdFor);
+    timers.current.push(t);
+  }, [clearTimers, exitDuration, prefersReducedMotion]);
+
+  useEffect(() => {
+    if (phase !== "loading") return undefined;
+
+    if (prefersReducedMotion) {
+      skipIntro();
+      return undefined;
+    }
+
+    if (stepIndex >= steps.length - 1) {
+      const t = setTimeout(skipIntro, stepDuration + 250);
+      timers.current.push(t);
+      return clearTimers;
+    }
+
+    const t = setTimeout(() => setStepIndex((i) => i + 1), stepDuration);
+    timers.current.push(t);
+    return clearTimers;
+  }, [phase, stepIndex]);
+
+  useEffect(() => clearTimers, [clearTimers]);
 }
