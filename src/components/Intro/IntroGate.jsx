@@ -17,6 +17,14 @@ export default function IntroGate({ children }) {
           onSkip={intro.skipIntro}
         />
       )}
+
+      <div
+        className={`cg-reveal-content${
+          isRevealing ? " cg-reveal-content--animate" : ""
+        }`}
+      >
+        {children}
+      </div>
     </>
   );
 }
