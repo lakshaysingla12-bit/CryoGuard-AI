@@ -1,297 +1,276 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Snowflake, ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+import { Snowflake, ArrowRight, X } from "lucide-react";
 
-export default function Signup() {
+export default function Signup({
+  isOpen = true,
+  onClose,
+  initialMode = "signup",
+}) {
+  const [isLogin, setIsLogin] = useState(initialMode === "login");
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     role: "",
     password: "",
     confirmPassword: "",
+    rememberMe: false,
   });
 
   const [errors, setErrors] = useState({});
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  useEffect(() => {
+    setIsLogin(initialMode === "login");
+    setErrors({});
+  }, [initialMode, isOpen]);
 
+  if (!isOpen) return null;
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
-
-    // Clear the error when the user starts correcting the field
-    setErrors((prev) => ({
-      ...prev,
-      [name]: "",
-    }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const validateForm = () => {
     const newErrors = {};
-
-    // Full name validation
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = "Full name is required.";
-    } else if (formData.fullName.trim().length < 3) {
-      newErrors.fullName = "Name must be at least 3 characters.";
-    }
-
-    // Email validation
     if (!formData.email.trim()) {
       newErrors.email = "Email address is required.";
-    } else if (
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
-    ) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Please enter a valid email address.";
     }
 
-    // Role validation
-    if (!formData.role) {
-      newErrors.role = "Please select your role.";
-    }
-
-    // Password validation
     if (!formData.password) {
       newErrors.password = "Password is required.";
     } else if (formData.password.length < 8) {
-      newErrors.password =
-        "Password must be at least 8 characters.";
+      newErrors.password = "Password must be at least 8 characters.";
     }
 
-    // Confirm password validation
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword =
-        "Please confirm your password.";
-    } else if (
-      formData.password !== formData.confirmPassword
-    ) {
-      newErrors.confirmPassword =
-        "Passwords do not match.";
+    if (!isLogin) {
+      if (!formData.fullName.trim()) {
+        newErrors.fullName = "Full name is required.";
+      } else if (formData.fullName.trim().length < 3) {
+        newErrors.fullName = "Name must be at least 3 characters.";
+      }
+      if (!formData.role) newErrors.role = "Please select your role.";
+      if (!formData.confirmPassword) {
+        newErrors.confirmPassword = "Please confirm your password.";
+      } else if (formData.password !== formData.confirmPassword) {
+        newErrors.confirmPassword = "Passwords do not match.";
+      }
     }
-
     return newErrors;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const validationErrors = validateForm();
-
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-
-    console.log("Signup form is valid:", formData);
+    console.log(isLogin ? "Logging in:" : "Signing up:", formData);
   };
 
-  return (
-    <div className="auth-page">
+  const switchMode = (loginState) => {
+    setIsLogin(loginState);
+    setErrors({});
+  };
 
-      <div className="auth-bg-glow auth-bg-glow-one"></div>
-      <div className="auth-bg-glow auth-bg-glow-two"></div>
-      <div className="auth-grid-background"></div>
+  // createPortal ensures modal is attached to document.body, avoiding CSS transform traps
+  return createPortal(
+    <div className="auth-overlay" onClick={onClose}>
+      <div
+        className={`auth-card ${!isLogin ? "auth-signup-card" : ""}`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {onClose && (
+          <button
+            type="button"
+            className="auth-close-btn"
+            onClick={onClose}
+            aria-label="Close"
+          >
+            <X size={18} />
+          </button>
+        )}
 
-      <div className="auth-card auth-signup-card">
+        <div className="auth-bg-glow auth-bg-glow-one"></div>
+        <div className="auth-bg-glow auth-bg-glow-two"></div>
+        <div className="auth-grid-background"></div>
 
-        {/* Logo */}
-        <Link to="/" className="auth-logo">
+        <div className="auth-logo">
           <span className="auth-logo-icon">
             <Snowflake size={20} />
           </span>
-
           <span>
             CryoGuard <b>AI</b>
           </span>
-        </Link>
+        </div>
+
+        {/* Mode Switch Tabs */}
+        <div className="auth-mode-tabs">
+          <button
+            type="button"
+            className={`auth-mode-btn ${!isLogin ? "active" : ""}`}
+            onClick={() => switchMode(false)}
+          >
+            Sign Up
+          </button>
+          <button
+            type="button"
+            className={`auth-mode-btn ${isLogin ? "active" : ""}`}
+            onClick={() => switchMode(true)}
+          >
+            Sign In
+          </button>
+        </div>
 
         {/* Heading */}
         <div className="auth-heading">
           <span className="auth-label">
-            GET STARTED
+            {isLogin ? "WELCOME BACK" : "GET STARTED"}
           </span>
-
-          <h1>Create your account</h1>
-
+          <h1>{isLogin ? "Log In to CryoGuard" : "Create Your Account"}</h1>
           <p>
-            Join CryoGuard AI and start monitoring your
-            cold-chain operations.
+            {isLogin
+              ? "Access your telemetry logs and cold-chain portal."
+              : "Join CryoGuard AI and start monitoring your cold-chain operations."}
           </p>
         </div>
 
-        {/* Signup Form */}
-        <form
-          className="auth-form"
-          onSubmit={handleSubmit}
-          noValidate
-        >
+        <form className="auth-form" onSubmit={handleSubmit} noValidate>
+          {!isLogin && (
+            <div className="auth-field">
+              <label htmlFor="fullName">Full name</label>
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleChange}
+                placeholder="Enter your full name"
+                className={errors.fullName ? "auth-input-error" : ""}
+              />
+              {errors.fullName && (
+                <span className="auth-error">{errors.fullName}</span>
+              )}
+            </div>
+          )}
 
-          {/* Full Name */}
           <div className="auth-field">
-            <label htmlFor="fullName">
-              Full name
-            </label>
-
-            <input
-              type="text"
-              id="fullName"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              placeholder="Enter your full name"
-              className={
-                errors.fullName ? "auth-input-error" : ""
-              }
-            />
-
-            {errors.fullName && (
-              <span className="auth-error">
-                {errors.fullName}
-              </span>
-            )}
-          </div>
-
-          {/* Email */}
-          <div className="auth-field">
-            <label htmlFor="signupEmail">
-              Email address
-            </label>
-
+            <label htmlFor="email">Email address</label>
             <input
               type="email"
-              id="signupEmail"
+              id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
               placeholder="Enter your email"
-              className={
-                errors.email ? "auth-input-error" : ""
-              }
+              className={errors.email ? "auth-input-error" : ""}
             />
-
-            {errors.email && (
-              <span className="auth-error">
-                {errors.email}
-              </span>
-            )}
+            {errors.email && <span className="auth-error">{errors.email}</span>}
           </div>
 
-          {/* Role */}
+          {!isLogin && (
+            <div className="auth-field">
+              <label htmlFor="role">Role</label>
+              <select
+                id="role"
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                className={errors.role ? "auth-input-error" : ""}
+              >
+                <option value="" disabled>
+                  Select your role
+                </option>
+                <option value="manager">Manager</option>
+                <option value="auditor">Auditor</option>
+                <option value="worker">Worker</option>
+              </select>
+              {errors.role && <span className="auth-error">{errors.role}</span>}
+            </div>
+          )}
+
           <div className="auth-field">
-            <label htmlFor="role">
-              Role
-            </label>
-
-            <select
-              id="role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className={
-                errors.role ? "auth-input-error" : ""
-              }
-            >
-              <option value="" disabled>
-                Select your role
-              </option>
-
-              <option value="manager">
-                Manager
-              </option>
-
-              <option value="auditor">
-                Auditor
-              </option>
-
-              <option value="worker">
-                Worker
-              </option>
-            </select>
-
-            {errors.role && (
-              <span className="auth-error">
-                {errors.role}
-              </span>
-            )}
-          </div>
-
-          {/* Password */}
-          <div className="auth-field">
-            <label htmlFor="signupPassword">
-              Password
-            </label>
-
+            <label htmlFor="password">Password</label>
             <input
               type="password"
-              id="signupPassword"
+              id="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Create a password"
-              className={
-                errors.password ? "auth-input-error" : ""
+              placeholder={
+                isLogin ? "Enter your password" : "Create a password"
               }
+              className={errors.password ? "auth-input-error" : ""}
             />
-
             {errors.password && (
-              <span className="auth-error">
-                {errors.password}
-              </span>
+              <span className="auth-error">{errors.password}</span>
             )}
           </div>
 
-          {/* Confirm Password */}
-          <div className="auth-field">
-            <label htmlFor="confirmPassword">
-              Confirm password
-            </label>
+          {!isLogin && (
+            <div className="auth-field">
+              <label htmlFor="confirmPassword">Confirm password</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm your password"
+                className={errors.confirmPassword ? "auth-input-error" : ""}
+              />
+              {errors.confirmPassword && (
+                <span className="auth-error">{errors.confirmPassword}</span>
+              )}
+            </div>
+          )}
 
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              placeholder="Confirm your password"
-              className={
-                errors.confirmPassword
-                  ? "auth-input-error"
-                  : ""
-              }
-            />
+          {isLogin && (
+            <div className="auth-options">
+              <label className="auth-checkbox">
+                <input
+                  type="checkbox"
+                  name="rememberMe"
+                  checked={formData.rememberMe}
+                  onChange={handleChange}
+                />
+                <span>Remember me</span>
+              </label>
 
-            {errors.confirmPassword && (
-              <span className="auth-error">
-                {errors.confirmPassword}
-              </span>
-            )}
-          </div>
+              <a href="#forgot-password" className="auth-forgot">
+                Forgot password?
+              </a>
+            </div>
+          )}
 
-          {/* Submit */}
-          <button
-            type="submit"
-            className="auth-submit"
-          >
-            Create account
+          <button type="submit" className="auth-submit">
+            {isLogin ? "Log In to CryoGuard" : "Create Account"}
             <ArrowRight size={17} />
           </button>
-
         </form>
 
-        {/* Login Link */}
         <div className="auth-switch">
           <span>
-            Already have an account?
+            {isLogin ? "Don't have an account?" : "Already have an account?"}
           </span>
-
-          <Link to="/login">
-            Login
-          </Link>
+          <button
+            type="button"
+            className="auth-switch-btn"
+            onClick={() => switchMode(!isLogin)}
+          >
+            {isLogin ? "Sign Up" : "Sign in"}
+          </button>
         </div>
-
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
