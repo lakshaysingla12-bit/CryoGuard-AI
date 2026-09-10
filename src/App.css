@@ -6476,3 +6476,72 @@ ACCESSIBILITY
   color: #e0f2fe;
   transform: translateY(-2px);
 }
+/* =========================================================
+   SPLASH EXIT & REVEAL ANIMATIONS
+   ========================================================= */
+
+.cg-splash-exiting {
+  animation: cgSplashPullUp 0.9s cubic-bezier(0.77, 0, 0.18, 1) forwards;
+}
+
+@keyframes cgSplashPullUp {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+.cg-reveal-content {
+  position: relative;
+  min-height: 100vh;
+  transform: translateY(0);
+}
+
+.cg-reveal-content--animate {
+  animation: cgContentReveal 0.9s cubic-bezier(0.77, 0, 0.18, 1) forwards;
+}
+
+@keyframes cgContentReveal {
+  from {
+    transform: translateY(35px);
+    opacity: 0.7;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE & ACCESSIBILITY
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .cg-splash-mark {
+    width: 62px;
+    height: 62px;
+    border-radius: 18px;
+  }
+  .cg-splash-word {
+    margin-bottom: 25px;
+  }
+  .cg-splash-progress,
+  .cg-splash-steps {
+    width: 75%;
+  }
+  .cg-splash-skip {
+    right: 18px;
+    bottom: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cg-splash *,
+  .cg-reveal-content {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
