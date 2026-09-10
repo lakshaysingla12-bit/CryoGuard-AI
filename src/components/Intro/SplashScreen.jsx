@@ -26,8 +26,41 @@ export default function SplashScreen({
           <Snowflake size={32} />
         </div>
 
-        <p className="cg-splash-word">…</p>
+        <p className="cg-splash-word">
+          CryoGuard <b>AI</b>
+        </p>
+
+        {/* Bootstrap's progress component, restyled with our own theme */}
+        <div
+          className="progress cg-splash-progress"
+          role="progressbar"
+          aria-valuenow={progress}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
+          <div
+            className="progress-bar cg-splash-progress-bar"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+
+        <ul className="cg-splash-steps">
+          {steps.map((step, index) => (
+            <li
+              key={step}
+              className={
+                index < stepIndex ? "done" : index === stepIndex ? "active" : ""
+              }
+            >
+              {step}
+            </li>
+          ))}
+        </ul>
       </div>
+
+      <button type="button" className="cg-splash-skip" onClick={onSkip}>
+        Skip
+      </button>
     </div>
   );
 }
