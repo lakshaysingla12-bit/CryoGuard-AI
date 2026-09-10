@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../UI/Button";
 import SectionHeading from "../UI/SectionHeading";
+import IconBox from "../UI/IconBox";
 import {
   ShieldCheck,
   Zap,
@@ -176,9 +177,11 @@ export default function ReviewsWhyUs() {
           <div className="lp-reasons">
             {reasons.map(({ icon: Icon, title, body }) => (
               <div className="lp-reason" key={title}>
-                <div className="lp-reason-icon">
-                  <Icon size={19} />
-                </div>
+                <IconBox
+  icon={Icon}
+  size={19}
+  className="lp-reason-icon"
+/>
 
                 <div>
                   <h3>{title}</h3>
@@ -203,9 +206,11 @@ export default function ReviewsWhyUs() {
             <div className="lp-step" key={number}>
               <div className="lp-step-number">{number}</div>
 
-              <div className="lp-step-icon">
-                <Icon size={22} />
-              </div>
+              <IconBox
+  icon={Icon}
+  size={22}
+  className="lp-step-icon"
+/>
 
               <h3>{title}</h3>
 
