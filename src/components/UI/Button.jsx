@@ -7,11 +7,11 @@ export default function Button({
   variant = "primary",
   showIcon = true,
   className = "",
+  onClick,
 }) {
   const buttonContent = (
     <>
       <span>{children}</span>
-
       {showIcon && <ArrowRight size={17} />}
     </>
   );
@@ -21,6 +21,7 @@ export default function Button({
       <Link
         to={to}
         className={`lp-btn lp-btn-${variant} ${className}`}
+        onClick={onClick}
       >
         {buttonContent}
       </Link>
@@ -29,6 +30,8 @@ export default function Button({
 
   return (
     <button
+      type="button"
+      onClick={onClick}
       className={`lp-btn lp-btn-${variant} ${className}`}
     >
       {buttonContent}
