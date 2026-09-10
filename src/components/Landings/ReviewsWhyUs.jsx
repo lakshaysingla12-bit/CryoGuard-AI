@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../UI/Button";
+import SectionHeading from "../UI/SectionHeading";
 import {
   ShieldCheck,
   Zap,
@@ -191,16 +192,11 @@ export default function ReviewsWhyUs() {
 
       {/* HOW IT WORKS */}
       <section id="how-it-works" className="lp-section lp-how">
-        <div className="lp-section-heading">
-          <span className="lp-section-label">HOW IT WORKS</span>
-
-          <h2>From sensor data to smarter decisions.</h2>
-
-          <p>
-            A simple workflow designed around real-world cold-chain
-            operations.
-          </p>
-        </div>
+        <SectionHeading
+  label="HOW IT WORKS"
+  title="From sensor data to smarter decisions."
+  description="A simple workflow designed around real-world cold-chain operations."
+/>
 
         <div className="lp-steps-grid">
           {steps.map(({ number, icon: Icon, title, body }) => (
@@ -359,16 +355,11 @@ export default function ReviewsWhyUs() {
 
       {/* FAQ */}
 <section id="faq" className="lp-section lp-faq">
-  <div className="lp-section-heading">
-    <span className="lp-section-label">FAQ</span>
-
-    <h2>Frequently asked questions.</h2>
-
-    <p>
-      Find answers to common questions about CryoGuard AI and
-      cold-chain monitoring.
-    </p>
-  </div>
+ <SectionHeading
+  label="FAQ"
+  title="Frequently asked questions."
+  description="Find answers to common questions about CryoGuard AI and cold-chain monitoring."
+/>
 
   <div className="lp-faq-list">
    
