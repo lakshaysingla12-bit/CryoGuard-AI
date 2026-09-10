@@ -6,6 +6,15 @@ import HeroFeatures from "./components/Landings/HeroFeatures";
 import ReviewsWhyUs from "./components/Landings/ReviewsWhyUs";
 import Login from "./components/Auth/Login";
 import Signup from "./components/Auth/Signup";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faLayerGroup,
+  faShieldHalved,
+  faRoute,
+  faStar,
+  faRightToBracket,
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
 function App() {
   const [navOpen, setNavOpen] = useState(false);
 
@@ -90,13 +99,36 @@ function App() {
                 </div>
 
                 <div className="lp-footer-links">
-                  <a href="#features">Features</a>
-                  <a href="#why-us">Why CryoGuard</a>
-                  <a href="#how-it-works">How it works</a>
-                  <a href="#reviews">Reviews</a>
-                  <Link to="/login">Login</Link>
-                  <Link to="/signup">Sign up</Link>
-                </div>
+  <a href="#features">
+    <FontAwesomeIcon icon={faLayerGroup} />
+    <span>Features</span>
+  </a>
+
+  <a href="#why-us">
+    <FontAwesomeIcon icon={faShieldHalved} />
+    <span>Why CryoGuard</span>
+  </a>
+
+  <a href="#how-it-works">
+    <FontAwesomeIcon icon={faRoute} />
+    <span>How it works</span>
+  </a>
+
+  <a href="#reviews">
+    <FontAwesomeIcon icon={faStar} />
+    <span>Reviews</span>
+  </a>
+
+  <Link to="/login">
+    <FontAwesomeIcon icon={faRightToBracket} />
+    <span>Login</span>
+  </Link>
+
+  <Link to="/signup">
+    <FontAwesomeIcon icon={faUserPlus} />
+    <span>Sign up</span>
+  </Link>
+</div>
 
                 <div className="lp-footer-bottom">
                   <span>© {new Date().getFullYear()} CryoGuard AI</span>
