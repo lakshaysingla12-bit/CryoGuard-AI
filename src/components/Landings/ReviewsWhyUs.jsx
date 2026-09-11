@@ -32,29 +32,6 @@ export default function ReviewsWhyUs({ onOpenLogin }) {
     },
   ];
 
-  // const reasons = [
-  //   {
-  //     icon: Zap,
-  //     title: "Prevent problems, don't just report them",
-  //     body: "Traditional monitoring tells you what already happened. CryoGuard focuses on what is likely to happen next.",
-  //   },
-  //   {
-  //     icon: Eye,
-  //     title: "Complete operational visibility",
-  //     body: "Temperature, location, shipment status and alerts come together in one simple interface.",
-  //   },
-  //   {
-  //     icon: ShieldCheck,
-  //     title: "Protect high-value cargo",
-  //     body: "Reduce the risk of spoiled pharmaceutical, food and temperature-sensitive shipments.",
-  //   },
-  //   {
-  //     icon: Clock3,
-  //     title: "Act while there is still time",
-  //     body: "Early warnings give operations teams valuable time to intervene before cargo is compromised.",
-  //   },
-  // ];
-
   return (
     <>
       <WhyUs />
@@ -266,6 +243,9 @@ export default function ReviewsWhyUs({ onOpenLogin }) {
               className="lp-contact-link"
             >
               WhatsApp
+            </a>
+            <a href="mailto:contact@cryoguard.ai" className="lp-contact-link">
+              Email Us
             </a>
           </div>
         </div>
