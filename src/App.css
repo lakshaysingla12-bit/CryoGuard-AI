@@ -4220,14 +4220,96 @@ body {
 .lp-footer-links a:hover {
   color: var(--cyan);
 }
+/* =========================================
+   FOOTER BOTTOM BAR (3-COLUMN LAYOUT)
+========================================= */
 .lp-footer-bottom {
   grid-column: 1 / -1;
-  padding-top: 22px;
-  border-top: 1px solid var(--border);
+  padding-top: 24px;
+  border-top: 1px solid var(--border, rgba(148, 190, 220, 0.14));
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: 20px;
+  font-size: 11px;
+  color: #718797;
+}
+
+/* Left */
+.lp-footer-copy {
+  flex-shrink: 0;
   color: #526a80;
-  font-size: 10px;
+}
+
+/* Middle */
+.lp-footer-crafted {
+  text-align: center;
+  color: var(--muted, #8ca2b9);
+}
+
+.lp-footer-crafted b {
+  color: var(--white, #f2f8ff);
+  font-weight: 600;
+}
+
+/* Rightmost Container */
+.lp-footer-team-socials {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.lp-member-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lp-member-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted, #8ca2b9);
+}
+
+.lp-social-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(148, 190, 220, 0.15);
+  color: #8ca2b9;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.lp-social-icon-btn:hover {
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--cyan, #38bdf8);
+  border-color: rgba(56, 189, 248, 0.4);
+  transform: translateY(-1px);
+}
+
+.lp-social-divider {
+  color: rgba(148, 190, 220, 0.2);
+  font-size: 11px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 950px) {
+  .lp-footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 14px;
+  }
+
+  .lp-footer-team-socials {
+    justify-content: center;
+  }
 }
 /* =========================================================
    5. MOBILE RESPONSIVENESS (NAV & FOOTER)
@@ -6769,7 +6851,7 @@ ACCESSIBILITY
   box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
 }
 
-/* Small mobile devices par agar background overlay scroll ho */
+/*If the background overlay scrolls on small mobile devices */
 .auth-overlay::-webkit-scrollbar {
   width: 5px;
 }
@@ -6863,11 +6945,11 @@ ACCESSIBILITY
    SEAMLESS FROSTED TABS (SMOOTH SEGMENTED CONTROL)
 ========================================= */
 
-/* 1. Outer Container: Soft background me blend hone wala wrapper */
+/* 1. Outer Container: Soft background  blend wrapper */
 .auth-mode-tabs {
   display: flex;
   background: rgba(4, 12, 22, 0.45);
-  border: 1px solid rgba(148, 190, 220, 0.08); /* Harsh border hata kar ultra-soft kiya */
+  border: 1px solid rgba(148, 190, 220, 0.08);
   border-radius: 12px;
   padding: 3px;
   margin: 18px 0 20px;
