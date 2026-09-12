@@ -101,6 +101,9 @@ export default function Landing() {
           <a href="#reviews" onClick={() => setNavOpen(false)}>
             Reviews
           </a>
+          <a href="#faq" onClick={() => setNavOpen(false)}>
+            FAQ
+          </a>
           <button
             type="button"
             className="lp-nav-cta"
