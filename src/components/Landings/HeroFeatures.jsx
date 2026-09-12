@@ -1,17 +1,6 @@
-import {
-  Activity,
-  MapPin,
-  BrainCircuit,
-  Thermometer,
-  CheckCircle2,
-  Truck,
-  ArrowRight,
-  CircleCheck,
-  Radar,
-  BellRing,
-  BarChart3,
-} from "lucide-react";
-
+import { useState } from "react";
+import { createPortal } from "react-dom";
+import { Activity,MapPin,BrainCircuit,Thermometer, CheckCircle2,Truck,ArrowRight,CircleCheck,Radar,BellRing,BarChart3,} from "lucide-react";
 const features = [
   {
     icon: <BrainCircuit size={22} />,
@@ -50,17 +39,63 @@ const features = [
       "Turn fleet data into actionable reports, performance metrics and operational insights.",
   },
 ];
+function FeatureCard({ feature, onClick }) {
+  return (
+    <article
+      className="lp-feature-card"
+      onClick={onClick}
+    >
+      <div className="lp-feature-icon">
+        {feature.icon}
+      </div>
 
+      <h3>{feature.title}</h3>
+
+      <ArrowRight
+        size={18}
+        className="lp-feature-arrow"
+      />
+    </article>
+  );
+}
+function FeatureModal({ feature, onClose }) {
+  return createPortal(
+    <div
+      className="lp-feature-modal-overlay"
+      onClick={onClose}
+    >
+      <div
+        className="lp-feature-modal"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          type="button"
+          className="lp-feature-modal-close"
+          onClick={onClose}
+        >
+          ×
+        </button>
+
+        <div className="lp-feature-modal-icon">
+          {feature.icon}
+        </div>
+
+        <h2>{feature.title}</h2>
+
+        <p>{feature.description}</p>
+      </div>
+    </div>,
+    document.body
+  );
+}
 export default function HeroFeatures({ onOpenSignup }) {
+  const [selectedFeature, setSelectedFeature] = useState(null);
   return (
     <>
-      {/* =========================================
-          HERO SECTION
-      ========================================= */}
+      {/* --------------HERO FUNCTION-------*/}
 
       <section className="lp-hero">
         {/* Hero Content */}
-
         <div className="lp-hero-copy">
           <div className="lp-status-pill">
             <span className="lp-status-dot"></span>
@@ -89,7 +124,7 @@ export default function HeroFeatures({ onOpenSignup }) {
               onClick={() => onOpenSignup && onOpenSignup()}
             >
               Start Monitoring
-              <ArrowRight size={17} />
+              <ArrowRight size={21} />
             </button>
 
             <a href="#how-it-works" className="lp-btn lp-btn-glass">
@@ -184,13 +219,11 @@ export default function HeroFeatures({ onOpenSignup }) {
             </div>
           </div>
 
-          {/* =========================================
-              FLOATING AI CARD
-          ========================================= */}
+          {/*  FLOATING AI CARD */}
 
           <div className="lp-floating-card lp-ai-floating">
             <div className="lp-floating-icon ai">
-              <BrainCircuit size={19} />
+              <BrainCircuit size={24} />
             </div>
 
             <div>
@@ -269,49 +302,36 @@ export default function HeroFeatures({ onOpenSignup }) {
           <span>AI monitoring</span>
         </div>
       </section>
-
-      {/* =========================================
-          FEATURES
-      ========================================= */}
-
+{/* features cards */}
       <section className="lp-features" id="features">
-        {/* Features Heading */}
+  <div className="lp-features-heading">
+    <span>POWERFUL FEATURES</span>
 
-        <div className="lp-features-heading">
-          <span>POWERFUL FEATURES</span>
+    <h2>Everything your cold-chain operation needs.</h2>
 
-          <h2>Everything your cold-chain operation needs.</h2>
+    <p>
+      One intelligent platform for monitoring, prediction, alerts and
+      operational decisions.
+    </p>
+  </div>
 
-          <p>
-            One intelligent platform for monitoring, prediction, alerts and
-            operational decisions.
-          </p>
-        </div>
+  <div className="lp-features-grid">
+    {features.map((feature, index) => (
+      <FeatureCard
+        key={index}
+        feature={feature}
+        onClick={() => setSelectedFeature(feature)}
+      />
+    ))}
+  </div>
+</section>
 
-        {/* Feature Cards */}
-
-        <div className="lp-features-grid">
-          {features.map((feature, index) => (
-            <article className="lp-feature-card" key={index}>
-              {/* Icon */}
-
-              <div className="lp-feature-icon">{feature.icon}</div>
-
-              {/* Title */}
-
-              <h3>{feature.title}</h3>
-
-              {/* Description */}
-
-              <p>{feature.description}</p>
-
-              {/* Arrow */}
-
-              <ArrowRight size={18} className="lp-feature-arrow" />
-            </article>
-          ))}
-        </div>
-      </section>
+{selectedFeature && (
+  <FeatureModal
+    feature={selectedFeature}
+    onClose={() => setSelectedFeature(null)}
+  />
+)}
     </>
   );
 }
