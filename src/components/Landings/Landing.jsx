@@ -12,6 +12,7 @@ import {
   faRoute,
   faStar,
   faRightToBracket,
+  faCircleQuestion,
 } from "@fortawesome/free-solid-svg-icons";
 
 // Clean data array to eliminate repetitive footer SVG code
@@ -152,6 +153,10 @@ export default function Landing() {
           <a href="#reviews">
             <FontAwesomeIcon icon={faStar} />
             <span>Reviews</span>
+          </a>
+          <a href="#faq">
+            <FontAwesomeIcon icon={faCircleQuestion} />
+            <span>FAQ</span>
           </a>
           <button
             type="button"
