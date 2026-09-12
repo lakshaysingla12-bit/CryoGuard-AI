@@ -3351,9 +3351,7 @@ a {
   }
 }
 
-/* ==========================================================
-   LANDING PAGE - FINAL GLOBAL POLISH
-   ========================================================== */
+/* ------------------LANDING PAGE - FINAL GLOBAL POLISH------------ */
 
 .lp-hero,
 .lp-trust-stats,
@@ -3366,7 +3364,6 @@ a {
 }
 
 /* Keep sections visually connected */
-
 .lp-hero {
   min-height: 90vh;
 }
@@ -3469,9 +3466,7 @@ body {
   position: relative;
 }
 
-/* =========================================================
-   BACKGROUND
-   ========================================================= */
+/* -----------BACKGROUND---------------- */
 .lp-grid-background {
   position: fixed;
   inset: 0;
@@ -3516,9 +3511,7 @@ body {
     transform: translate(70px, 50px);
   }
 }
-/* =========================================================
-   3. NAVIGATION BAR
-   ========================================================= */
+/* -------------NAVIGATION BAR----------------- */
 .lp-nav {
   position: sticky;
   top: 0;
@@ -3602,9 +3595,7 @@ body {
   color: var(--white);
   cursor: pointer;
 }
-/* =========================================================
-   4. FOOTER
-   ========================================================= */
+/* ------------FOOTER------------------- */
 .lp-footer {
   position: relative;
   z-index: 2;
@@ -3635,9 +3626,7 @@ body {
 .lp-footer-links a:hover {
   color: var(--cyan);
 }
-/* =========================================
-   FOOTER BOTTOM BAR (3-COLUMN LAYOUT)
-========================================= */
+/* ------------------------------ FOOTER BOTTOM BAR (3-COLUMN LAYOUT)--------------- */
 .lp-footer-bottom {
   grid-column: 1 / -1;
   padding-top: 24px;
@@ -3726,9 +3715,7 @@ body {
     justify-content: center;
   }
 }
-/* =========================================================
-   5. MOBILE RESPONSIVENESS (NAV & FOOTER)
-   ========================================================= */
+/* -----------------------5. MOBILE RESPONSIVENESS (NAV & FOOTER) -------------------*/
 @media (max-width: 768px) {
   .lp-nav {
     padding: 0 20px;
@@ -3776,12 +3763,10 @@ body {
   }
 }
 
-/* =========================================================
-   LOGIN PAGE - ADVANCED MOTION & MICRO INTERACTIONS
-   ========================================================= */
+/*---------------------LOGIN PAGE - ADVANCED MOTION & MICRO INTERACTIONS------------ */
 
 /* ---------------------------------------------------------
-   LOGIN PAGE ENTRANCE
+ LOGIN PAGE ENTRANCE
    --------------------------------------------------------- */
 
 .auth-page {
@@ -3798,9 +3783,7 @@ body {
   }
 }
 
-/* ---------------------------------------------------------
-   ANIMATED BACKGROUND GRID
-   --------------------------------------------------------- */
+/* -------------------------ANIMATED BACKGROUND GRID-------------------------------- */
 
 .auth-grid-background {
   animation: authGridMove 18s linear infinite;
@@ -3816,9 +3799,7 @@ body {
   }
 }
 
-/* ---------------------------------------------------------
-   BACKGROUND GLOW - FLOATING
-   --------------------------------------------------------- */
+/* ------------------------------BACKGROUND GLOW - FLOATING--------------------------------- */
 
 .auth-bg-glow-one {
   animation: authGlowOne 8s ease-in-out infinite alternate;
@@ -3862,13 +3843,10 @@ body {
   }
 }
 
-/* ---------------------------------------------------------
-   LOGIN CARD ENTRANCE
-   --------------------------------------------------------- */
+/* --------LOGIN CARD ENTRANCE -------------- */
 
 .auth-card {
   animation: authCardReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-
   transition:
     transform 0.4s ease,
     border-color 0.4s ease,
@@ -3956,9 +3934,7 @@ body {
   transform: rotate(25deg) scale(1.08);
 }
 
-/* ---------------------------------------------------------
-   HEADING ANIMATION
-   --------------------------------------------------------- */
+/* ----------------- HEADING ANIMATION ------------------------ */
 
 .auth-heading {
   animation: authHeadingReveal 0.8s 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -3976,9 +3952,7 @@ body {
   }
 }
 
-/* ---------------------------------------------------------
-   LABEL ANIMATION
-   --------------------------------------------------------- */
+/* --------------------------LABEL ANIMATION-------------------------------- */
 
 .auth-label {
   animation: authLabelReveal 0.7s 0.4s ease-out both;
@@ -3998,9 +3972,7 @@ body {
   }
 }
 
-/* ---------------------------------------------------------
-   FORM FIELD STAGGERED ENTRANCE
-   --------------------------------------------------------- */
+/* ---------------------FORM FIELD STAGGERED ENTRANCE---------------------------------- */
 
 .auth-field {
   animation: authFieldReveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -4026,9 +3998,7 @@ body {
   }
 }
 
-/* ---------------------------------------------------------
-   INPUT MICRO INTERACTION
-   --------------------------------------------------------- */
+/* -----------------------------INPUT MICRO INTERACTION---------------------------- */
 
 .auth-field input {
   transition:
@@ -4046,9 +4016,7 @@ body {
   transform: translateY(-1px);
 }
 
-/* ---------------------------------------------------------
-   REMEMBER / FORGOT ANIMATION
-   --------------------------------------------------------- */
+/* ------------------------------REMEMBER / FORGOT ANIMATION --------------------------------- */
 
 .auth-options {
   animation: authOptionsReveal 0.7s 0.65s ease-out both;
@@ -4100,14 +4068,11 @@ body {
   width: 100%;
 }
 
-/* ---------------------------------------------------------
-   LOGIN BUTTON ENTRANCE
-   --------------------------------------------------------- */
+/* ----------------------LOGIN BUTTON ENTRANCE---------------------- */
 
 .auth-submit {
   position: relative;
   overflow: hidden;
-
   animation: authButtonReveal 0.75s 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -4123,30 +4088,22 @@ body {
   }
 }
 
-/* ---------------------------------------------------------
-   BUTTON SHIMMER
-   --------------------------------------------------------- */
+/* ---------------BUTTON SHIMMER---------------------- */
 
 .auth-submit::before {
   content: "";
-
   position: absolute;
-
   top: 0;
   left: -120%;
-
   width: 70%;
   height: 100%;
-
   background: linear-gradient(
     90deg,
     transparent,
     rgba(255, 255, 255, 0.22),
     transparent
   );
-
   transform: skewX(-20deg);
-
   transition: left 0.7s ease;
 }
 
@@ -4154,9 +4111,7 @@ body {
   left: 140%;
 }
 
-/* ---------------------------------------------------------
-   BUTTON ICON ANIMATION
-   --------------------------------------------------------- */
+/* ----------------------BUTTON ICON ANIMATION----------------------- */
 
 .auth-submit svg {
   transition: transform 0.3s ease;
@@ -4166,9 +4121,7 @@ body {
   transform: translateX(5px);
 }
 
-/* ---------------------------------------------------------
-   BUTTON HOVER
-   --------------------------------------------------------- */
+/* ------------------------ BUTTON HOVER-------------------------------------------------- */
 
 .auth-submit:hover {
   transform: translateY(-3px) scale(1.01);
@@ -4182,9 +4135,7 @@ body {
   transform: translateY(0) scale(0.99);
 }
 
-/* ---------------------------------------------------------
-   SIGNUP SWITCH
-   --------------------------------------------------------- */
+/* ---------------------SIGNUP SWITCH---------------------------------- */
 
 .auth-switch {
   animation: authSwitchReveal 0.7s 0.9s ease-out both;
@@ -4208,17 +4159,12 @@ body {
 
 .auth-switch a::after {
   content: "";
-
   position: absolute;
-
   left: 0;
   bottom: -3px;
-
   width: 0;
   height: 1px;
-
   background: #45c4f5;
-
   transition: width 0.3s ease;
 }
 
@@ -4226,9 +4172,7 @@ body {
   width: 100%;
 }
 
-/* ---------------------------------------------------------
-   VALIDATION ERROR ANIMATION
-   --------------------------------------------------------- */
+/* ------------------------- VALIDATION ERROR ANIMATION--------------------- */
 
 .auth-error {
   animation: authErrorReveal 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -4246,9 +4190,7 @@ body {
   }
 }
 
-/* ---------------------------------------------------------
-   ERROR INPUT SHAKE
-   --------------------------------------------------------- */
+/* ---------------------------- ERROR INPUT SHAKE----------------------------------- */
 
 .auth-input-error {
   animation: authInputShake 0.35s ease-in-out;
@@ -4273,9 +4215,7 @@ body {
   }
 }
 
-/* ---------------------------------------------------------
-   ACCESSIBILITY
-   --------------------------------------------------------- */
+/* ----------------------------ACCESSIBILITY---------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
   .auth-page,
@@ -4298,21 +4238,16 @@ body {
   }
 }
 
-/* =========================================================
-   SIGNUP / AUTHENTICATION STYLING
-   ========================================================= */
+/* -----------------SIGNUP / AUTHENTICATION STYLING----------------- */
 
 .auth-page {
   min-height: 100vh;
   position: relative;
   overflow: hidden;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   padding: 40px 20px;
-
   background: #020b14;
 }
 
@@ -4322,39 +4257,31 @@ body {
   position: absolute;
   width: 420px;
   height: 420px;
-
   border-radius: 50%;
   filter: blur(100px);
-
   pointer-events: none;
 }
 
 .auth-bg-glow-one {
   top: -180px;
   left: -120px;
-
   background: rgba(38, 185, 240, 0.12);
 }
 
 .auth-bg-glow-two {
   right: -150px;
   bottom: -180px;
-
   background: rgba(0, 120, 255, 0.1);
 }
 
 /* Grid background */
-
 .auth-grid-background {
   position: absolute;
   inset: 0;
-
   background-image:
     linear-gradient(rgba(100, 180, 220, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(100, 180, 220, 0.035) 1px, transparent 1px);
-
   background-size: 45px 45px;
-
   pointer-events: none;
 }
 
@@ -4363,27 +4290,20 @@ body {
 .auth-card {
   position: relative;
   z-index: 2;
-
   width: 100%;
   max-width: 460px;
-
   padding: 38px;
-
   border: 1px solid rgba(120, 190, 220, 0.16);
   border-radius: 22px;
-
   background: rgba(7, 20, 32, 0.78);
-
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-
   box-shadow:
     0 25px 70px rgba(0, 0, 0, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 /* Signup card */
-
 .auth-signup-card {
   max-width: 500px;
 }
@@ -4394,10 +4314,8 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-
   color: #f4f8fc;
   text-decoration: none;
-
   font-size: 19px;
   font-weight: 600;
 }
@@ -4409,15 +4327,11 @@ body {
 .auth-logo-icon {
   width: 38px;
   height: 38px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 11px;
-
   color: #35bdf5;
-
   background: rgba(53, 189, 245, 0.09);
   border: 1px solid rgba(53, 189, 245, 0.18);
 }
@@ -4431,11 +4345,8 @@ body {
 
 .auth-label {
   display: inline-block;
-
   margin-bottom: 9px;
-
   color: #35bdf5;
-
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1.7px;
@@ -4443,24 +4354,19 @@ body {
 
 .auth-heading h1 {
   margin: 0;
-
   color: #f5f9fc;
-
   font-size: 30px;
   line-height: 1.2;
 }
 
 .auth-heading p {
   margin: 11px 0 0;
-
   color: #91a7b9;
-
   font-size: 14px;
   line-height: 1.6;
 }
 
 /* Form */
-
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -4475,7 +4381,6 @@ body {
 
 .auth-field label {
   color: #c7d5df;
-
   font-size: 13px;
   font-weight: 600;
 }
@@ -4484,20 +4389,13 @@ body {
 .auth-field select {
   width: 100%;
   box-sizing: border-box;
-
   padding: 13px 14px;
-
   border: 1px solid rgba(130, 175, 205, 0.18);
   border-radius: 10px;
-
   outline: none;
-
   background: rgba(2, 12, 21, 0.72);
-
   color: #f4f8fc;
-
   font-size: 14px;
-
   transition:
     border-color 0.25s ease,
     box-shadow 0.25s ease,
@@ -4511,9 +4409,7 @@ body {
 .auth-field input:focus,
 .auth-field select:focus {
   border-color: rgba(53, 189, 245, 0.65);
-
   background: rgba(4, 17, 29, 0.9);
-
   box-shadow:
     0 0 0 3px rgba(53, 189, 245, 0.08),
     0 0 25px rgba(53, 189, 245, 0.06);
@@ -4534,27 +4430,19 @@ body {
 
 .auth-submit {
   width: 100%;
-
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 9px;
-
   margin-top: 5px;
   padding: 13px 18px;
-
   border: 0;
   border-radius: 10px;
-
   background: linear-gradient(135deg, #35bdf5, #168bd1);
-
   color: #ffffff;
-
   font-size: 14px;
   font-weight: 700;
-
   cursor: pointer;
-
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease;
@@ -4562,7 +4450,6 @@ body {
 
 .auth-submit:hover {
   transform: translateY(-2px);
-
   box-shadow: 0 10px 30px rgba(25, 165, 225, 0.25);
 }
 
@@ -4577,20 +4464,15 @@ body {
   justify-content: center;
   align-items: center;
   gap: 6px;
-
   margin-top: 25px;
-
   color: #71899b;
-
   font-size: 13px;
 }
 
 .auth-switch a {
   color: #35bdf5;
-
   font-weight: 600;
   text-decoration: none;
-
   transition: color 0.2s ease;
 }
 
@@ -4607,7 +4489,6 @@ body {
 
   .auth-card {
     padding: 28px 22px;
-
     border-radius: 18px;
   }
 
@@ -4616,9 +4497,7 @@ body {
   }
 }
 
-/* =========================================================
-   AUTH VALIDATION & ERROR STATES
-   ========================================================= */
+/* ------------------ AUTH VALIDATION & ERROR STATES--------------- */
 
 .auth-error {
   display: block;
@@ -4675,9 +4554,7 @@ body {
     transform: translateY(0);
   }
 }
-/* =========================
-   CONTACT US
-========================= */
+/* --------------CONTACT US------------ */
 
 .lp-contact {
   padding: 55px 24px 65px;
@@ -4741,20 +4618,13 @@ body {
   box-shadow: 0 8px 25px rgba(34, 211, 238, 0.15);
 }
 
-/* =========================
-   FAQ
-========================= */
-/* =========================
-   FAQ SECTION
-========================= */
-/* =========================
-   FAQ SECTION
-========================= */
+/* -------------FAQ----------- */
 
 .lp-faq {
   padding: 70px 24px;
   position: relative;
   overflow: hidden;
+  scroll-margin-top: 100px;
 }
 
 /* Background ambient glow */
@@ -4776,18 +4646,14 @@ body {
   animation: faqAmbientGlow 6s ease-in-out infinite;
 }
 
-/* =========================
-   SECTION HEADING
-========================= */
+/* ---------SECTION HEADING-------*/
 
 .lp-faq .lp-section-heading {
   margin-bottom: 32px;
   animation: faqFadeDown 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* =========================
-   FAQ LIST
-========================= */
+/* --------------FAQ LIST-------------- */
 
 .lp-faq-list {
   max-width: 850px;
@@ -4796,9 +4662,7 @@ body {
   z-index: 1;
 }
 
-/* =========================
-   FAQ ITEM
-========================= */
+/* -----------------FAQ ITEM----------------*/
 
 .lp-faq-item {
   position: relative;
@@ -4807,9 +4671,7 @@ body {
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.04);
   overflow: hidden;
-
   transform-origin: center;
-
   transition:
     border-color 0.4s ease,
     background 0.4s ease,
@@ -4819,9 +4681,7 @@ body {
   animation: faqCardEnter 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* =========================
-   STAGGERED ENTRANCE
-========================= */
+/*----------------STAGGERED ENTRANCE------------ */
 
 .lp-faq-item:nth-child(1) {
   animation-delay: 0.1s;
@@ -4847,9 +4707,7 @@ body {
   animation-delay: 0.5s;
 }
 
-/* =========================
-   MOVING GLOW
-========================= */
+/* -------------MOVING GLOW---------- */
 
 .lp-faq-item::before {
   content: "";
@@ -4872,29 +4730,22 @@ body {
   left: 130%;
 }
 
-/* =========================
-   HOVER EFFECT
-========================= */
+/* -------------HOVER EFFECT-------------*/
 
 .lp-faq-item:hover {
   border-color: rgba(100, 220, 255, 0.45);
   background: rgba(100, 220, 255, 0.065);
-
   transform: translateY(-5px) scale(1.01);
-
   box-shadow:
     0 12px 35px rgba(0, 0, 0, 0.2),
     0 0 25px rgba(103, 232, 249, 0.08);
 }
 
-/* =========================
-   OPEN STATE
-========================= */
+/* --------------OPEN STATE---------- */
 
 .lp-faq-item[open] {
   border-color: rgba(103, 232, 249, 0.45);
   background: rgba(103, 232, 249, 0.055);
-
   box-shadow:
     0 10px 35px rgba(0, 0, 0, 0.2),
     0 0 30px rgba(103, 232, 249, 0.07);
@@ -4902,26 +4753,19 @@ body {
   animation: faqOpenPulse 0.45s ease both;
 }
 
-/* =========================
-   QUESTION
-========================= */
+/* -----------QUESTIONS---------*/
 
 .lp-faq-question {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-
   padding: 18px 20px;
-
   cursor: pointer;
-
   color: #ffffff;
   font-size: 16px;
   font-weight: 600;
-
   list-style: none;
-
   transition:
     color 0.3s ease,
     padding-left 0.35s ease,
@@ -4942,27 +4786,19 @@ body {
   letter-spacing: 0.15px;
 }
 
-/* =========================
-   PLUS ICON
-========================= */
+/* -----------PLUS ICON---------- */
 
 .lp-faq-plus {
   flex-shrink: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 28px;
   height: 28px;
-
   font-size: 22px;
   font-weight: 400;
-
   color: #67e8f9;
-
   border-radius: 50%;
-
   transition:
     transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55),
     background 0.3s ease,
@@ -4974,9 +4810,7 @@ body {
 
 .lp-faq-item[open] .lp-faq-plus {
   transform: rotate(45deg) scale(1.12);
-
   background: rgba(103, 232, 249, 0.12);
-
   box-shadow:
     0 0 12px rgba(103, 232, 249, 0.2),
     inset 0 0 8px rgba(103, 232, 249, 0.08);
@@ -4994,13 +4828,10 @@ body {
   transform: rotate(45deg) scale(1.15);
 }
 
-/* =========================
-   ANSWER
-========================= */
+/* ----------------ANSWER---------------- */
 
 .lp-faq-answer {
   padding: 0 20px 18px;
-
   animation: faqAnswerReveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
   transform-origin: top;
 }
@@ -5009,18 +4840,13 @@ body {
 
 .lp-faq-answer p {
   margin: 0;
-
   color: #94a3b8;
-
   line-height: 1.7;
   font-size: 14px;
-
   animation: faqTextReveal 0.5s ease 0.05s both;
 }
 
-/* =========================
-   ANIMATIONS
-========================= */
+/* --------------ANIMATIONS----------------*/
 
 /* Heading */
 
@@ -5111,9 +4937,7 @@ body {
   }
 }
 
-/* =========================
-   TABLET
-========================= */
+/* ----------------TABLET--------------- */
 
 @media (max-width: 768px) {
   .lp-faq {
@@ -5150,9 +4974,7 @@ body {
   }
 }
 
-/* =========================
-   REDUCE MOTION
-========================= */
+/* ---------------REDUCE MOTION--------------*/
 
 @media (prefers-reduced-motion: reduce) {
   .lp-faq *,
@@ -5162,9 +4984,7 @@ body {
   }
 }
 
-/* =========================
-   MOBILE
-========================= */
+/* ----------------MOBILE-------------- */
 
 @media (max-width: 480px) {
   .lp-faq {
@@ -5211,9 +5031,7 @@ body {
   }
 }
 
-/* =========================
-   REDUCE MOTION
-========================= */
+/* --------------REDUCE MOTION------------- */
 
 @media (prefers-reduced-motion: reduce) {
   .lp-faq-item,
@@ -5230,9 +5048,7 @@ body {
   }
 }
 
-/* =========================================================
-CRYOGUARD AI - TESTIMONIALS
-========================================================= */
+/* ------------------CRYOGUARD AI - TESTIMONIALS---------------*/
 
 .cg-testimonials {
   position: relative;
@@ -5291,21 +5107,16 @@ CRYOGUARD AI - TESTIMONIALS
   max-width: 1200px;
   min-height: 430px;
   margin: auto;
-
   display: flex;
   overflow: hidden;
-
   border: 1px solid rgba(148, 163, 184, 0.15);
   border-radius: 28px;
-
   background: linear-gradient(
     135deg,
     rgba(30, 41, 59, 0.92),
     rgba(15, 23, 42, 0.82)
   );
-
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
-
   backdrop-filter: blur(20px);
 }
 
@@ -5314,16 +5125,12 @@ CRYOGUARD AI - TESTIMONIALS
 .cg-testimonial-number {
   width: 120px;
   flex-shrink: 0;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   gap: 18px;
-
   border-right: 1px solid rgba(148, 163, 184, 0.12);
-
   color: #64748b;
   font-size: 13px;
   letter-spacing: 2px;
@@ -5346,7 +5153,6 @@ CRYOGUARD AI - TESTIMONIALS
 .cg-testimonial-main {
   flex: 1;
   padding: 65px 75px;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -5354,20 +5160,16 @@ CRYOGUARD AI - TESTIMONIALS
 
 .cg-testimonial-quote {
   margin-bottom: 12px;
-
   font-family: Georgia, serif;
   font-size: 70px;
   line-height: 0.7;
-
   color: #38bdf8;
 }
 
 .cg-testimonial-main blockquote {
   max-width: 850px;
   margin: 0;
-
   color: #e2e8f0;
-
   font-size: clamp(22px, 2.4vw, 34px);
   line-height: 1.45;
   font-weight: 400;
@@ -5378,7 +5180,6 @@ CRYOGUARD AI - TESTIMONIALS
 
 .cg-testimonial-footer {
   margin-top: 50px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -5396,17 +5197,12 @@ CRYOGUARD AI - TESTIMONIALS
 .cg-testimonial-avatar {
   width: 50px;
   height: 50px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 50%;
-
   background: linear-gradient(135deg, #38bdf8, #0ea5e9);
-
   color: #082f49;
-
   font-size: 14px;
   font-weight: 800;
 }
@@ -5454,7 +5250,6 @@ CRYOGUARD AI - TESTIMONIALS
   position: absolute;
   right: 35px;
   bottom: 30px;
-
   display: flex;
   gap: 10px;
 }
@@ -5462,20 +5257,14 @@ CRYOGUARD AI - TESTIMONIALS
 .cg-testimonial-btn {
   width: 44px;
   height: 44px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border: 1px solid rgba(148, 163, 184, 0.2);
   border-radius: 50%;
-
   background: rgba(15, 23, 42, 0.7);
-
   color: #cbd5e1;
-
   cursor: pointer;
-
   transition:
     transform 0.25s ease,
     background 0.25s ease,
@@ -5496,7 +5285,6 @@ CRYOGUARD AI - TESTIMONIALS
 
 .cg-testimonial-dots {
   margin-top: 28px;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -5506,15 +5294,11 @@ CRYOGUARD AI - TESTIMONIALS
 .cg-testimonial-dots button {
   width: 22px;
   height: 3px;
-
   padding: 0;
   border: none;
   border-radius: 10px;
-
   background: #334155;
-
   cursor: pointer;
-
   transition:
     width 0.3s ease,
     background 0.3s ease;
@@ -5525,9 +5309,7 @@ CRYOGUARD AI - TESTIMONIALS
   background: #38bdf8;
 }
 
-/* =========================================================
-RESPONSIVE
-========================================================= */
+/* ----------------------RESPONSIVE-------------- */
 
 @media (max-width: 900px) {
   .cg-testimonials {
@@ -5617,18 +5399,14 @@ RESPONSIVE
   }
 }
 
-/* =========================================================
-FINAL CTA - PREMIUM ANIMATIONS
-========================================================= */
+/* -------------------INAL CTA - PREMIUM ANIMATIONS---------*/
 
 .lp-cta-animated {
   position: relative;
   overflow: hidden;
 }
 
-/* -------------------------
-CTA CONTENT ENTRANCE
-------------------------- */
+/* -------------------------CTA CONTENT ENTRANCE----------------------- */
 
 .lp-cta-animated .lp-cta-content {
   animation: ctaContentReveal 1s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -5646,9 +5424,7 @@ CTA CONTENT ENTRANCE
   }
 }
 
-/* -------------------------
-GLOW ANIMATION
-------------------------- */
+/* -------------------------GLOW ANIMATION------------------------ */
 
 .lp-cta-animated .lp-cta-glow {
   animation:
@@ -5680,9 +5456,7 @@ GLOW ANIMATION
   }
 }
 
-/* -------------------------
-SNOWFLAKE FLOAT
-------------------------- */
+/* ------------------------SNOWFLAKE FLOAT------------------------ */
 
 .lp-cta-float {
   animation:
@@ -5711,9 +5485,7 @@ SNOWFLAKE FLOAT
   }
 }
 
-/* -------------------------
-LABEL
-------------------------- */
+/* -------------------------LABEL------------------------ */
 
 .lp-cta-label {
   display: inline-block;
@@ -5735,9 +5507,7 @@ LABEL
   }
 }
 
-/* -------------------------
-HEADING
-------------------------- */
+/* -------------------------HEADING------------------------- */
 
 .lp-cta-title {
   animation: ctaHeadingReveal 0.9s 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -5757,9 +5527,7 @@ HEADING
   }
 }
 
-/* -------------------------
-HIGHLIGHTED HEADING TEXT
-------------------------- */
+/* -------------------------HIGHLIGHTED HEADING TEXT------------------------- */
 
 .lp-cta-title span {
   display: inline-block;
@@ -5779,9 +5547,7 @@ HIGHLIGHTED HEADING TEXT
   }
 }
 
-/* -------------------------
-DESCRIPTION
-------------------------- */
+/* -------------------------DESCRIPTION------------------------- */
 
 .lp-cta-description {
   animation: ctaDescriptionReveal 0.8s 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -5799,9 +5565,7 @@ DESCRIPTION
   }
 }
 
-/* -------------------------
-BUTTON
-------------------------- */
+/* -------------------------BUTTON------------------------- */
 
 .lp-cta-button-animated {
   position: relative;
@@ -5841,23 +5605,18 @@ BUTTON SHIMMER
 
 .lp-cta-button-animated::before {
   content: "";
-
   position: absolute;
   top: 0;
   left: -120%;
-
   width: 70%;
   height: 100%;
-
   background: linear-gradient(
     90deg,
     transparent,
     rgba(255, 255, 255, 0.2),
     transparent
   );
-
   transform: skewX(-20deg);
-
   transition: left 0.7s ease;
 }
 
@@ -5865,9 +5624,7 @@ BUTTON SHIMMER
   left: 140%;
 }
 
-/* -------------------------
-BUTTON HOVER
-------------------------- */
+/* -------------------------BUTTON HOVER------------------------- */
 
 .lp-cta-button-animated {
   transition:
@@ -5887,9 +5644,7 @@ BUTTON HOVER
   transform: translateX(5px);
 }
 
-/* -------------------------
-CTA HOVER DEPTH
-------------------------- */
+/* -------------------------CTA HOVER DEPTH------------------------- */
 
 .lp-cta-animated .lp-cta-content {
   transition: transform 0.5s ease;
@@ -5899,9 +5654,7 @@ CTA HOVER DEPTH
   transform: translateY(-2px);
 }
 
-/* -------------------------
-ACCESSIBILITY
-------------------------- */
+/* -------------------------ACCESSIBILITY------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
   .lp-cta-animated *,
@@ -5913,9 +5666,7 @@ ACCESSIBILITY
   }
 }
 
-/* =========================
-   FOOTER NAVIGATION ICONS
-   ========================= */
+/* ----------------FOOTER NAVIGATION ICONS------------- */
 
 .lp-footer-links a {
   display: inline-flex;
@@ -5935,9 +5686,7 @@ ACCESSIBILITY
   transform: translateY(-2px);
   color: #7dd3fc;
 }
-/* =========================================================
-   CRYOGUARD AI — INTRO SPLASH SCREEN
-   ========================================================= */
+/* -------------------CRYOGUARD AI — INTRO SPLASH SCREEN--------------- */
 
 .cg-splash {
   position: fixed;
@@ -6159,9 +5908,7 @@ ACCESSIBILITY
   color: #e0f2fe;
   transform: translateY(-2px);
 }
-/* =========================================================
-   SPLASH EXIT & REVEAL ANIMATIONS
-   ========================================================= */
+/* ----------------SPLASH EXIT & REVEAL ANIMATIONS---------------- */
 
 .cg-splash-exiting {
   animation: cgSplashPullUp 0.9s cubic-bezier(0.77, 0, 0.18, 1) forwards;
@@ -6197,9 +5944,7 @@ ACCESSIBILITY
   }
 }
 
-/* =========================================================
-   RESPONSIVE & ACCESSIBILITY
-   ========================================================= */
+/* ----------------RESPONSIVE & ACCESSIBILITY -----------------*/
 
 @media (max-width: 600px) {
   .cg-splash-mark {
@@ -6407,9 +6152,7 @@ ACCESSIBILITY
   color: #78d8ff;
   text-decoration: underline;
 }
-/* =========================================
-   THEMED SCROLLBAR FOR AUTH MODAL CARD
-========================================= */
+/* ---------------------- THEMED SCROLLBAR FOR AUTH MODAL CARD------------- */
 
 /* Firefox Support */
 .auth-overlay .auth-card {
@@ -6456,9 +6199,7 @@ ACCESSIBILITY
   background: rgba(56, 189, 248, 0.2);
   border-radius: 10px;
 }
-/* =========================================
-   COLD-CHAIN FROSTED GLASS AUTH BUTTONS
-========================================= */
+/* -----------------------COLD-CHAIN FROSTED GLASS AUTH BUTTONS-----------*/
 
 /* 1. Navbar "Sign In" Button */
 .lp-nav-cta {
@@ -6533,9 +6274,7 @@ ACCESSIBILITY
     0 12px 35px rgba(0, 0, 0, 0.45),
     0 0 30px rgba(56, 189, 248, 0.4);
 }
-/* =========================================
-   SEAMLESS FROSTED TABS (SMOOTH SEGMENTED CONTROL)
-========================================= */
+/* ----------------SEAMLESS FROSTED TABS (SMOOTH SEGMENTED CONTROL)-----------------*/
 
 /* 1. Outer Container: Soft background  blend wrapper */
 .auth-mode-tabs {
@@ -6561,11 +6300,9 @@ ACCESSIBILITY
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 .auth-mode-btn:hover:not(.active) {
   color: #dce9f5;
 }
-
 /* 3. Active Tab: Soft Glass Pill (Zero harsh partitions) */
 .auth-mode-btn.active {
   color: #ffffff;
@@ -6578,30 +6315,24 @@ ACCESSIBILITY
   backdrop-filter: blur(12px);
 }
 
-/* =========================================
-   BASIC ELEMENT RESETS
-========================================= */
-
+/* ----------- BASIC ELEMENT RESETS-------- */
 img {
   max-width: 100%;
   height: auto;
 }
-
 input,
 textarea,
 select {
   font: inherit;
 }
-
 button {
   border: 0;
 }
-
 button:disabled {
   cursor: default;
 }
 /* =========================================
-   STICKY LOCKED NAVBAR
+  STICKY LOCKED NAVBAR
 ========================================= */
 header.lp-nav {
   position: sticky !important;
@@ -6616,8 +6347,6 @@ header.lp-nav {
   border-bottom: 1px solid rgba(148, 190, 220, 0.14) !important;
   box-sizing: border-box !important;
 }
-
-
 .lp-step {
   cursor: pointer;
   transition:
@@ -6625,43 +6354,31 @@ header.lp-nav {
     border-color 0.3s ease,
     box-shadow 0.3s ease;
 }
-
 .lp-step:hover {
   transform: translateY(-6px);
 }
-
 .lp-step-modal-overlay {
   position: fixed;
   inset: 0;
   z-index: 9999;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   padding: 20px;
-
   background: rgba(3, 10, 18, 0.72);
   backdrop-filter: blur(8px);
-
   animation: stepOverlayIn 0.25s ease both;
 }
-
 .lp-step-modal {
   position: relative;
   width: min(420px, 100%);
-
   padding: 32px;
-
   border: 1px solid rgba(103, 232, 249, 0.25);
   border-radius: 20px;
-
   background: rgba(10, 25, 38, 0.96);
-
   box-shadow:
     0 25px 70px rgba(0, 0, 0, 0.45),
     0 0 35px rgba(103, 232, 249, 0.08);
-
   animation: stepModalIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -6669,22 +6386,16 @@ header.lp-nav {
   position: absolute;
   top: 14px;
   right: 14px;
-
   width: 32px;
   height: 32px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
-
   background: rgba(255, 255, 255, 0.05);
   color: #94a3b8;
-
   cursor: pointer;
-
   transition:
     transform 0.25s ease,
     color 0.25s ease,
@@ -6700,20 +6411,14 @@ header.lp-nav {
 .lp-step-modal-icon {
   width: 52px;
   height: 52px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   margin-bottom: 18px;
-
   border-radius: 14px;
-
   color: #67e8f9;
   background: rgba(103, 232, 249, 0.1);
-
   box-shadow: 0 0 25px rgba(103, 232, 249, 0.08);
-
   animation: stepIconPop 0.45s ease 0.1s both;
 }
 
@@ -6726,14 +6431,12 @@ header.lp-nav {
 
 .lp-step-modal h3 {
   margin: 8px 0 12px;
-
   font-size: 23px;
   color: #ffffff;
 }
 
 .lp-step-modal p {
   margin: 0;
-
   color: #94a3b8;
   font-size: 14px;
   line-height: 1.7;
@@ -6741,19 +6444,13 @@ header.lp-nav {
 
 .lp-step-modal-button {
   margin-top: 24px;
-
   padding: 10px 20px;
-
   border: 1px solid rgba(103, 232, 249, 0.25);
   border-radius: 8px;
-
   background: rgba(103, 232, 249, 0.08);
   color: #67e8f9;
-
   font-weight: 600;
-
   cursor: pointer;
-
   transition:
     transform 0.25s ease,
     background 0.25s ease,
@@ -6787,13 +6484,11 @@ header.lp-nav {
     transform: translateY(0) scale(1);
   }
 }
-
 @keyframes stepIconPop {
   from {
     opacity: 0;
     transform: scale(0.7) rotate(-10deg);
   }
-
   to {
     opacity: 1;
     transform: scale(1) rotate(0);
