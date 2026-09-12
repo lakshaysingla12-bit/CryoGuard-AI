@@ -293,18 +293,13 @@ a {
 
 .lp-trust-stat {
   position: relative;
-
   padding: 30px 20px;
-
   text-align: center;
-
   border-radius: 20px;
 
   /* glass effect */
   background: rgba(255, 255, 255, 0.055);
-
   border: 1px solid rgba(255, 255, 255, 0.12);
-
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
 
@@ -312,7 +307,6 @@ a {
   box-shadow:
     0 12px 35px rgba(0, 0, 0, 0.25),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-
   overflow: hidden;
 
   transition:
@@ -326,15 +320,11 @@ a {
 
 .lp-trust-stat::before {
   content: "";
-
   position: absolute;
-
   top: 0;
   left: 15%;
-
   width: 70%;
   height: 1px;
-
   background: linear-gradient(
     90deg,
     transparent,
@@ -347,21 +337,14 @@ a {
 
 .lp-trust-stat::after {
   content: "";
-
   position: absolute;
-
   width: 100px;
   height: 100px;
-
   top: -60px;
   right: -40px;
-
   border-radius: 50%;
-
   background: rgba(55, 180, 255, 0.12);
-
   filter: blur(25px);
-
   pointer-events: none;
 }
 
@@ -595,16 +578,17 @@ a {
 /* Glow inside card */
 
 .lp-feature-card::before {
-  content: "";
+ content: "";
   position: absolute;
-  width: 130px;
-  height: 130px;
-  top: -70px;
-  right: -50px;
+  top: -40px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
-  background: rgba(60, 190, 255, 0.1);
-  filter: blur(25px);
-  transition: transform 0.4s ease;
+  background: rgba(56, 189, 248, 0.10);
+  filter: blur(35px);
+  pointer-events: none;
+  transition: none;
 }
 
 /* Top reflection */
@@ -637,7 +621,7 @@ a {
 }
 
 .lp-feature-card:hover::before {
-  transform: scale(1.6);
+  transform: scale(1.1);
 }
 
 /* --------------FEATURE ICON------------------*/
@@ -806,6 +790,8 @@ a {
 
   .lp-feature-card {
     min-height: 220px;
+    position: relative;
+  overflow: hidden !important;
   }
 }
 /*--------------REVIEWS----------------- */
