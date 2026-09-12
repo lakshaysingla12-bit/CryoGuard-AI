@@ -1,3 +1,4 @@
+
 import {
   ShieldCheck,
   Zap,
@@ -10,6 +11,8 @@ import {
 import IconBox from "../UI/IconBox";
 
 export default function WhyUs() {
+  const healthItems = ["Temperature", "Route", "Sensor"];
+
   const reasons = [
     {
       icon: Zap,
@@ -39,6 +42,7 @@ export default function WhyUs() {
 
   return (
     <section id="why-us" className="lp-section lp-why">
+      {/* WHY US VISUAL */}
       <div className="lp-why-visual">
         <div className="lp-why-card">
           <div className="lp-why-header">
@@ -59,24 +63,18 @@ export default function WhyUs() {
             <span></span>
           </div>
 
+          {/* Shipment Health Items */}
           <div className="lp-health-items">
-            <div>
-              <CheckCircle2 size={16} />
-              Temperature
-            </div>
-
-            <div>
-              <CheckCircle2 size={16} />
-              Route
-            </div>
-
-            <div>
-              <CheckCircle2 size={16} />
-              Sensor
-            </div>
+            {healthItems.map((item) => (
+              <div key={item}>
+                <CheckCircle2 size={16} />
+                {item}
+              </div>
+            ))}
           </div>
         </div>
 
+        {/* Floating Info Cards */}
         <div className="lp-small-glass lp-small-one">
           <Zap size={16} />
           Early intervention
@@ -88,24 +86,25 @@ export default function WhyUs() {
         </div>
       </div>
 
+      {/* WHY US CONTENT */}
       <div className="lp-why-copy">
-        <span className="lp-section-label">
-          WHY CRYOGUARD
-        </span>
+        <span className="lp-section-label">WHY CRYOGUARD</span>
 
-        <h2>
-          Don't wait for a temperature breach.
-        </h2>
+        <h2>Don't wait for a temperature breach.</h2>
 
         <p className="lp-why-intro">
-          Most monitoring systems tell you what went wrong.
-          CryoGuard is designed to tell you what is likely
-          to go wrong next.
+          Most monitoring systems tell you what went wrong. CryoGuard is
+          designed to tell you what is likely to go wrong next.
         </p>
 
+        {/* Reasons */}
         <div className="lp-reasons">
-          {reasons.map(({ icon: Icon, title, body }) => (
-            <div className="lp-reason" key={title}>
+          {reasons.map(({ icon: Icon, title, body }, index) => (
+            <div
+              className="lp-reason"
+              key={title}
+              data-index={index}
+            >
               <IconBox
                 icon={Icon}
                 size={19}
@@ -123,3 +122,4 @@ export default function WhyUs() {
     </section>
   );
 }
+
