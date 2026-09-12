@@ -1,6 +1,5 @@
 import {AreaChart,Area,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer,ReferenceLine} from 'recharts'
 import { temperatureSeries } from '../data/mockdata'
-
 export default function TemperatureChart() {
   return (
     <div className="panel chart-panel">
