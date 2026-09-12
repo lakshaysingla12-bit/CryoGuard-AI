@@ -811,6 +811,8 @@ a {
   margin: 12px 0;
   font-size: clamp(32px, 4vw, 52px);
   line-height: 1.1;
+  color: white !important;
+  font-weight: bold;
 }
 
 .lp-section-heading p {
