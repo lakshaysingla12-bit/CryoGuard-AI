@@ -1,4 +1,4 @@
-```jsx
+
 import { useEffect, useState } from "react";
 import {
   Database,
@@ -166,4 +166,4 @@ export default function HowItWorks() {
     </section>
   );
 }
-```
+
