@@ -139,11 +139,7 @@ export default function HowItWorks() {
                   <SelectedIcon size={26} />
                 </div>
 
-                {/* STEP NUMBER */}
-                <span className="lp-step-modal-number">
-                  STEP{" "}
-                  {String(steps.indexOf(selectedStep) + 1).padStart(2, "0")}
-                </span>
+                
 
                 {/* TITLE */}
                 <h3 id="step-modal-title">{selectedStep.title}</h3>
