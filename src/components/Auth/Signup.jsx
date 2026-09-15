@@ -68,23 +68,37 @@ export default function Signup({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    console.log(
+      "Submit button clicked! Current Mode:",
+      isLogin ? "LOGIN" : "SIGNUP",
+    );
+    console.log("Raw Form State:", formData);
+
     const validationErrors = validateForm();
+
     if (Object.keys(validationErrors).length > 0) {
+      console.warn(
+        "❌ Form submission stopped due to validation errors:",
+        validationErrors,
+      );
       setErrors(validationErrors);
       return;
     }
 
-    if (isLogin) {
-      // Login alert
-      alert(`✅ Login Successful!\nWelcome back to CryoGuard AI Portal.`);
-    } else {
-      // Signup alert
-      alert(
-        `🎉 Account Created Successfully!\nWelcome ${formData.fullName} (${formData.role.toUpperCase()}) to CryoGuard AI.`,
-      );
-    }
+    console.log(
+      "✅ SUCCESS PAYLOAD:",
+      isLogin ? "Logging in:" : "Signing up:",
+      formData,
+    );
 
-    // Modal ko band karein
+    // Agar aapne alert lagaya hai:
+    alert(
+      isLogin
+        ? `Logged in as ${formData.email}`
+        : `Account created for ${formData.fullName}`,
+    );
+
     if (onClose) onClose();
   };
 
