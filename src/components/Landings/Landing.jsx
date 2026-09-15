@@ -71,6 +71,13 @@ export default function Landing() {
     setAuthModal((prev) => ({ ...prev, isOpen: false }));
   };
 
+  const scrollToTop = (e) => {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
     <div className="lp">
       {/* 1. Background Effects */}
@@ -80,7 +87,7 @@ export default function Landing() {
 
       {/* 2. Navigation Bar */}
       <header className="lp-nav">
-        <Link to="/" className="lp-logo">
+        <Link to="/" className="lp-logo" onClick={scrollToTop}>
           <span className="lp-logo-icon">
             <Snowflake size={19} />
           </span>
