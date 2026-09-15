@@ -73,7 +73,19 @@ export default function Signup({
       setErrors(validationErrors);
       return;
     }
-    console.log(isLogin ? "Logging in:" : "Signing up:", formData);
+
+    if (isLogin) {
+      // Login alert
+      alert(`✅ Login Successful!\nWelcome back to CryoGuard AI Portal.`);
+    } else {
+      // Signup alert
+      alert(
+        `🎉 Account Created Successfully!\nWelcome ${formData.fullName} (${formData.role.toUpperCase()}) to CryoGuard AI.`,
+      );
+    }
+
+    // Modal ko band karein
+    if (onClose) onClose();
   };
 
   const switchMode = (loginState) => {
