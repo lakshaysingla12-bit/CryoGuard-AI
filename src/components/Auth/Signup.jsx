@@ -105,8 +105,16 @@ export default function Signup({
   const switchMode = (loginState) => {
     setIsLogin(loginState);
     setErrors({});
+    // Switch karte hi input fields reset ho jayengi:
+    setFormData({
+      fullName: "",
+      email: "",
+      role: "",
+      password: "",
+      confirmPassword: "",
+      rememberMe: false,
+    });
   };
-
   // createPortal ensures modal is attached to document.body, avoiding CSS transform traps
   return createPortal(
     <div className="auth-overlay" onClick={onClose}>
