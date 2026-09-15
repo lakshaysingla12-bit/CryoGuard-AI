@@ -181,10 +181,6 @@ export default function Landing() {
             © {new Date().getFullYear()} CryoGuard AI
           </span>
 
-          <span className="lp-footer-crafted">
-            Crafted with ⚡ by <b>Akshita</b>, <b>Yashika</b> & <b>Lakshay</b>
-          </span>
-
           <div className="lp-footer-team-socials">
             {TEAM_MEMBERS.map((member, index) => (
               <div
