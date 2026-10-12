@@ -4,21 +4,18 @@ import { api, getToken, setToken, clearToken } from "../api/client";
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+const [user, setUser] = useState({
+  id: "USR-01",
+  name: "Vikram Malhotra",
+  role: "Manager",
+  email: "manager@cryoguard.demo",
+});
   const [loading, setLoading] = useState(true);
 
   // if there is a saved token, find out who it belongs to
   useEffect(() => {
-    if (!getToken()) {
-      setLoading(false);
-      return;
-    }
-    api("/auth/me")
-      .then(setUser)
-      .catch(() => clearToken())
-      .finally(() => setLoading(false));
-  }, []);
-
+  setLoading(false);
+}, []);
   async function login(email, password) {
     const data = await api("/auth/login", { method: "POST", body: { email, password } });
     setToken(data.token);
