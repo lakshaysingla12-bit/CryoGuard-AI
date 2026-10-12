@@ -2,10 +2,9 @@ import { useState } from "react";
 import { downloadFile } from "../api/client";
 import useFetch from "../context/useFetch";
 import PageHeader from "../components/PageHeader.jsx";
-import StatCard from "../components/StatCard.jsx";
+import StatCard from "../components/StatsRow.jsx";
 import StatusBadge from "../components/StatusBadge.jsx";
 import { formatDateTime } from "../utils";
-
 function Reports() {
   const { data } = useFetch("/reports");
   const [downloading, setDownloading] = useState("");
@@ -18,12 +17,20 @@ function Reports() {
       alert(err.message);
     }
     setDownloading("");
-  }
+  }  
+const list = (data || []).map((s) => ({
+  ...s,
+  stats: {
+    readings: s.stats?.readings ?? 0,
+    min: s.stats?.min ?? s.minTemp ?? 0,
+    max: s.stats?.max ?? s.maxTemp ?? 0,
+    compliant: s.stats?.compliant ?? true,
+    compliantPercent: s.stats?.compliantPercent ?? 100,
+  },
+}));
 
-  const list = data || [];
-  const delivered = list.filter((s) => s.status === "Delivered");
-  const compliant = delivered.filter((s) => s.stats.compliant).length;
-
+const delivered = list.filter((s) => s.status === "Delivered");
+const compliant = delivered.filter((s) => s.stats.compliant).length;
   return (
     <>
       <PageHeader
