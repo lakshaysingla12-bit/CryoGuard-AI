@@ -34,17 +34,32 @@ function Topbar() {
           {summary?.openAlerts > 0 && <span className="notif-count">{summary.openAlerts}</span>}
         </Link>
 
-        <div className="user-box d-flex align-items-center gap-2">
-          <div className="avatar">{user.name.charAt(0)}</div>
-          <div className="lh-sm d-none d-md-block">
-            <div className="fw-semibold">{user.name}</div>
-            <small className="text-secondary">{user.role}</small>
-          </div>
-        </div>
+        
+<div className="user-box d-flex align-items-center gap-2">
+  <div className="avatar">
+    {(user?.name || "Guest").charAt(0).toUpperCase()}
+  </div>
 
-        <button className="icon-btn" onClick={logout} title="Log out" aria-label="Log out">
-          <i className="bi bi-box-arrow-right"></i>
-        </button>
+  <div className="lh-sm d-none d-md-block">
+    <div className="fw-semibold">{user?.name || "Guest"}</div>
+    <small className="text-secondary">{user?.role || "Not signed in"}</small>
+  </div>
+</div>
+
+{user && (
+  <button
+    className="icon-btn"
+    onClick={() => {
+      logout();
+      navigate("/login");
+    }}
+    title="Log out"
+    aria-label="Log out"
+  >
+    <i className="bi bi-box-arrow-right"></i>
+  </button>
+)}
+
       </div>
     </header>
   );
