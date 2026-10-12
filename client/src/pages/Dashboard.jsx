@@ -16,9 +16,9 @@ import {
 import { useLive } from "../context/LiveContext.jsx";
 import useFetch from "../context/useFetch.js";
 import PageHeader from "../components/PageHeader.jsx";
-import StatCard from "../components/StatCard.jsx";
+import StatCard from "../components/StatsRow.jsx";
 import StatusBadge from "../components/StatusBadge.jsx";
-import FleetMap from "../components/FleetMap.jsx";
+import FleetMap from "../components/LiveFleetMap.jsx";
 import { alertIcon, formatTime, timeAgo } from "../utils";
 
 const tooltipStyle = {
