@@ -18,7 +18,11 @@ function Sidebar() {
   const { user } = useAuth();
   const { summary, connected } = useLive();
 
-  const items = menuItems.filter((item) => !item.managerOnly || user.role === "Manager");
+  
+const items = menuItems.filter(
+  (item) => !item.managerOnly || user?.role === "Manager"
+);
+
 
   return (
     <aside className="sidebar">
