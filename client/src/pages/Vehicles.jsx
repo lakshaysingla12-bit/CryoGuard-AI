@@ -1,6 +1,6 @@
 import { useLive } from "../context/LiveContext";
 import PageHeader from "../components/PageHeader.jsx";
-import StatCard from "../components/StatCard.jsx";
+import StatCard from "../components/StatsRow.jsx";
 import StatusBadge from "../components/StatusBadge.jsx";
 
 const statusLabel = { normal: "Normal", warning: "Warning", critical: "Critical", idle: "Idle" };
