@@ -1,5 +1,4 @@
 // src/components/VehicleDetailsPanel.jsx
-import React from 'react';
 import { Truck, Thermometer, Wind, AlertOctagon, Zap, Shield, Phone } from 'lucide-react';
 import { useCryoGuard } from '../context/CryoGuardContext.jsx';
 
