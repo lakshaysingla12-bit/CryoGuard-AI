@@ -1,0 +1,17 @@
+{
+  "myProfile": [
+    {
+      "id": "p-demo-001",
+      "name": "Aarav Sharma",
+      "email": "aarav.sharma@cryoguard.ai",
+      "role": "Manager",
+      "team": "Manager",
+      "status": "Active",
+      "location": "Chandigarh, India",
+      "phone": "+91 98765 43210",
+      "joined": "2026-10-18",
+      "avatar": "AS",
+      "color": "#b9e5ff"
+    }
+  ]
+}
