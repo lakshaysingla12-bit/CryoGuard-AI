@@ -1,49 +1,94 @@
-// src/components/Header.jsx
-import React from 'react';
-import { Search, Bell, Shield, Radio, Activity } from 'lucide-react';
-import { useCryoGuard } from '../context/CryoGuardContext.jsx';
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Search, Bell, LogOut } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import { useLive } from "../context/LiveContext";
+import { getMyProfile } from "../api/myProfileApi.js";
 
 export default function Header() {
-  const { searchQuery, setSearchQuery, isSimulating, toggleSimulation, isBackendConnected } = useCryoGuard();
+  const { user } = useAuth();
+  const { summary } = useLive();
+  const navigate = useNavigate();
+
+  const [search, setSearch] = useState("");
+  const [profile, setProfile] = useState({
+    name: user?.name || "Vikram Malhotra",
+    role: user?.role || "Manager",
+  });
+
+  useEffect(() => {
+    getMyProfile()
+      .then((data) => {
+        if (data?.name) setProfile(data);
+      })
+      .catch(() => {
+        // API unavailable ho toh demo user ka naam dikhate raho
+      });
+  }, []);
+
+  function handleSearch(event) {
+    event.preventDefault();
+    navigate("/shipments?q=" + encodeURIComponent(search.trim()));
+  }
+
+  const initials = profile.name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
 
   return (
-    <header className="top-navbar">
-      {/* Search Input */}
-      <div style={{ position: 'relative' }}>
-        <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+    <header className="topbar">
+      <form className="search-box" onSubmit={handleSearch}>
+        <Search size={18} aria-hidden="true" />
+
         <input
-          type="text"
-          className="search-input"
-          placeholder="Search cargo, truck ID, driver, destination..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          type="search"
+          className="form-control"
+          placeholder="Search shipments, vehicles, locations..."
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          aria-label="Search shipments, vehicles, and locations"
         />
-      </div>
+      </form>
 
-      {/* Actions */}
       <div className="d-flex align-items-center gap-3">
-        <button
-          className={`btn btn-sm ${isSimulating ? 'btn-outline-info' : 'btn-outline-secondary'} d-flex align-items-center gap-2`}
-          onClick={toggleSimulation}
-          type="button"
+        <Link
+          to="/alerts"
+          className="icon-btn position-relative"
+          aria-label="Alerts"
         >
-          <Radio size={14} className={isSimulating ? 'text-info' : 'text-muted'} />
-          <span className="small">{isSimulating ? 'IoT Telematics: LIVE' : 'IoT Paused'}</span>
+          <Bell size={19} />
+          {summary?.openAlerts > 0 && (
+            <span className="notif-count">{summary.openAlerts}</span>
+          )}
+        </Link>
+
+        <Link
+          to="/my-profile"
+          className="user-box d-flex align-items-center gap-2 text-decoration-none"
+          aria-label="My Profile"
+        >
+          <div className="avatar">{initials}</div>
+
+          <div className="lh-sm d-none d-md-block">
+            <div className="fw-semibold">{profile.name}</div>
+            <small className="text-secondary">
+              {profile.role || user?.role || "My Profile"}
+            </small>
+          </div>
+        </Link>
+
+        <button
+          type="button"
+          className="icon-btn"
+          title="Log out — link later"
+          aria-label="Log out"
+        >
+          <LogOut size={19} />
         </button>
-
-        <span className="cg-sector-pill">
-          <Shield size={13} /> Multi-Sector Cold Chain
-        </span>
-
-        <div className="d-flex align-items-center gap-2 px-2 py-1 rounded" style={{ backgroundColor: 'rgba(14,23,42,0.6)', border: '1px solid var(--cg-border)' }}>
-          <div className="avatar-circle" style={{ width: '32px', height: '32px', fontSize: '0.85rem' }}>
-            VK
-          </div>
-          <div className="d-flex flex-column text-start">
-            <span className="small fw-bold text-light">Vikram Malhotra</span>
-            <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Cold-Chain Lead</span>
-          </div>
-        </div>
       </div>
     </header>
   );
