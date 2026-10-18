@@ -1,19 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 import { useLive } from "../context/LiveContext";
+import { getMyProfile } from "../api/myProfileApi.js";
 
 function Topbar() {
-  const { user, logout } = useAuth();
   const { summary } = useLive();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
+  const [profile, setProfile] = useState({ name: "Aarav Sharma" });
 
-  // pressing Enter opens the shipments page filtered by the text
-  function handleSearch(e) {
-    e.preventDefault();
+  useEffect(() => {
+    const handleProfileUpdate = (event) => setProfile(event.detail);
+
+    window.addEventListener("cryoguard-demo-profile-updated", handleProfileUpdate);
+
+    getMyProfile()
+  .then((myProfile) => {
+    if (myProfile) setProfile(myProfile);
+  })
+  .catch(() => {});
+
+    return () => {
+      window.removeEventListener("cryoguard-demo-profile-updated", handleProfileUpdate);
+    };
+  }, []);
+
+  function handleSearch(event) {
+    event.preventDefault();
     navigate("/shipments?q=" + encodeURIComponent(search.trim()));
   }
+
+  const initials = profile.name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
 
   return (
     <header className="topbar">
@@ -24,42 +46,38 @@ function Topbar() {
           className="form-control"
           placeholder="Search shipments, vehicles, locations..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(event) => setSearch(event.target.value)}
         />
       </form>
 
       <div className="d-flex align-items-center gap-3">
         <Link to="/alerts" className="icon-btn position-relative" aria-label="Alerts">
           <i className="bi bi-bell"></i>
-          {summary?.openAlerts > 0 && <span className="notif-count">{summary.openAlerts}</span>}
+          {summary?.openAlerts > 0 && (
+            <span className="notif-count">{summary.openAlerts}</span>
+          )}
         </Link>
 
-        
-<div className="user-box d-flex align-items-center gap-2">
-  <div className="avatar">
-    {(user?.name || "Guest").charAt(0).toUpperCase()}
-  </div>
+        <Link
+          to="/my-profile"
+          className="user-box d-flex align-items-center gap-2 text-decoration-none"
+          aria-label="My Profile"
+        >
+          <div className="avatar">{initials}</div>
+          <div className="lh-sm d-none d-md-block">
+            <div className="fw-semibold">{profile.name}</div>
+            <small className="text-secondary">My Profile</small>
+          </div>
+        </Link>
 
-  <div className="lh-sm d-none d-md-block">
-    <div className="fw-semibold">{user?.name || "Guest"}</div>
-    <small className="text-secondary">{user?.role || "Not signed in"}</small>
-  </div>
-</div>
-
-{user && (
-  <button
-    className="icon-btn"
-    onClick={() => {
-      logout();
-      navigate("/login");
-    }}
-    title="Log out"
-    aria-label="Log out"
-  >
-    <i className="bi bi-box-arrow-right"></i>
-  </button>
-)}
-
+        <button
+          type="button"
+          className="icon-btn"
+          title="Log out — link later"
+          aria-label="Log out"
+        >
+          <i className="bi bi-box-arrow-right"></i>
+        </button>
       </div>
     </header>
   );
