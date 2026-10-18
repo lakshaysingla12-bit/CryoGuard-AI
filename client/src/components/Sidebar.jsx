@@ -11,6 +11,7 @@ const menuItems = [
   { path: "/ai", label: "AI Predictions", icon: "bi-cpu" },
   { path: "/reports", label: "Reports", icon: "bi-file-earmark-text" },
   { path: "/users", label: "Users", icon: "bi-people", managerOnly: true },
+  { path: "/my-profile", label: "My Profile", icon: "bi-person-circle" },
   { path: "/settings", label: "Settings", icon: "bi-gear" },
 ];
 
