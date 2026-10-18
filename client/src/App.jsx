@@ -9,6 +9,7 @@ import Alerts from "./pages/Alerts.jsx";
 import Inventory from "./pages/Inventory.jsx";
 import Reports from "./pages/Reports.jsx";
 import Users from "./pages/Users.jsx";
+import MyProfile from "./pages/MyProfile.jsx";
 import Settings from "./pages/Settings.jsx";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
