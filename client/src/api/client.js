@@ -19,7 +19,14 @@ let alerts = RECENT_ALERTS.map((a) => ({
   createdAt: new Date(Date.now() - 2 * 60 * 1000).toISOString(),
   resolved: a.acknowledged,
 }));
-
+let settings = {
+  companyName: "CryoGuard AI",
+  warningMargin: 2,
+  aiHorizonMinutes: 30,
+  autoDispatch: false,
+  emailAlerts: true,
+  smsAlerts: false,
+};
 let shipments = VEHICLES.map((v, index) => ({
   id: v.shipmentId,
   cargo: v.cargo,
@@ -142,7 +149,28 @@ export async function api(path, { method = "GET", body } = {}) {
       email: "manager@cryoguard.demo",
     };
   }
+const telemetryMatch = route.match(/^\/vehicles\/([^/]+)\/telemetry$/);
 
+if (telemetryMatch && verb === "GET") {
+  const vehicle = vehicles.find((item) => item.id === telemetryMatch[1]);
+
+  if (!vehicle) {
+    throw new Error("Vehicle not found");
+  }
+
+  const count = Math.min(Number(params.get("limit") || 40), 40);
+
+  return Array.from({ length: count }, (_, index) => {
+    const wave = Math.sin(index / 3);
+
+    return {
+      ts: new Date(Date.now() - (count - index - 1) * 30_000).toISOString(),
+      temp: Number((vehicle.temp + wave * 0.4).toFixed(1)),
+      humidity: Number(((vehicle.humidity ?? 70) + wave * 2).toFixed(1)),
+      vibration: Number(((vehicle.vibration ?? 0.3) + Math.abs(wave) * 0.1).toFixed(2)),
+    };
+  });
+}
   if (route === "/vehicles") return vehicles;
 
   if (route === "/dashboard/summary") return getSummary();
@@ -210,6 +238,14 @@ export async function api(path, { method = "GET", body } = {}) {
   }
 
   if (route === "/inventory") return INVENTORY_ITEMS;
+  if (route === "/settings" && verb === "GET") {
+  return settings;
+}
+
+if (route === "/settings" && verb === "PUT") {
+  settings = { ...body };
+  return settings;
+}
 
   if (route === "/users") return SYSTEM_USERS;
 
