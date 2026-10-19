@@ -198,3 +198,161 @@
   min-width: 0;
   width: 100%;
 }
+
+
+/* Temperature row styling */
+.temperature-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.temperature-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 18px 12px;
+  box-sizing: border-box;
+
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #e8edf4;
+  border-radius: 0;
+  box-shadow: none;
+
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.temperature-row:hover {
+  background-color: #f5f8fc;
+}
+
+.temperature-row:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
+
+.temperature-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.temperature-info h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.temperature-info strong {
+  white-space: nowrap;
+}
+
+.temperature-line {
+  flex-shrink: 0;
+  margin-left: auto;
+  text-align: right;
+}
+
+.temperature-line span {
+  color: #35b765;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* Temperature details panel */
+.temperature-details {
+  margin-top: 20px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #e5eaf1;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(25, 40, 65, 0.06);
+  color: #1f2937;
+}
+
+.temperature-details-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.temperature-details-header h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.temperature-close-icon {
+  appearance: none;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: #3b82f6;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.temperature-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #edf0f5;
+  font-size: 14px;
+}
+
+.temperature-detail-row span {
+  color: #64748b;
+}
+
+.temperature-detail-row strong {
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.temperature-close-btn {
+  display: block;
+  margin: 18px auto 0;
+  padding: 9px 16px;
+  background: #2563eb;
+  border: none;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.temperature-close-btn:hover {
+  background: #1d4ed8;
+}
+
+@media (max-width: 420px) {
+  .temperature-row {
+    gap: 8px;
+    padding: 16px 8px;
+  }
+
+  .temperature-info {
+    gap: 8px;
+  }
+
+  .temperature-info h3 {
+    font-size: 12px;
+  }
+
+  .temperature-line span {
+    font-size: 12px;
+  }
+}
