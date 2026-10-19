@@ -208,9 +208,9 @@
 }
 
 .temperature-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
   width: 100%;
   padding: 18px 12px;
@@ -243,8 +243,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  flex: 1;
+  gap: 8px;
   min-width: 0;
 }
 
@@ -259,14 +258,14 @@
 }
 
 .temperature-line {
-  flex-shrink: 0;
-  margin-left: auto;
+  min-width: max-content;
   text-align: right;
 }
 
 .temperature-line span {
+  display: inline-block;
   color: #35b765;
-  font-size: 14px;
+  font-size: 13px;
   white-space: nowrap;
 }
 
@@ -341,14 +340,18 @@
 @media (max-width: 420px) {
   .temperature-row {
     gap: 8px;
-    padding: 16px 8px;
+    padding: 16px 4px;
   }
 
   .temperature-info {
-    gap: 8px;
+    gap: 6px;
   }
 
   .temperature-info h3 {
+    font-size: 12px;
+  }
+
+  .temperature-info strong {
     font-size: 12px;
   }
 
