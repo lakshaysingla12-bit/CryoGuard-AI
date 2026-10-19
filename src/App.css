@@ -209,11 +209,11 @@
 
 .temperature-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) 65px 120px;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   width: 100%;
-  padding: 18px 12px;
+  padding: 18px 4px;
   box-sizing: border-box;
 
   appearance: none;
@@ -239,25 +239,30 @@
   outline-offset: -2px;
 }
 
+/* Let the location and temperature use separate grid columns */
 .temperature-info {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  min-width: 0;
+  display: contents;
 }
 
 .temperature-info h3 {
+  grid-column: 1;
   margin: 0;
   font-size: 14px;
   font-weight: 600;
-}
-
-.temperature-info strong {
   white-space: nowrap;
 }
 
+.temperature-info strong {
+  grid-column: 2;
+  justify-self: center;
+  white-space: nowrap;
+  font-size: 14px;
+  color: #35a765;
+}
+
 .temperature-line {
+  grid-column: 3;
+  justify-self: end;
   min-width: max-content;
   text-align: right;
 }
@@ -337,14 +342,12 @@
   background: #1d4ed8;
 }
 
+/* Mobile layout */
 @media (max-width: 420px) {
   .temperature-row {
-    gap: 8px;
-    padding: 16px 4px;
-  }
-
-  .temperature-info {
-    gap: 6px;
+    grid-template-columns: minmax(0, 1fr) 55px 105px;
+    gap: 4px;
+    padding: 18px 0;
   }
 
   .temperature-info h3 {
@@ -356,6 +359,6 @@
   }
 
   .temperature-line span {
-    font-size: 12px;
+    font-size: 11px;
   }
 }
