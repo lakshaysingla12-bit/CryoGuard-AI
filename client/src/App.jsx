@@ -11,6 +11,7 @@ import Reports from "./pages/Reports.jsx";
 import Users from "./pages/Users.jsx";
 import MyProfile from "./pages/MyProfile.jsx";
 import Settings from "./pages/Settings.jsx";
+import AiPredictions from "./pages/AiPredictions.jsx";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/shipments" element={<Shipments />} />
         <Route path="/vehicles" element={<Vehicles />} />
         <Route path="/alerts" element={<Alerts />} />
+        <Route path="/ai" element={<AiPredictions />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/users" element={<Users />} />
