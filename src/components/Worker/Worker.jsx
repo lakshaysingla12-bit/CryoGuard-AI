@@ -6,8 +6,10 @@ import TrainingProgress from "./TrainingProgress";
 import Messages from "./Messages";
 import WorkerHeader from "./WorkerHeader";
 import { useNavigate } from "react-router-dom";
+import { useWorker } from "../../context/WorkerContext";
 function Worker() {
   const [activeSection, setActiveSection] = useState("dashboard");
+  const { pendingTasks, completedTasks } = useWorker();
 const navigate = useNavigate();
   return (
     <div className="worker-dashboard">
@@ -73,7 +75,7 @@ const navigate = useNavigate();
 
             <div>
               <h3>My Tasks</h3>
-              <strong>5</strong>
+              <strong>{pendingTasks}</strong>
               <p>Pending</p>
             </div>
           </button>
@@ -126,7 +128,7 @@ const navigate = useNavigate();
 
             <div>
               <h3>Completed Today</h3>
-              <strong>12</strong>
+              <strong>{completedTasks}</strong>
               <p>Tasks Done</p>
             </div>
           </button>
@@ -136,11 +138,11 @@ const navigate = useNavigate();
 
         {/* Selected Summary Section */}
         {activeSection === "tasks" && (
-          <div className="section-panel">
-            <h2>My Tasks</h2>
-            <p>You have 5 pending tasks.</p>
-          </div>
-        )}
+  <div className="section-panel">
+    <h2>My Tasks</h2>
+    <p>You have {pendingTasks} pending tasks.</p>
+  </div>
+)}
 
         {activeSection === "shipments" && (
           <div className="section-panel">
@@ -156,13 +158,12 @@ const navigate = useNavigate();
           </div>
         )}
 
-        {activeSection === "completed" && (
-          <div className="section-panel">
-            <h2>Completed Today</h2>
-            <p>You have completed 12 tasks today.</p>
-          </div>
-        )}
-
+       {activeSection === "completed" && (
+  <div className="section-panel">
+    <h2>Completed Today</h2>
+    <p>You have completed {completedTasks} tasks.</p>
+  </div>
+)}
 
         {/* Lower Dashboard */}
         <section className="dashboard-grid">
