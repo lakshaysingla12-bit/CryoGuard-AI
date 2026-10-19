@@ -1,34 +1,44 @@
+
+import { useEffect, useState } from "react";
 import { Package2, MapPin, AlertTriangle } from "lucide-react";
 import "./Inventory.css";
 
 function Inventory() {
-  const inventoryItems = [
-    {
-      id: "INV-1021",
-      name: "Vaccines",
-      quantity: "120 Units",
-      location: "Cold Room 1",
-      status: "Available"
-    },
-    {
-      id: "INV-1022",
-      name: "Insulin",
-      quantity: "85 Units",
-      location: "Cold Room 2",
-      status: "Available"
-    },
-    {
-      id: "INV-1023",
-      name: "Biological Samples",
-      quantity: "42 Units",
-      location: "Storage Area 3",
-      status: "Low Stock"
-    }
-  ];
+  const [inventoryItems, setInventoryItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const API_URL = "https://dummyjson.com/c/08db-491d-47fe-9815";
+
+  useEffect(() => {
+    const fetchInventory = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await fetch(API_URL);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch inventory data");
+        }
+
+        const data = await response.json();
+
+        // Your API returns an object containing an items array
+        setInventoryItems(data.items || []);
+      } catch (err) {
+        setError("Unable to load inventory. Please try again.");
+        console.error("Inventory API error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInventory();
+  }, []);
 
   return (
     <div className="inventory-page">
-
       <div className="inventory-header">
         <div>
           <h1>Inventory</h1>
@@ -36,52 +46,82 @@ function Inventory() {
         </div>
 
         <span className="inventory-count">
-          3 Items
+          {inventoryItems.length} Items
         </span>
       </div>
 
-      <div className="inventory-list">
+      {loading && (
+        <p className="inventory-message">Loading inventory...</p>
+      )}
 
-        {inventoryItems.map((item) => (
-          <div className="inventory-card" key={item.id}>
+      {error && (
+        <div className="inventory-error">
+          <p>{error}</p>
+          <button onClick={() => window.location.reload()}>
+            Retry
+          </button>
+        </div>
+      )}
 
-            <div className="inventory-icon">
-              <Package2 size={22} />
+      {!loading && !error && inventoryItems.length === 0 && (
+        <p className="inventory-message">No inventory items found.</p>
+      )}
+
+      {!loading && !error && (
+        <div className="inventory-list">
+          {inventoryItems.map((item) => (
+            <div className="inventory-card" key={item.id}>
+              <div className="inventory-icon">
+                <Package2 size={22} />
+              </div>
+
+              <div className="inventory-info">
+                <h3>{item.name}</h3>
+
+                <p className="inventory-id">{item.id}</p>
+
+                <p>
+                  <MapPin size={14} />
+                  {item.location}
+                </p>
+
+                <p>
+                  Category: {item.category || "N/A"}
+                </p>
+
+                <p>
+                  Storage Temperature: {item.temperature || "N/A"}
+                </p>
+
+                <p>
+                  Minimum Stock: {item.minStock ?? "N/A"}
+                </p>
+              </div>
+
+              <div className="inventory-quantity">
+                <strong>{item.quantity} {item.unit || "Units"}</strong>
+                <span>Quantity</span>
+              </div>
+
+              <div className="inventory-status">
+                {item.status === "Low Stock" && (
+                  <AlertTriangle size={14} />
+                )}
+
+                <span
+                  className={
+                    item.status === "Low Stock"
+                      ? "low-stock"
+                      : "available"
+                  }
+                >
+                  {item.status}
+                </span>
+              </div>
             </div>
-
-            <div className="inventory-info">
-              <h3>{item.name}</h3>
-
-              <p className="inventory-id">
-                {item.id}
-              </p>
-
-              <p>
-                <MapPin size={14} />
-                {item.location}
-              </p>
-            </div>
-
-            <div className="inventory-quantity">
-              <strong>{item.quantity}</strong>
-              <span>Quantity</span>
-            </div>
-
-            <div className="inventory-status">
-              {item.status === "Low Stock" && (
-                <AlertTriangle size={14} />
-              )}
-
-              <span className={item.status === "Low Stock" ? "low-stock" : "available"}>
-                {item.status}
-              </span>
-            </div>
-
-          </div>
-        ))}
-
-      </div>
-
+          ))}
+        </div>
+      )}
     </div>
   );
 }
