@@ -362,3 +362,19 @@
     font-size: 11px;
   }
 }
+
+
+/* Future worker dashboard utility styles */
+.worker-dashboard .text-muted {
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+.worker-dashboard .rounded-card {
+  border-radius: 12px;
+  transition: box-shadow 0.2s ease;
+}
+
+.worker-dashboard .rounded-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
