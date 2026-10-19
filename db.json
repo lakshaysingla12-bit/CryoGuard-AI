@@ -13,5 +13,37 @@
       "avatar": "AS",
       "color": "#b9e5ff"
     }
+  ],
+   "users": [
+    {
+      "id": "usr-001",
+      "name": "Aarav Sharma",
+      "email": "aarav.sharma@cryoguard.ai",
+      "role": "Manager",
+      "team": "Operations",
+      "status": "Active",
+      "location": "Chandigarh, India",
+      "phone": "+91 98765 43210"
+    },
+    {
+      "id": "usr-002",
+      "name": "Priya Singh",
+      "email": "priya.singh@cryoguard.ai",
+      "role": "Worker",
+      "team": "Logistics",
+      "status": "Active",
+      "location": "Mohali, India",
+      "phone": "+91 98765 12345"
+    },
+    {
+      "id": "usr-003",
+      "name": "Rohan Mehta",
+      "email": "rohan.mehta@cryoguard.ai",
+      "role": "Auditor",
+      "team": "Quality",
+      "status": "Active",
+      "location": "Chandigarh, India",
+      "phone": "+91 98765 54321"
+    }
   ]
 }
