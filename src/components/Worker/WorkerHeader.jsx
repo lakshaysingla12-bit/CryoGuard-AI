@@ -1,37 +1,50 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useWorker } from "../../context/WorkerContext";
 function WorkerHeader() {
+
   const navigate = useNavigate();
+
+  const {
+    worker,
+    updateWorker,
+    language,
+    toggleLanguage,
+  } = useWorker();
+
   const [showProfile, setShowProfile] = useState(false);
-  const [language, setLanguage] = useState("EN");
 
-  const [name, setName] = useState("Rohit Kumar");
-  const [email, setEmail] = useState("rohit@cryoguard.com");
-  const [phone, setPhone] = useState("9876543210");
-
-  const [editName, setEditName] = useState(name);
-  const [editEmail, setEditEmail] = useState(email);
-  const [editPhone, setEditPhone] = useState(phone);
+  const [editName, setEditName] = useState(worker.name);
+  const [editEmail, setEditEmail] = useState(worker.email);
+  const [editPhone, setEditPhone] = useState(worker.phone);
 
   const isHindi = language === "HI";
 
   const handleSave = () => {
-    setName(editName);
-    setEmail(editEmail);
-    setPhone(editPhone);
+    const name = editName.trim();
+    const email = editEmail.trim();
+    const phone = editPhone.trim();
+
+    if (
+      !name ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
+      !/^\d{10}$/.test(phone)
+    ) {
+      alert("Please enter a valid name, email, and 10-digit phone number.");
+      return;
+    }
+
+    updateWorker({ name, email, phone });
     setShowProfile(false);
   };
 
   const handleCancel = () => {
-    setEditName(name);
-    setEditEmail(email);
-    setEditPhone(phone);
+    setEditName(worker.name);
+    setEditEmail(worker.email);
+    setEditPhone(worker.phone);
     setShowProfile(false);
   };
 
-  const toggleLanguage = () => {
-    setLanguage(isHindi ? "EN" : "HI");
-  };
 
   return (
     <>
@@ -59,12 +72,19 @@ function WorkerHeader() {
             {language}
           </button>
 
-          <button
-            className="profile-button"
-            onClick={() => setShowProfile(true)}
-          >
-            👤 {name}
-          </button>
+          
+<button
+  className="profile-button"
+  onClick={() => {
+    setEditName(worker.name);
+    setEditEmail(worker.email);
+    setEditPhone(worker.phone);
+    setShowProfile(true);
+  }}
+>
+  👤 {worker.name}
+</button>
+
 
         </div>
 
