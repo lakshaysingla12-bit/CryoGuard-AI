@@ -1,213 +1,92 @@
-
-import { createContext, useContext, useEffect, useState } from "react";
-import {
-  VEHICLES,
-  RECENT_ALERTS,
-  TEMPERATURE_TREND_DATA,
-} from "../data/mockdata";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { api } from "../api/client";
 
 const LiveContext = createContext(null);
 
-const VEHICLE_COORDINATES = [
-  { lat: 30.7333, lng: 76.7794 }, // Chandigarh
-  { lat: 28.6139, lng: 77.2090 }, // Delhi
-  { lat: 19.0760, lng: 72.8777 }, // Mumbai
-  { lat: 18.5204, lng: 73.8567 }, // Pune
-];
-
-function makeVehicles() {
-  return VEHICLES.map((v, index) => ({
-    ...v,
-    ...VEHICLE_COORDINATES[index % VEHICLE_COORDINATES.length],
-
-    plate: `PB-${10 + index}AB-${1000 + index}`,
-    model: [
-      "Reefer Truck",
-      "Ultra-Cold Van",
-      "Refrigerated Truck",
-      "Hybrid Reefer",
-    ][index % 4],
-
-    temp: v.temperature,
-    coolingHealth: [85, 94, 48, 65][index % 4],
-
-    tempStatus:
-      v.status === "Critical"
-        ? "critical"
-        : v.status === "Warning"
-        ? "warning"
-        : "normal",
-
-    status: index === 3 ? "Idle" : "In Transit",
-  }));
-}
-
-function makeAlerts() {
-  return RECENT_ALERTS.map((a, index) => ({
-    id: a.id,
-    vehicleId: a.vehicleId,
-    shipmentId: `SHP-10${21 + index}`,
-    type: a.title,
-    message: a.detail,
-    level:
-      String(a.severity).toLowerCase() === "critical"
-        ? "Critical"
-        : "Warning",
-    createdAt: new Date(
-      Date.now() - (index + 1) * 2 * 60 * 1000
-    ).toISOString(),
-    resolved: Boolean(a.acknowledged),
-  }));
-}
-
-function makeShipments(vehicles) {
-  return vehicles.map((v, index) => ({
-    id: v.shipmentId,
-    cargo: v.cargo,
-    origin: v.route?.split(" → ")[0] || "Origin unavailable",
-    destination: v.route?.split(" → ")[1] || "Destination unavailable",
-    vehicleId: v.id,
-    minTemp: v.minTemp,
-    maxTemp: v.maxTemp,
-    currentTemp: v.temp,
-
-    createdAt: new Date(
-      Date.now() - (index + 1) * 60 * 60 * 1000
-    ).toISOString(),
-
-    status: v.status === "Idle" ? "Delivered" : "In Transit",
-
-    displayStatus:
-      v.tempStatus === "critical"
-        ? "Critical"
-        : v.tempStatus === "warning"
-        ? "Delayed"
-        : v.status === "Idle"
-        ? "Delivered"
-        : "In Transit",
-
-    progress: [72, 45, 88, 100][index % 4],
-  }));
-}
-
 function makeSummary(vehicles, alerts, shipments) {
-  const openAlerts = alerts.filter((a) => !a.resolved);
+  const openAlerts = alerts.filter((alert) => !alert.resolved);
+  const count = (status) => shipments.filter((shipment) => shipment.displayStatus === status).length;
 
   return {
-    activeShipments: shipments.filter(
-      (s) => s.status === "In Transit"
-    ).length,
-
-    deliveredCount: shipments.filter(
-      (s) => s.status === "Delivered"
-    ).length,
-
-    vehiclesOnRoad: vehicles.filter(
-      (v) => v.status === "In Transit"
-    ).length,
-
+    activeShipments: shipments.filter((shipment) => shipment.status === "In Transit").length,
+    deliveredCount: shipments.filter((shipment) => shipment.status === "Delivered").length,
+    vehiclesOnRoad: vehicles.filter((vehicle) => vehicle.status === "In Transit").length,
     totalVehicles: vehicles.length,
-
-    delayed: shipments.filter(
-      (s) => s.displayStatus === "Delayed"
-    ).length,
-
+    delayed: count("Delayed"),
     openAlerts: openAlerts.length,
-
-    criticalAlerts: openAlerts.filter(
-      (a) => a.level === "Critical"
-    ).length,
-
+    criticalAlerts: openAlerts.filter((alert) => alert.level === "Critical").length,
     onTimePercent: 96,
-
     statusBreakdown: {
-      "On track": shipments.filter(
-        (s) => s.displayStatus === "In Transit"
-      ).length,
-
-      Delayed: shipments.filter(
-        (s) => s.displayStatus === "Delayed"
-      ).length,
-
-      "Temp excursion": shipments.filter(
-        (s) => s.displayStatus === "Critical"
-      ).length,
-
-      Delivered: shipments.filter(
-        (s) => s.displayStatus === "Delivered"
-      ).length,
+      "On track": count("In Transit"),
+      Delayed: count("Delayed"),
+      "Temp excursion": count("Critical"),
+      Delivered: count("Delivered"),
     },
   };
 }
 
 export function LiveProvider({ children }) {
-  const [vehicles, setVehicles] = useState(() => makeVehicles());
-  const [alerts, setAlerts] = useState(() => makeAlerts());
+  const [vehicles, setVehicles] = useState([]);
+  const [shipments, setShipments] = useState([]);
+  const [alerts, setAlerts] = useState([]);
   const [tick, setTick] = useState(0);
-  const [alertCount, setAlertCount] = useState(0);
+  const [connected, setConnected] = useState(false);
   const [toasts, setToasts] = useState([]);
 
-  const shipments = makeShipments(vehicles);
-  const summary = makeSummary(vehicles, alerts, shipments);
-
-  const trend = TEMPERATURE_TREND_DATA.map((point, index) => ({
-    ts:
-      Date.now() -
-      (TEMPERATURE_TREND_DATA.length - index) * 60 * 60 * 1000,
-    avg: point.temp,
-    max: point.temp + 1,
-  }));
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setVehicles((oldVehicles) =>
-        oldVehicles.map((v, index) => ({
-          ...v,
-          temp: Number(
-            (
-              v.temp +
-              (index % 2 === 0 ? 0.1 : -0.1)
-            ).toFixed(1)
-          ),
-        }))
-      );
-
-      setTick((n) => n + 1);
-    }, 5000);
-
-    return () => clearInterval(timer);
+  const refresh = useCallback(async () => {
+    try {
+      const [nextVehicles, nextShipments, nextAlerts] = await Promise.all([
+        api("/vehicles"),
+        api("/shipments"),
+        api("/alerts"),
+      ]);
+      setVehicles(nextVehicles);
+      setShipments(nextShipments);
+      setAlerts(nextAlerts);
+      setConnected(true);
+      setTick((value) => value + 1);
+    } catch {
+      setConnected(false);
+    }
   }, []);
 
-  function showToast(alert) {
-    setToasts((old) => [...old, alert]);
-  }
+  useEffect(() => {
+    refresh();
+    const timer = window.setInterval(refresh, 5000);
+    return () => window.clearInterval(timer);
+  }, [refresh]);
 
-  function dismissToast(id) {
-    setToasts((old) => old.filter((t) => t.id !== id));
-  }
+  const dismissToast = useCallback((id) => {
+    setToasts((current) => current.filter((toast) => toast.id !== id));
+  }, []);
+
+  const showToast = useCallback((alert) => {
+    const toast = { ...alert, id: alert.id || `toast-${Date.now()}` };
+    setToasts((current) => [...current, toast].slice(-4));
+  }, []);
+
+  const summary = useMemo(
+    () => makeSummary(vehicles, alerts, shipments),
+    [vehicles, alerts, shipments]
+  );
 
   const value = {
     vehicles,
-    summary,
-    trend,
-    connected: true,
-    tick,
-    alertCount,
-    alerts,
     shipments,
+    alerts,
+    summary,
+    connected,
+    tick,
+    alertCount: alerts.filter((alert) => !alert.resolved).length,
     setVehicles,
     setAlerts,
-    setAlertCount,
     showToast,
     toasts,
     dismissToast,
+    refresh,
   };
 
-  return (
-    <LiveContext.Provider value={value}>
-      {children}
-    </LiveContext.Provider>
-  );
+  return <LiveContext.Provider value={value}>{children}</LiveContext.Provider>;
 }
 
 export const useLive = () => useContext(LiveContext);

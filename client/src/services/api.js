@@ -1,47 +1,53 @@
 // src/services/api.js
-import {
-  INITIAL_STATS,
-  VEHICLES,
-  RECENT_ALERTS,
-  AI_PREDICTIONS,
-  TEMPERATURE_TREND_DATA,
-  INVENTORY_ITEMS,
-  COMPLIANCE_REPORTS,
-  SYSTEM_USERS,
-} from '../data/mockdata.js';
-
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+// The same JSON Server is used by manager, worker and auditor dashboards.
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 async function request(endpoint, options = {}) {
   const url = `${API_BASE}${endpoint}`;
   try {
     const response = await fetch(url, {
-      headers: { 'Content-Type': 'application/json', ...options.headers },
+      headers: { ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...options.headers },
       ...options,
     });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    if (response.status === 204) return null;
     const result = await response.json();
     return result.data !== undefined ? result.data : result;
   } catch (error) {
-    console.warn(`[CryoGuard API Offline] fallback for ${endpoint}`);
+    console.warn(`[CryoGuard API unavailable] ${endpoint}`);
     return null;
   }
 }
 
 export const api = {
-  async getStats() { return (await request('/stats')) || INITIAL_STATS; },
-  async getVehicles() { return (await request('/vehicles')) || VEHICLES; },
-  async getAlerts() { return (await request('/alerts')) || RECENT_ALERTS; },
-  async getInventory() { return (await request('/inventory')) || INVENTORY_ITEMS; },
-  async getUsers() { return (await request('/users')) || SYSTEM_USERS; },
-  async getReports() { return (await request('/reports')) || COMPLIANCE_REPORTS; },
-  async getAiPrediction() { return (await request('/ai-prediction')) || AI_PREDICTIONS; },
-  async getTemperatureTrend() { return (await request('/temperature-trend')) || TEMPERATURE_TREND_DATA; },
+  async getStats() {
+    const [vehicles, shipments, alerts] = await Promise.all([
+      request('/vehicles'), request('/shipments'), request('/alerts'),
+    ]);
+    if (!vehicles || !shipments || !alerts) return null;
+    return {
+      vehicles,
+      shipments,
+      openAlerts: alerts.filter((alert) => !alert.resolved),
+    };
+  },
+  async getVehicles() { return (await request('/vehicles')) || []; },
+  async getShipments() { return (await request('/shipments')) || []; },
+  async getAssignments() { return (await request('/assignments')) || []; },
+  async getAlerts() { return (await request('/alerts')) || []; },
+  async getInventory() {
+    const [items, units] = await Promise.all([request('/inventoryItems'), request('/storageUnits')]);
+    return items && units ? { items, units } : { items: [], units: [] };
+  },
+  async getUsers() { return (await request('/users')) || []; },
+  async getReports() { return (await request('/reports')) || []; },
+  async getAiPrediction() { return []; },
+  async getTemperatureTrend() { return (await request('/temperatureReadings')) || []; },
   async boostCooling(id) { return await request(`/vehicles/${id}/boost`, { method: 'POST' }); },
   async createShipment(data) { return await request('/shipments', { method: 'POST', body: JSON.stringify(data) }); },
-  async acknowledgeAlert(id) { return await request(`/alerts/${id}/acknowledge`, { method: 'POST' }); },
-  async resolveAlert(id) { return await request(`/alerts/${id}/resolve`, { method: 'POST' }); },
-  async createInventoryBatch(data) { return await request('/inventory', { method: 'POST', body: JSON.stringify(data) }); },
+  async acknowledgeAlert(id) { return await request(`/alerts/${id}`, { method: 'PATCH', body: JSON.stringify({ acknowledged: true, resolved: true, status: 'resolved' }) }); },
+  async resolveAlert(id) { return await request(`/alerts/${id}`, { method: 'PATCH', body: JSON.stringify({ resolved: true, status: 'resolved' }) }); },
+  async createInventoryBatch(data) { return await request('/inventoryItems', { method: 'POST', body: JSON.stringify(data) }); },
   async createUser(data) { return await request('/users', { method: 'POST', body: JSON.stringify(data) }); },
 };
 
