@@ -4,6 +4,7 @@ import Assignments from "./Assignments";
 import Temperature from "./Temperature";
 import TrainingProgress from "./TrainingProgress";
 import Messages from "./Messages";
+import Alert from "../../pages/Alerts";
 import WorkerHeader from "./WorkerHeader";
 import { useNavigate } from "react-router-dom";
 import { useWorker } from "../../context/WorkerContext";
@@ -97,22 +98,19 @@ const navigate = useNavigate();
 
 
           {/* Alerts */}
-          <button
-            className={`summary-card ${
-              activeSection === "alerts"
-                ? "active-summary-card"
-                : ""
-            }`}
-            onClick={() => setActiveSection("alerts")}
-          >
-            <div className="summary-icon">⚠️</div>
+{/* Alerts */}
+<button
+  className="summary-card"
+  onClick={() => navigate("/alerts")}
+>
+  <div className="summary-icon">⚠️</div>
 
-            <div>
-              <h3>Alerts</h3>
-              <strong>1</strong>
-              <p>Requires Attention</p>
-            </div>
-          </button>
+  <div>
+    <h3>Alerts</h3>
+    <strong>3</strong>
+    <p>Requires Attention</p>
+  </div>
+</button>
 
 
           {/* Completed Today */}
