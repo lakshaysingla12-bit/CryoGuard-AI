@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3001/myProfile";
+const API_URL = "/api/myProfile";
 
 export async function getMyProfile() {
   const response = await fetch(API_URL);

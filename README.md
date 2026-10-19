@@ -34,19 +34,13 @@ The development command starts both services:
 - Vite dashboard: `http://localhost:5173`
 - JSON Server API: `http://localhost:3001`
 
-Keep the terminal running while using the dashboard. Open the Vite URL in your browser. To create a production bundle, run `npm run build` from `client/`; to preview it, run `npm run preview`.
+Keep the terminal running while using the dashboard. Open the Vite URL (or the forwarded **5173** port in Codespaces) in your browser. The Vite server proxies dashboard requests from `/api/*` to JSON Server on port `3001`; the browser does not call the forwarded API port directly. This avoids Codespaces cross-origin restrictions, so no `VITE_API_URL` file is needed for the manager dashboard.
+
+To create a production bundle, run `npm run build` from `client/`; to preview it, run `npm run preview`.
 
 ## Shared data for the team
 
-The shared dataset is at the repository root in [`db.json`](./db.json). The JSON Server process started by the manager project serves this file on port `3001`.
-
-If a teammate is running a dashboard in a separate project, point it at the same API by setting:
-
-```env
-VITE_API_URL=http://localhost:3001
-```
-
-Start only one JSON Server for the shared dataset. If the manager project already runs it, teammates should start only their own Vite app and use the shared API URL. The API must be reachable from each dashboard’s browser or development environment.
+The shared dataset is at the repository root in [`db.json`](./db.json). The JSON Server process started by the manager project serves this file on port `3001`. Keep the API port private in Codespaces; the dashboard reaches it through the Vite proxy. Dashboards running in the same Codespace can use the same local JSON Server. A dashboard running in a different Codespace needs a server-side proxy configured to reach the shared API; a browser request directly to another private forwarded port will be blocked by Codespaces access controls.
 
 ## Demo data
 
@@ -91,7 +85,7 @@ JSON Server exposes the collections below. The manager client also provides a fe
 Fetch shipments:
 
 ```js
-const response = await fetch("http://localhost:3001/shipments");
+const response = await fetch("/api/shipments");
 if (!response.ok) throw new Error("Could not load shipments");
 const shipments = await response.json();
 ```
@@ -101,7 +95,7 @@ Fetch the latest messages for one worker (replace `wrk-001` with that worker’s
 ```js
 const workerId = "wrk-001";
 const response = await fetch(
-  `http://localhost:3001/messages?workerId=${encodeURIComponent(workerId)}&_sort=sentAt&_order=desc`
+  `/api/messages?workerId=${encodeURIComponent(workerId)}&_sort=sentAt&_order=desc`
 );
 if (!response.ok) throw new Error("Could not load supervisor messages");
 const messages = await response.json();
@@ -110,7 +104,7 @@ const messages = await response.json();
 Send a supervisor message:
 
 ```js
-const response = await fetch("http://localhost:3001/messages", {
+const response = await fetch("/api/messages", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
@@ -145,8 +139,8 @@ if (!response.ok) throw new Error("Could not send supervisor message");
 
 ## Troubleshooting
 
-- **API requests fail:** confirm the JSON Server is running at `http://localhost:3001` and that the port is not already occupied.
-- **A teammate sees different or empty data:** check that their dashboard uses `VITE_API_URL=http://localhost:3001` and that their worker or auditor IDs match the IDs in `db.json`.
+- **API requests fail:** confirm JSON Server is running on port `3001`, then open `/api/vehicles` through the Vite app to check the proxy. Restart Vite after changing `vite.config.js`.
+- **A teammate sees different or empty data:** check that their Vite proxy points to the shared JSON Server and that worker or auditor IDs match the IDs in `db.json`.
 - **A worker sees no supervisor messages:** request `/messages?workerId=<their-user-id>` and verify the manager sent a message to that same ID.
 - **Changes to demo data do not appear:** refresh the dashboard and check that the JSON Server is still serving the repository’s root `db.json`.
 

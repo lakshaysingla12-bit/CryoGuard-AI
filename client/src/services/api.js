@@ -1,6 +1,6 @@
 // src/services/api.js
 // The same JSON Server is used by manager, worker and auditor dashboards.
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_BASE = '/api';
 
 async function request(endpoint, options = {}) {
   const url = `${API_BASE}${endpoint}`;

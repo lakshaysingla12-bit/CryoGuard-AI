@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3001";
+const API_BASE = "/api";
 const TOKEN_KEY = "cryoguard_token";
 
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
