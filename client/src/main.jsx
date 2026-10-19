@@ -8,15 +8,18 @@ import "./App.css";
 import App from "./App.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { LiveProvider } from "./context/LiveContext.jsx";
+import { ThemeProvider } from "./context/ThemeContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <LiveProvider>
-          <App />
-        </LiveProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <LiveProvider>
+            <App />
+          </LiveProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

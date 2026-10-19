@@ -7,6 +7,7 @@ const menuItems = [
   { path: "/", label: "Dashboard", icon: "bi-grid-1x2" },
   { path: "/monitoring", label: "Monitoring", icon: "bi-broadcast" },
   { path: "/shipments", label: "Shipments", icon: "bi-box-seam" },
+  { path: "/inventory", label: "Inventory", icon: "bi-boxes" },
   { path: "/vehicles", label: "Vehicles", icon: "bi-truck" },
   { path: "/alerts", label: "Alerts", icon: "bi-bell", showAlertCount: true },
   { path: "/ai", label: "AI Predictions", icon: "bi-cpu" },
@@ -27,14 +28,14 @@ function Sidebar() {
 
   return (
     <aside className={`sidebar${collapsed ? " sidebar-collapsed" : ""}`}>
-      <div className="brand">
+      <div className="brand" title={collapsed ? "CryoGuard AI" : undefined}>
         <span className="brand-icon">
           <i className="bi bi-snow2" />
         </span>
 
         {!collapsed && (
           <span className="brand-name">
-            CryoGuard <span className="text-info">AI</span>
+            CryoGuard <span className="brand-ai">AI</span>
           </span>
         )}
 

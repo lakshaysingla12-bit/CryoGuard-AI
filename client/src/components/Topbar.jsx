@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLive } from "../context/LiveContext";
 import { getMyProfile } from "../api/myProfileApi.js";
+import { useTheme } from "../context/ThemeContext.jsx";
 
 function Topbar() {
   const { summary } = useLive();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [profile, setProfile] = useState({ name: "Aarav Sharma" });
@@ -57,6 +59,16 @@ function Topbar() {
             <span className="notif-count">{summary.openAlerts}</span>
           )}
         </Link>
+
+        <button
+          type="button"
+          className="icon-btn"
+          onClick={toggleTheme}
+          title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+          aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+        >
+          <i className={`bi ${theme === "dark" ? "bi-sun" : "bi-moon-stars"}`} />
+        </button>
 
         <Link
           to="/my-profile"
