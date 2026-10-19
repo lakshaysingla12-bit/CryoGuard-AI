@@ -1,7 +1,7 @@
 // Summary card at the top of a page. color: success, info, danger, warning, primary
 function StatsRow({ icon, color = "info", value, label, note }) {
   return (
-    <div className="card-box h-100">
+    <div className="card-box stats-card h-100">
       <div className="d-flex align-items-center gap-3">
         <span className={"stat-icon text-" + color}>
           <i className={"bi " + icon}></i>

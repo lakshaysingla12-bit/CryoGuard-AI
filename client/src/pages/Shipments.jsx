@@ -7,6 +7,7 @@ import useFetch from "../context/useFetch";
 import PageHeader from "../components/PageHeader.jsx";
 import StatusBadge from "../components/StatusBadge.jsx";
 import Modal from "../components/Modal.jsx";
+import StatsRow from "../components/StatsRow.jsx";
 import { formatDateTime } from "../utils";
 
 const filters = ["All", "In Transit", "Delayed", "Critical", "Delivered"];
@@ -28,13 +29,20 @@ function Shipments() {
     .filter(
       (s) =>
         !text ||
-        [s.id, s.cargo, s.origin, s.destination, s.vehicleId].some((field) =>
+        [s.id, s.cargo, s.origin, s.destination, s.vehicleId, s.workerName, s.workerId].some((field) =>
           field.toLowerCase().includes(text)
         )
     );
 
   const canCreate = user.role === "Manager" || user.role === "Dispatcher";
   const hasIdleVehicle = vehicles.some((v) => v.status === "Idle");
+  const shipmentCounts = {
+    total: (data || []).length,
+    inTransit: (data || []).filter((s) => s.displayStatus === "In Transit").length,
+    delayed: (data || []).filter((s) => s.displayStatus === "Delayed").length,
+    critical: (data || []).filter((s) => s.displayStatus === "Critical").length,
+    delivered: (data || []).filter((s) => s.displayStatus === "Delivered").length,
+  };
 
   return (
     <>
@@ -45,6 +53,14 @@ function Shipments() {
           </button>
         )}
       </PageHeader>
+
+      <div className="row row-cols-1 row-cols-sm-2 row-cols-xl-5 g-3 mb-4">
+        <div className="col"><StatsRow icon="bi-box-seam" color="primary" value={shipmentCounts.total} label="Total shipments" /></div>
+        <div className="col"><StatsRow icon="bi-truck" color="info" value={shipmentCounts.inTransit} label="In transit" /></div>
+        <div className="col"><StatsRow icon="bi-clock-history" color="warning" value={shipmentCounts.delayed} label="Delayed" /></div>
+        <div className="col"><StatsRow icon="bi-exclamation-triangle" color="danger" value={shipmentCounts.critical} label="Critical" /></div>
+        <div className="col"><StatsRow icon="bi-check-circle" color="success" value={shipmentCounts.delivered} label="Delivered" /></div>
+      </div>
 
       <div className="card-box">
         <div className="d-flex flex-wrap justify-content-between gap-3 mb-3">

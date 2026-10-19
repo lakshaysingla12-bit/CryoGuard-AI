@@ -1,56 +1,30 @@
 import { Link } from "react-router-dom";
-import {
-  Area,
-  ComposedChart,
-  CartesianGrid,
-  Cell,
-  Line,
-  Pie,
-  PieChart,
-  ReferenceLine,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { useLive } from "../context/LiveContext.jsx";
 import useFetch from "../context/useFetch.js";
 import PageHeader from "../components/PageHeader.jsx";
 import StatCard from "../components/StatsRow.jsx";
 import StatusBadge from "../components/StatusBadge.jsx";
 import FleetMap from "../components/LiveFleetMap.jsx";
-import { alertIcon, formatTime, timeAgo } from "../utils";
-
-const tooltipStyle = {
-  background: "#0f1520",
-  border: "1px solid #1f2a3a",
-  borderRadius: 8,
-  fontSize: 13,
-};
-
-const pieColors = {
-  "On track": "#38bdf8",
-  Delayed: "#fbbf24",
-  "Temp excursion": "#f87171",
-  Delivered: "#4ade80",
-};
+import TeamSupervision from "../components/TeamSupervision.jsx";
+import { alertIcon, timeAgo } from "../utils";
 
 function Dashboard() {
-  const { vehicles, summary, trend, tick, alertCount } = useLive();
+  const { vehicles, summary, tick, alertCount } = useLive();
 
   const alerts = useFetch("/alerts?status=open&limit=5", [alertCount]);
-  const ai = useFetch("/ai/overview", [tick]);
   const shipments = useFetch("/shipments", [tick]);
 
   if (!summary) return <p className="text-secondary">Loading dashboard...</p>;
 
-  const topRisk = ai.data?.[0];
-  const trendData = trend.map((p) => ({ ...p, time: formatTime(p.ts) }));
-  const pieData = Object.entries(summary.statusBreakdown)
-    .map(([name, value]) => ({ name, value }))
-    .filter((d) => d.value > 0);
-
   const inTransit = (shipments.data || []).filter((s) => s.status === "In Transit").slice(0, 5);
+  const shipmentStatuses = [
+    { label: "On track", value: summary.statusBreakdown["On track"] || 0, color: "#38bdf8" },
+    { label: "Delayed", value: summary.statusBreakdown.Delayed || 0, color: "#fbbf24" },
+    { label: "Temp excursion", value: summary.statusBreakdown["Temp excursion"] || 0, color: "#f87171" },
+    { label: "Delivered", value: summary.statusBreakdown.Delivered || 0, color: "#4ade80" },
+  ];
+  const pieData = shipmentStatuses.filter((status) => status.value > 0);
 
   return (
     <>
@@ -87,11 +61,11 @@ function Dashboard() {
         </div>
         <div className="col-sm-6 col-xl">
           <StatCard
-            icon="bi-cpu"
+            icon="bi-thermometer-high"
             color="primary"
-            value={(ai.data || []).filter((a) => a.risk === "High").length}
-            label="Vehicles At Risk"
-            note="AI forecast for the next 2 hours"
+            value={vehicles.filter((vehicle) => vehicle.tempStatus === "warning" || vehicle.tempStatus === "critical").length}
+            label="Vehicles Need Attention"
+            note="Based on current sensor readings"
           />
         </div>
         <div className="col-sm-6 col-xl">
@@ -145,69 +119,9 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* ---------- trend and AI ---------- */}
-      <div className="row g-3 mb-4">
-        <div className="col-lg-8">
-          <div className="card-box h-100">
-            <h5 className="card-title-text mb-1">Temperature Trend (Chilled Shipments)</h5>
-            <p className="text-secondary small mb-3">Average and hottest vehicle, updated every 5 seconds</p>
+      <TeamSupervision />
 
-            <ResponsiveContainer width="100%" height={260}>
-              <ComposedChart data={trendData}>
-                <defs>
-                  <linearGradient id="avgFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#38bdf8" stopOpacity={0.35} />
-                    <stop offset="100%" stopColor="#38bdf8" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid stroke="#1f2a3a" vertical={false} />
-                <XAxis dataKey="time" stroke="#8b98a9" fontSize={12} minTickGap={40} />
-                <YAxis
-                  stroke="#8b98a9"
-                  fontSize={12}
-                  unit="°"
-                  domain={[0, (max) => Math.max(10, Math.ceil(max + 1))]}
-                />
-                <Tooltip contentStyle={tooltipStyle} />
-                <ReferenceLine
-                  y={8}
-                  stroke="#f87171"
-                  strokeDasharray="5 5"
-                  label={{ value: "Max limit: 8°C", fill: "#f87171", fontSize: 12, position: "insideTopRight" }}
-                />
-                <Area type="monotone" dataKey="avg" name="Average" stroke="#38bdf8" strokeWidth={2} fill="url(#avgFill)" />
-                <Line type="monotone" dataKey="max" name="Hottest" stroke="#fbbf24" strokeWidth={2} dot={false} />
-              </ComposedChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        <div className="col-lg-4">
-          <div className="card-box h-100">
-            <h5 className="card-title-text">
-              <i className="bi bi-cpu text-info me-2"></i>AI Prediction
-            </h5>
-
-            {topRisk && topRisk.risk !== "Low" ? (
-              <>
-                <div className="d-flex align-items-center gap-2 mb-2">
-                  <strong>{topRisk.vehicleId}</strong>
-                  <StatusBadge status={topRisk.risk} />
-                </div>
-                <p className="text-secondary">{topRisk.summary}</p>
-                <Link to="/ai" className="btn btn-outline-info btn-sm">See full analysis</Link>
-              </>
-            ) : (
-              <p className="text-secondary">
-                <i className="bi bi-check-circle text-success me-2"></i>
-                No cooling problems expected in the next 2 hours.
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* ---------- shipments and status chart ---------- */}
+      {/* ---------- shipments ---------- */}
       <div className="row g-3">
         <div className="col-lg-8">
           <div className="card-box h-100">
@@ -249,27 +163,26 @@ function Dashboard() {
             </div>
           </div>
         </div>
-
         <div className="col-lg-4">
           <div className="card-box h-100">
             <h5 className="card-title-text">Shipment Status</h5>
-
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>
-                <Pie data={pieData} dataKey="value" nameKey="name" innerRadius={55} outerRadius={80} paddingAngle={3} stroke="none">
-                  {pieData.map((d) => (
-                    <Cell key={d.name} fill={pieColors[d.name]} />
-                  ))}
+                <Pie data={pieData} dataKey="value" nameKey="label" innerRadius={55} outerRadius={80} paddingAngle={3} stroke="none">
+                  {pieData.map((status) => <Cell key={status.label} fill={status.color} />)}
                 </Pie>
-                <Tooltip contentStyle={tooltipStyle} />
+                <Tooltip
+                  contentStyle={{ background: "#0f1520", border: "1px solid #1f2a3a", borderRadius: 8, color: "#e5e9f0" }}
+                  labelStyle={{ color: "#e5e9f0" }}
+                  itemStyle={{ color: "#e5e9f0" }}
+                />
               </PieChart>
             </ResponsiveContainer>
-
             <div className="d-flex flex-wrap gap-3 justify-content-center small">
-              {pieData.map((d) => (
-                <span key={d.name}>
-                  <i className="bi bi-circle-fill me-1" style={{ color: pieColors[d.name] }}></i>
-                  {d.name} ({d.value})
+              {shipmentStatuses.map((status) => (
+                <span key={status.label}>
+                  <i className="bi bi-circle-fill me-1" style={{ color: status.color }} />
+                  {status.label} ({status.value})
                 </span>
               ))}
             </div>

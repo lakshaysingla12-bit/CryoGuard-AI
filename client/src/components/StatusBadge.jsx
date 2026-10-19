@@ -12,6 +12,9 @@ const colors = {
   Critical: "danger",
   High: "danger",
   Low: "success",
+  "Low stock": "warning",
+  "In stock": "success",
+  "Needs review": "warning",
   Compliant: "success",
   "Non-compliant": "danger",
 };

@@ -91,6 +91,12 @@ a {
 .brand-name {
   font-size: 1.15rem;
   font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.brand-ai {
+  color: var(--accent);
 }
 
 .side-link {
@@ -240,6 +246,21 @@ a {
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1.25rem;
+}
+
+.stats-card {
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 8px 22px rgb(0 0 0 / 18%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stats-card { transition: none; }
+  .stats-card:hover { transform: none; }
 }
 
 .card-title-text {
@@ -562,3 +583,92 @@ a {
 .sidebar-collapsed .link-status {
   justify-content: center;
 }
+
+/* ---------- Light theme ---------- */
+html[data-theme="light"] {
+  color-scheme: light;
+  --bg-main: #f3f6fa;
+  --bg-side: #ffffff;
+  --bg-card: #ffffff;
+  --bg-top: #ffffff;
+  --border: #d9e2ec;
+  --text-muted: #64748b;
+  --accent: #0284c7;
+}
+
+html[data-theme="light"] body {
+  background: var(--bg-main);
+  color: #172033;
+}
+
+html[data-theme="light"] .sidebar,
+html[data-theme="light"] .topbar,
+html[data-theme="light"] .card-box {
+  background: #ffffff;
+  border-color: var(--border);
+}
+
+html[data-theme="light"] .side-link { color: #475569; }
+html[data-theme="light"] .side-link:hover,
+html[data-theme="light"] .sidebar-toggle:hover { color: #172033; background: #eef4f8; }
+html[data-theme="light"] .side-link.active { color: var(--accent); background: #e0f2fe; }
+
+html[data-theme="light"] .brand-icon,
+html[data-theme="light"] .icon-btn,
+html[data-theme="light"] .search-box input,
+html[data-theme="light"] .form-control,
+html[data-theme="light"] .form-select,
+html[data-theme="light"] .vehicle-item,
+html[data-theme="light"] .mini-stat {
+  color: #172033;
+  background: #f8fafc;
+  border-color: var(--border);
+}
+
+html[data-theme="light"] .stat-icon { background: #eef4f8; }
+html[data-theme="light"] .stat-label,
+html[data-theme="light"] .profile-form-grid label,
+html[data-theme="light"] .my-profile-grid label,
+html[data-theme="light"] .form-label,
+html[data-theme="light"] .text-light { color: #172033 !important; }
+html[data-theme="light"] .text-secondary { color: #64748b !important; }
+
+html[data-theme="light"] .table {
+  --bs-table-color: #172033;
+  --bs-table-bg: transparent;
+  --bs-table-border-color: var(--border);
+}
+
+html[data-theme="light"] .form-control:focus,
+html[data-theme="light"] .form-select:focus {
+  color: #172033;
+  background: #ffffff;
+}
+
+html[data-theme="light"] .profile-form-grid .form-control,
+html[data-theme="light"] .profile-form-grid .form-select {
+  color: #172033;
+  background: #f8fafc;
+  border-color: var(--border);
+}
+
+html[data-theme="light"] .leaflet-tile-pane { filter: none; }
+html[data-theme="light"] .leaflet-tooltip { color: #172033; background: #ffffff; border-color: var(--border); }
+
+html[data-theme="light"] .badge.bg-info-subtle { color: #075985 !important; background-color: #e0f2fe !important; border-color: #7dd3fc !important; }
+html[data-theme="light"] .badge.bg-danger-subtle { color: #991b1b !important; background-color: #fee2e2 !important; border-color: #fca5a5 !important; }
+html[data-theme="light"] .badge.bg-warning-subtle { color: #854d0e !important; background-color: #fef3c7 !important; border-color: #fcd34d !important; }
+html[data-theme="light"] .badge.bg-success-subtle { color: #166534 !important; background-color: #dcfce7 !important; border-color: #86efac !important; }
+html[data-theme="light"] .progress { background-color: #dce5ee; }
+
+html[data-theme="light"] .btn-info { color: #ffffff; background-color: #0284c7; border-color: #0284c7; }
+html[data-theme="light"] .btn-info:hover { background-color: #0369a1; border-color: #0369a1; }
+html[data-theme="light"] .btn-outline-secondary { color: #475569; border-color: #94a3b8; }
+html[data-theme="light"] .btn-outline-secondary:hover { color: #172033; background: #e2e8f0; border-color: #64748b; }
+html[data-theme="light"] .btn-outline-info { color: #0369a1; border-color: #0284c7; }
+html[data-theme="light"] .btn-outline-info:hover { color: #ffffff; background: #0284c7; }
+
+html[data-theme="light"] .form-check-label { color: #172033; }
+html[data-theme="light"] .form-check-input:not(:checked) { background-color: #b6c3d4; border-color: #9da1a7; }
+html[data-theme="light"] .form-check-input:checked { background-color: #0284c7; border-color: #0284c7; }
+html[data-theme="light"] .modal-content { color: #172033; background: #ffffff; border-color: var(--border); }

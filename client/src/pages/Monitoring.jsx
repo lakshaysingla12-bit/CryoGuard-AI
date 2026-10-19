@@ -1,48 +1,45 @@
 import { useState } from "react";
-import {
-  CartesianGrid,
-  Line,
-  LineChart,
-  ReferenceLine,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
 import { useLive } from "../context/LiveContext.jsx";
-import useFetch from "../context/useFetch.js";
 import PageHeader from "../components/PageHeader.jsx";
 import FleetMap from "../components/LiveFleetMap.jsx";
 import StatusBadge from "../components/StatusBadge.jsx";
-import { formatTime } from "../utils";
-
-const metrics = {
-  temp: { label: "Temperature", unit: "°C", color: "#38bdf8" },
-  humidity: { label: "Humidity", unit: "%", color: "#a78bfa" },
-  vibration: { label: "Vibration", unit: "g", color: "#fbbf24" },
-};
+import StatsRow from "../components/StatsRow.jsx";
 
 const statusLabel = { normal: "Normal", warning: "Warning", critical: "Critical" };
 
 function Monitoring() {
-  const { vehicles, tick } = useLive();
-  const [selectedId, setSelectedId] = useState("TRK-014");
-  const [metric, setMetric] = useState("temp");
+  const { vehicles } = useLive();
+  const [selectedId, setSelectedId] = useState("TRK-01");
 
-  const onRoad = vehicles.filter((v) => v.status === "In Transit");
+  const onRoad = vehicles
+    .filter((v) => v.status === "In Transit")
+    .sort((a, b) => {
+      const priority = { critical: 0, warning: 1, normal: 2 };
+      return (priority[a.tempStatus] ?? 3) - (priority[b.tempStatus] ?? 3);
+    });
+  const needsAttention = onRoad.filter((v) => v.tempStatus === "warning" || v.tempStatus === "critical").length;
+  const criticalCount = onRoad.filter((v) => v.tempStatus === "critical").length;
   // if the selected truck finished its trip, fall back to the first one
   const selected = onRoad.find((v) => v.id === selectedId) || onRoad[0];
-
-  const readings = useFetch(selected ? `/vehicles/${selected.id}/telemetry?limit=40` : "/vehicles", [tick, selected?.id]);
-  const chartData = Array.isArray(readings.data) && selected
-    ? readings.data.map((r) => ({ ...r, time: formatTime(r.ts) }))
-    : [];
-
-  const m = metrics[metric];
+  const formattedSpeed = selected?.speed == null || selected.speed === ""
+    ? "—"
+    : `${String(selected.speed).replace(/\s*km\/h$/i, "")} km/h`;
 
   return (
     <>
       <PageHeader title="Live Monitoring" subtitle="Watch every vehicle and its sensors in real time" />
+
+      <div className="row g-3 mb-3">
+        <div className="col-sm-6 col-xl-4">
+          <StatsRow icon="bi-truck" color="info" value={onRoad.length} label="Vehicles on the road" />
+        </div>
+        <div className="col-sm-6 col-xl-4">
+          <StatsRow icon="bi-exclamation-triangle" color="warning" value={needsAttention} label="Need attention" />
+        </div>
+        <div className="col-sm-6 col-xl-4">
+          <StatsRow icon="bi-thermometer-high" color="danger" value={criticalCount} label="Critical temperature" />
+        </div>
+      </div>
 
       <div className="row g-3 mb-3">
         <div className="col-lg-8">
@@ -76,7 +73,7 @@ function Monitoring() {
 
       {selected && (
         <div className="card-box">
-          <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+          <div className="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3">
             <div>
               <h5 className="card-title-text mb-1">
                 {selected.id} · {selected.cargo}
@@ -85,42 +82,28 @@ function Monitoring() {
                 {selected.origin} → {selected.destination} · Driver {selected.driver} · {selected.progress}% of trip done
               </small>
             </div>
+            <StatusBadge status={statusLabel[selected.tempStatus]} />
+          </div>
 
-            <div className="btn-group btn-group-sm">
-              {Object.entries(metrics).map(([key, info]) => (
-                <button
-                  key={key}
-                  className={"btn " + (metric === key ? "btn-info" : "btn-outline-secondary")}
-                  onClick={() => setMetric(key)}
-                >
-                  {info.label}
-                </button>
-              ))}
+          <div className="row g-3">
+            <div className="col-6 col-md-3">
+              <div className="mini-stat"><small>Temperature</small><strong>{selected.temp}°C</strong></div>
+            </div>
+            <div className="col-6 col-md-3">
+              <div className="mini-stat"><small>Humidity</small><strong>{selected.humidity}%</strong></div>
+            </div>
+            <div className="col-6 col-md-3">
+              <div className="mini-stat"><small>Vibration</small><strong>{selected.vibration} g</strong></div>
+            </div>
+            <div className="col-6 col-md-3">
+              <div className="mini-stat"><small>Speed</small><strong>{formattedSpeed}</strong></div>
             </div>
           </div>
-
-          <div className="row g-3 mb-3">
-            <div className="col-6 col-md-3"><div className="mini-stat"><small>Temperature</small><strong>{selected.temp}°C</strong></div></div>
-            <div className="col-6 col-md-3"><div className="mini-stat"><small>Humidity</small><strong>{selected.humidity}%</strong></div></div>
-            <div className="col-6 col-md-3"><div className="mini-stat"><small>Vibration</small><strong>{selected.vibration} g</strong></div></div>
-            <div className="col-6 col-md-3"><div className="mini-stat"><small>Speed</small><strong>{selected.speed} km/h</strong></div></div>
-          </div>
-
-          <ResponsiveContainer width="100%" height={260}>
-            <LineChart data={chartData}>
-              <CartesianGrid stroke="#1f2a3a" vertical={false} />
-              <XAxis dataKey="time" stroke="#8b98a9" fontSize={12} minTickGap={40} />
-              <YAxis stroke="#8b98a9" fontSize={12} domain={metric === "temp" ? [(min) => Math.floor(min - 1), (max) => Math.ceil(max + 1)] : [0, "auto"]} unit={m.unit} allowDecimals={metric !== "temp"} />
-              <Tooltip contentStyle={{ background: "#0f1520", border: "1px solid #1f2a3a", borderRadius: 8 }} />
-              {metric === "temp" && (
-                <>
-                  <ReferenceLine y={selected.maxTemp} stroke="#f87171" strokeDasharray="5 5" />
-                  <ReferenceLine y={selected.minTemp} stroke="#f87171" strokeDasharray="5 5" />
-                </>
-              )}
-              <Line type="linear" dataKey={metric} name={m.label} stroke={m.color} strokeWidth={2} dot={false} isAnimationActive={false} />
-            </LineChart>
-          </ResponsiveContainer>
+        </div>
+      )}
+      {!selected && (
+        <div className="card-box text-center text-secondary">
+          No vehicles are currently on the road.
         </div>
       )}
     </>
