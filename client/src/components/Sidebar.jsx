@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useLive } from "../context/LiveContext";
@@ -16,24 +17,40 @@ const menuItems = [
 ];
 
 function Sidebar() {
+  const [collapsed, setCollapsed] = useState(false);
   const { user } = useAuth();
   const { summary, connected } = useLive();
 
-  
-const items = menuItems.filter(
-  (item) => !item.managerOnly || user?.role === "Manager"
-);
-
+  const items = menuItems.filter(
+    (item) => !item.managerOnly || user?.role === "Manager"
+  );
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar${collapsed ? " sidebar-collapsed" : ""}`}>
       <div className="brand">
         <span className="brand-icon">
-          <i className="bi bi-snow2"></i>
+          <i className="bi bi-snow2" />
         </span>
-        <span className="brand-name">
-          CryoGuard <span className="text-info">AI</span>
-        </span>
+
+        {!collapsed && (
+          <span className="brand-name">
+            CryoGuard <span className="text-info">AI</span>
+          </span>
+        )}
+
+        <button
+          type="button"
+          className="sidebar-toggle"
+          onClick={() => setCollapsed((value) => !value)}
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          <i
+            className={`bi ${
+              collapsed ? "bi-chevron-right" : "bi-chevron-left"
+            }`}
+          />
+        </button>
       </div>
 
       <nav className="nav flex-column mt-3">
@@ -42,20 +59,28 @@ const items = menuItems.filter(
             key={item.path}
             to={item.path}
             end={item.path === "/"}
-            className={({ isActive }) => "side-link" + (isActive ? " active" : "")}
+            title={collapsed ? item.label : undefined}
+            className={({ isActive }) =>
+              "side-link" + (isActive ? " active" : "")
+            }
           >
-            <i className={"bi " + item.icon}></i>
-            <span>{item.label}</span>
+            <i className={`bi ${item.icon}`} />
+            {!collapsed && <span>{item.label}</span>}
+
             {item.showAlertCount && summary?.openAlerts > 0 && (
-              <span className="badge rounded-pill bg-danger ms-auto">{summary.openAlerts}</span>
+              <span className="badge rounded-pill bg-danger ms-auto">
+                {summary.openAlerts}
+              </span>
             )}
           </NavLink>
         ))}
       </nav>
 
-      <div className="link-status">
-        <span className={"status-dot " + (connected ? "on" : "off")}></span>
-        {connected ? "Live data connected" : "Reconnecting..."}
+      <div className="link-status" title={collapsed ? (connected ? "Live data connected" : "Reconnecting…") : undefined}>
+        <span className={`status-dot ${connected ? "on" : "off"}`} />
+        {!collapsed && (
+          <span>{connected ? "Live data connected" : "Reconnecting..."}</span>
+        )}
       </div>
     </aside>
   );
