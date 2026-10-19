@@ -17,33 +17,48 @@ function WorkerHeader() {
   const [editName, setEditName] = useState(worker.name);
   const [editEmail, setEditEmail] = useState(worker.email);
   const [editPhone, setEditPhone] = useState(worker.phone);
+  const [errors, setErrors] = useState({});
 
   const isHindi = language === "HI";
 
-  const handleSave = () => {
-    const name = editName.trim();
-    const email = editEmail.trim();
-    const phone = editPhone.trim();
 
-    if (
-      !name ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
-      !/^\d{10}$/.test(phone)
-    ) {
-      alert("Please enter a valid name, email, and 10-digit phone number.");
-      return;
-    }
+const handleSave = () => {
+  const name = editName.trim();
+  const email = editEmail.trim();
+  const phone = editPhone.trim();
 
-    updateWorker({ name, email, phone });
-    setShowProfile(false);
-  };
+  const newErrors = {};
+
+  if (!name) {
+    newErrors.name = "Name is required.";
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    newErrors.email = "Enter a valid email address.";
+  }
+
+  if (!/^\d{10}$/.test(phone)) {
+    newErrors.phone = "Phone must contain exactly 10 digits.";
+  }
+
+  setErrors(newErrors);
+
+  if (Object.keys(newErrors).length > 0) {
+    return;
+  }
+
+  updateWorker({ name, email, phone });
+  setShowProfile(false);
+};
+
 
   const handleCancel = () => {
-    setEditName(worker.name);
-    setEditEmail(worker.email);
-    setEditPhone(worker.phone);
-    setShowProfile(false);
-  };
+  setEditName(worker.name);
+  setEditEmail(worker.email);
+  setEditPhone(worker.phone);
+  setErrors({});
+  setShowProfile(false);
+};
 
 
   return (
@@ -79,6 +94,7 @@ function WorkerHeader() {
     setEditName(worker.name);
     setEditEmail(worker.email);
     setEditPhone(worker.phone);
+    setErrors({});
     setShowProfile(true);
   }}
 >
@@ -127,41 +143,65 @@ function WorkerHeader() {
             </div>
 
 
-            <div className="profile-form">
+            
+<div className="profile-form">
 
-              <label>
-                {isHindi ? "पूरा नाम" : "Full Name"}
+  {/* Full Name */}
+  <label>
+    {isHindi ? "पूरा नाम" : "Full Name"}
 
-                <input
-                  type="text"
-                  value={editName}
-                  onChange={(e) => setEditName(e.target.value)}
-                />
-              </label>
+    <input
+      type="text"
+      value={editName}
+      onChange={(e) => {
+        setEditName(e.target.value);
+        setErrors((prev) => ({ ...prev, name: "" }));
+      }}
+    />
 
+    {errors.name && (
+      <p className="field-error">{errors.name}</p>
+    )}
+  </label>
 
-              <label>
-                {isHindi ? "ईमेल" : "Email"}
+  {/* Email */}
+  <label>
+    {isHindi ? "ईमेल" : "Email"}
 
-                <input
-                  type="email"
-                  value={editEmail}
-                  onChange={(e) => setEditEmail(e.target.value)}
-                />
-              </label>
+    <input
+      type="email"
+      value={editEmail}
+      onChange={(e) => {
+        setEditEmail(e.target.value);
+        setErrors((prev) => ({ ...prev, email: "" }));
+      }}
+    />
 
+    {errors.email && (
+      <p className="field-error">{errors.email}</p>
+    )}
+  </label>
 
-              <label>
-                {isHindi ? "फ़ोन" : "Phone"}
+  {/* Phone */}
+  <label>
+    {isHindi ? "फ़ोन" : "Phone"}
 
-                <input
-                  type="tel"
-                  value={editPhone}
-                  onChange={(e) => setEditPhone(e.target.value)}
-                />
-              </label>
+    <input
+      type="tel"
+      value={editPhone}
+      onChange={(e) => {
+        setEditPhone(e.target.value);
+        setErrors((prev) => ({ ...prev, phone: "" }));
+      }}
+    />
 
-            </div>
+    {errors.phone && (
+      <p className="field-error">{errors.phone}</p>
+    )}
+  </label>
+
+</div>
+
 
 
             <div className="profile-actions">

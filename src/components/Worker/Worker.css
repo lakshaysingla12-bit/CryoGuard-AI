@@ -258,6 +258,11 @@
     padding: 15px;
   }
 }
+.field-error {
+  color: #dc2626;
+  font-size: 12px;
+  margin: 4px 0 0;
+}
 /* Lower Dashboard */
 
 .dashboard-grid {
