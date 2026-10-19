@@ -1,66 +1,71 @@
 
 import { useEffect, useState } from "react";
 
+
+const API_URL = "https://dummyjson.com/c/ac2f-52e1-47cf-9f6b";
+
 function Temperature() {
-  const [temperatures, setTemperatures] = useState([]);
+  const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [selectedRecord, setSelectedRecord] = useState(null);
 
-  function loadTemperatures() {
+  async function loadRecords(signal) {
     setLoading(true);
     setError("");
 
-    // Simulate an asynchronous API request
-    const timer = setTimeout(() => {
-      try {
-        setTemperatures([
-          {
-            name: "Cold Room 2",
-            value: 2.1,
-            points:
-              "0,32 25,28 50,30 75,22 100,26 125,18 150,23 175,16 200,21 225,14 250,18",
-          },
-          {
-            name: "Cold Room 3",
-            value: 3.4,
-            points:
-              "0,25 25,29 50,24 75,27 100,20 125,25 150,19 175,22 200,17 225,21 250,18",
-          },
-          {
-            name: "Vehicle TRK-09",
-            value: 4.8,
-            points:
-              "0,35 25,30 50,33 75,25 100,29 125,20 150,25 175,15 200,22 225,12 250,17",
-          },
-        ]);
+    try {
+      const response = await fetch(API_URL, { signal });
 
-        setLoading(false);
-      } catch {
-        setError("Unable to load temperature data.");
+      if (!response.ok) {
+        throw new Error(`Request failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error("Invalid API data");
+      }
+
+      setRecords(data);
+
+      setSelectedRecord((previous) =>
+        previous
+          ? data.find((item) => item.id === previous.id) ?? null
+          : null
+      );
+    } catch (err) {
+      if (err.name === "AbortError") return;
+
+      setError("Unable to load temperature data. Please try again.");
+    } finally {
+      if (!signal?.aborted) {
         setLoading(false);
       }
-    }, 1000);
-
-    return timer;
+    }
   }
 
   useEffect(() => {
-    const timer = loadTemperatures();
+    const controller = new AbortController();
 
-    return () => clearTimeout(timer);
+    loadRecords(controller.signal);
+
+    return () => controller.abort();
   }, []);
 
-  function handleRetry() {
-    loadTemperatures();
+  function handleRefresh() {
+    loadRecords();
   }
 
   return (
     <section className="dashboard-card temperature-card">
       <div className="section-header">
         <h2>Live Temperature (°C)</h2>
+
         <button
+          type="button"
           className="temperature-edit-btn"
-          onClick={handleRetry}
+          onClick={handleRefresh}
           disabled={loading}
         >
           {loading ? "Loading..." : "Refresh"}
@@ -72,53 +77,95 @@ function Temperature() {
       ) : error ? (
         <div role="alert">
           <p>{error}</p>
-          <button onClick={handleRetry}>Try Again</button>
+          <button type="button" onClick={handleRefresh}>
+            Try Again
+          </button>
         </div>
       ) : (
         <>
           <div className="temperature-list">
-            {temperatures.map((item) => {
-              const isWarning = item.value >= 5;
+            {records.map((record) => (
+              <button
+                type="button"
+                className="temperature-row"
+                key={record.id}
+                onClick={() => setSelectedRecord(record)}
+                aria-label={`View details for ${record.location}`}
+              >
+                <div className="temperature-info">
+                  <h3>{record.location}</h3>
 
-              return (
-                <div className="temperature-row" key={item.name}>
-                  <div className="temperature-info">
-                    <h3>{item.name}</h3>
-                    <strong
-                      className={isWarning ? "warning-text" : "normal"}
-                    >
-                      {item.value.toFixed(1)}°C
-                    </strong>
-                  </div>
-
-                  <div
-                    className={`temperature-line ${
-                      isWarning ? "warning-line" : ""
-                    }`}
-                  >
-                    <svg
-                      viewBox="0 0 250 50"
-                      preserveAspectRatio="none"
-                      aria-label={`${item.name} temperature trend`}
-                    >
-                      <polyline
-                        points={item.points}
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      />
-                    </svg>
-                  </div>
+                  <strong className="normal">
+                    {record.temperature} {record.unit}
+                  </strong>
                 </div>
-              );
-            })}
+
+                <div className="temperature-line">
+                  <span>View details →</span>
+                </div>
+              </button>
+            ))}
           </div>
 
-          <div className="temperature-legend">
-            <span>● Normal (0°C to 5°C)</span>
-            <span>● Warning (5°C to 8°C)</span>
-            <span>● Critical (&gt;8°C)</span>
-          </div>
+          {selectedRecord && (
+            <div
+              className="temperature-details"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="temperature-detail-title"
+            >
+              <div className="temperature-details-header">
+                <h3 id="temperature-detail-title">
+                  {selectedRecord.location}
+                </h3>
+
+                <button
+                  type="button"
+                  className="temperature-close-icon"
+                  onClick={() => setSelectedRecord(null)}
+                  aria-label="Close details"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="temperature-detail-row">
+                <span>Temperature</span>
+                <strong>
+                  {selectedRecord.temperature} {selectedRecord.unit}
+                </strong>
+              </div>
+
+              <div className="temperature-detail-row">
+                <span>Status</span>
+                <strong>{selectedRecord.status}</strong>
+              </div>
+
+              <div className="temperature-detail-row">
+                <span>Humidity</span>
+                <strong>{selectedRecord.humidity}%</strong>
+              </div>
+
+              <div className="temperature-detail-row">
+                <span>Last updated</span>
+                <strong>
+                  {selectedRecord.lastUpdated
+                    ? new Date(
+                        selectedRecord.lastUpdated
+                      ).toLocaleString()
+                    : "Not available"}
+                </strong>
+              </div>
+
+              <button
+                type="button"
+                className="temperature-close-btn"
+                onClick={() => setSelectedRecord(null)}
+              >
+                Close details
+              </button>
+            </div>
+          )}
         </>
       )}
     </section>
