@@ -1151,3 +1151,144 @@
 .temperature-info h3 {
   margin: 0;
 }
+
+
+/* ===== WORKER DASHBOARD THEME FIX ===== */
+
+/* Light mode */
+.worker-dashboard {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.worker-dashboard .welcome-card,
+.worker-dashboard .summary-card {
+  background: #ffffff;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+}
+
+.worker-dashboard .welcome-content h1,
+.worker-dashboard .summary-card h3 {
+  color: #0f172a;
+}
+
+.worker-dashboard .welcome-content p,
+.worker-dashboard .summary-card p {
+  color: #64748b;
+}
+
+.worker-dashboard .summary-card strong {
+  color: #0f172a;
+}
+
+/* ===== DARK MODE ===== */
+body.dark-mode .worker-dashboard {
+  background: #080f1d !important;
+  color: #e2e8f0;
+}
+
+/* Welcome banner */
+body.dark-mode .worker-dashboard .welcome-card {
+  background: #111e32 !important;
+  color: #f1f5f9 !important;
+  border: 1px solid #263750;
+}
+
+/* Welcome text */
+body.dark-mode .worker-dashboard .welcome-content h1 {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .worker-dashboard .welcome-content p {
+  color: #a9bad0 !important;
+}
+
+/* All four summary cards */
+body.dark-mode .worker-dashboard .summary-card {
+  background: #111e32 !important;
+  color: #e2e8f0 !important;
+  border: 1px solid #263750;
+  box-shadow: none;
+}
+
+/* Card headings */
+body.dark-mode .worker-dashboard .summary-card h3 {
+  color: #cbdaf0 !important;
+}
+
+/* Card numbers */
+body.dark-mode .worker-dashboard .summary-card strong {
+  color: #f8fafc !important;
+}
+
+/* Card descriptions */
+body.dark-mode .worker-dashboard .summary-card p {
+  color: #9aabc0 !important;
+}
+
+/* Hover effect */
+body.dark-mode .worker-dashboard .summary-card:hover {
+  background: #172942 !important;
+  border-color: #38bdf8;
+}
+
+/* Selected card */
+body.dark-mode .worker-dashboard .summary-card.active-summary-card {
+  background: #12304b !important;
+  border-color: #38bdf8;
+}
+
+/* Smooth theme transition */
+.worker-dashboard .welcome-card,
+.worker-dashboard .summary-card {
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+
+/* ===== WORKER NAVBAR THEME ===== */
+
+/* Light mode */
+.worker-dashboard .worker-header {
+  background: #ffffff;
+  color: #0f172a;
+  border-bottom: 1px solid #e2e8f0;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Dark mode */
+body.dark-mode .worker-dashboard .worker-header {
+  background: #0b1728 !important;
+  color: #f1f5f9 !important;
+  border-bottom: 1px solid #263750;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Navbar text */
+body.dark-mode .worker-dashboard .worker-header h1,
+body.dark-mode .worker-dashboard .worker-header h2,
+body.dark-mode .worker-dashboard .worker-header h3,
+body.dark-mode .worker-dashboard .worker-header p,
+body.dark-mode .worker-dashboard .worker-header span {
+  color: #e2e8f0;
+}
+
+/* Navbar buttons */
+body.dark-mode .worker-dashboard .worker-header button {
+  color: #e2e8f0;
+  background-color: transparent;
+}
+
+/* Hover */
+body.dark-mode .worker-dashboard .worker-header button:hover {
+  background: #172942;
+  border-radius: 8px;
+}
+
+/* Icons */
+body.dark-mode .worker-dashboard .worker-header svg {
+  color: #38bdf8;
+}
