@@ -543,9 +543,28 @@ function Users() {
                     className="journey-stop"
                     key={`${stop.location}-${index}`}
                   >
-                    <div className="journey-marker">
-                      {stop.status === "Completed" ? "✓" : "•"}
-                    </div>
+                    <div
+  className={`journey-marker ${
+    stop.status === "Completed" || stop.status === "Delivered"
+      ? "marker-reached"
+      : stop.status === "Delayed"
+        ? "marker-delayed"
+        : "marker-pending"
+  }`}
+  title={
+    stop.status === "Completed" || stop.status === "Delivered"
+      ? "Location reached"
+      : stop.status === "Delayed"
+        ? "Delayed checkpoint"
+        : "Location not reached yet"
+  }
+>
+  {stop.status === "Completed" || stop.status === "Delivered"
+    ? "✓"
+    : stop.status === "Delayed"
+      ? "!"
+      : "○"}
+</div>
 
                     <div className="journey-stop-content">
                       <div className="journey-stop-heading">
