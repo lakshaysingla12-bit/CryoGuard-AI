@@ -215,7 +215,7 @@ function Shipments() {
         </div>
 
         <div className="shipments-user">
-          <button
+          {/* <button
             type="button"
             className="topbar-icon"
             aria-label="Notifications"
@@ -223,7 +223,7 @@ function Shipments() {
           >
             ♧
             <span className="notification-dot">2</span>
-          </button>
+          </button> */}
           <div className="user-avatar">R</div>
           <div>
             <strong>Rohit Kumar</strong>
