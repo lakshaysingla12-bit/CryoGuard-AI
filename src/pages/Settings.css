@@ -267,3 +267,11 @@ body.dark-mode .setting-item-icon {
     gap: 12px;
   }
 }
+
+.settings-section-heading h2 {
+  color: #0f172a !important;
+}
+
+.dark-mode .settings-section-heading h2 {
+  color: #f1f5f9 !important;
+}
