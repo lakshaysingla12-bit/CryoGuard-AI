@@ -5,7 +5,8 @@ import "./Reports.css";
 
 const initialReports = Array.from({ length: 6 }, (_, index) => {
   const vehicle = VEHICLES[index % VEHICLES.length];
-  const existingReport = COMPLIANCE_REPORTS[index % COMPLIANCE_REPORTS.length];
+  const existingReport =
+    COMPLIANCE_REPORTS[index % COMPLIANCE_REPORTS.length];
 
   const isWithinRange =
     vehicle.temperature >= vehicle.minTemp &&
@@ -38,7 +39,6 @@ const emptyForm = {
   minTemp: "",
   maxTemp: "",
   reading: "",
-  auditor: "Rohit Kumar",
 };
 
 function Reports() {
@@ -47,11 +47,16 @@ function Reports() {
   const [formData, setFormData] = useState(emptyForm);
   const [formError, setFormError] = useState("");
 
+  // Calculate card values from the current reports list.
+  const totalReports = reports.length;
+
   const compliantCount = reports.filter(
     (report) => report.status === "Compliant"
   ).length;
 
-  const reviewCount = reports.length - compliantCount;
+  const reviewCount = reports.filter(
+    (report) => report.status === "Needs review"
+  ).length;
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -62,118 +67,121 @@ function Reports() {
     }));
   };
 
+  const handleAddReport = (event) => {
+    event.preventDefault();
+    setFormError("");
 
-const handleAddReport = (event) => {
-  event.preventDefault();
-  setFormError("");
+    const shipmentId = formData.shipmentId.trim();
+    const cargo = formData.cargo.trim();
+    const route = formData.route.trim();
 
-  const shipmentId = formData.shipmentId.trim();
-  const cargo = formData.cargo.trim();
-  const route = formData.route.trim();
+    const minTemp = Number(formData.minTemp);
+    const maxTemp = Number(formData.maxTemp);
+    const reading = Number(formData.reading);
 
-  const minTemp = Number(formData.minTemp);
-  const maxTemp = Number(formData.maxTemp);
-  const reading = Number(formData.reading);
+    // Validate required fields.
+    if (
+      !shipmentId ||
+      !cargo ||
+      !route ||
+      !formData.date ||
+      formData.minTemp === "" ||
+      formData.maxTemp === "" ||
+      formData.reading === ""
+    ) {
+      setFormError("Please fill in all fields.");
+      return;
+    }
 
-  // 1. Required fields
-  if (
-    !shipmentId ||
-    !cargo ||
-    !route ||
-    !formData.date ||
-    formData.minTemp === "" ||
-    formData.maxTemp === "" ||
-    formData.reading === ""
-  ) {
-    setFormError("Please fill in all fields.");
-    return;
-  }
+    // Validate shipment ID.
+    if (!/^SHP-\d{4,}$/.test(shipmentId)) {
+      setFormError("Shipment ID must look like SHP-1027.");
+      return;
+    }
 
-  // 2. Shipment ID format
-  if (!/^SHP-\d{4,}$/.test(shipmentId)) {
-    setFormError("Shipment ID must look like SHP-1027.");
-    return;
-  }
+    // Validate date.
+    const selectedDate = new Date(`${formData.date}T00:00:00`);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-  // 3. Date validation
-  const selectedDate = new Date(`${formData.date}T00:00:00`);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+    if (Number.isNaN(selectedDate.getTime())) {
+      setFormError("Please enter a valid report date.");
+      return;
+    }
 
-  if (Number.isNaN(selectedDate.getTime())) {
-    setFormError("Please enter a valid report date.");
-    return;
-  }
+    if (selectedDate > today) {
+      setFormError("Report date cannot be in the future.");
+      return;
+    }
 
-  if (selectedDate > today) {
-    setFormError("Report date cannot be in the future.");
-    return;
-  }
+    // Validate numeric temperatures.
+    if (
+      !Number.isFinite(minTemp) ||
+      !Number.isFinite(maxTemp) ||
+      !Number.isFinite(reading)
+    ) {
+      setFormError("Please enter valid numeric temperature values.");
+      return;
+    }
 
-  // 4. Numeric validation
-  if (
-    !Number.isFinite(minTemp) ||
-    !Number.isFinite(maxTemp) ||
-    !Number.isFinite(reading)
-  ) {
-    setFormError("Please enter valid numeric temperature values.");
-    return;
-  }
+    if (minTemp >= maxTemp) {
+      setFormError(
+        "Minimum temperature must be less than maximum temperature."
+      );
+      return;
+    }
 
-  // 5. Temperature range validation
-  if (minTemp >= maxTemp) {
-    setFormError(
-      "Minimum temperature must be less than maximum temperature."
-    );
-    return;
-  }
+    if (
+      minTemp < -273.15 ||
+      maxTemp > 1000 ||
+      reading < -273.15 ||
+      reading > 1000
+    ) {
+      setFormError(
+        "Temperature values must be between -273.15°C and 1000°C."
+      );
+      return;
+    }
 
-  // 6. Basic plausible temperature limits
-  if (
-    minTemp < -273.15 ||
-    maxTemp > 1000 ||
-    reading < -273.15 ||
-    reading > 1000
-  ) {
-    setFormError(
-      "Temperature values must be between -273.15°C and 1000°C."
-    );
-    return;
-  }
+    // Determine report status.
+    const isWithinRange =
+      reading >= minTemp && reading <= maxTemp;
 
-  // 7. Calculate compliance from the permitted range
-  const isWithinRange = reading >= minTemp && reading <= maxTemp;
+    // Generate the next unique report ID.
+    const nextNumber =
+      reports.reduce((max, report) => {
+        const match = report.id.match(/(\d+)$/);
+        return Math.max(max, match ? Number(match[1]) : 0);
+      }, 0) + 1;
 
-  const nextNumber =
-    reports.reduce((max, report) => {
-      const match = report.id.match(/(\d+)$/);
-      return Math.max(max, match ? Number(match[1]) : 0);
-    }, 0) + 1;
+    const newReport = {
+      id: `RPT-${String(nextNumber).padStart(3, "0")}`,
+      shipmentId,
+      cargo,
+      route,
+      date: formData.date,
+      minTemp,
+      maxTemp,
+      reading,
+      status: isWithinRange ? "Compliant" : "Needs review",
+      auditor: "Rohit Kumar",
+    };
 
-  const newReport = {
-    id: `RPT-${String(nextNumber).padStart(3, "0")}`,
-    shipmentId,
-    cargo,
-    route,
-    date: formData.date,
-    minTemp,
-    maxTemp,
-    reading,
-    status: isWithinRange ? "Compliant" : "Needs review",
-    auditor: "Rohit Kumar",
+    // Add the report. React recalculates all three cards automatically.
+    setReports((previousReports) => [
+      newReport,
+      ...previousReports,
+    ]);
+
+    // Reset the form after saving.
+    setFormData({
+      ...emptyForm,
+      date: new Date().toISOString().slice(0, 10),
+    });
+
+    setShowForm(false);
+    setFormError("");
   };
-
-  setReports((previous) => [newReport, ...previous]);
-
-  setFormData({
-    ...emptyForm,
-    date: new Date().toISOString().slice(0, 10),
-  });
-
-  setShowForm(false);
-  setFormError("");
-};
-
 
   const handleDownload = (report) => {
     const reportText = [
@@ -210,7 +218,9 @@ const handleAddReport = (event) => {
     <div className="reports-page">
       <header className="reports-header">
         <div className="reports-heading">
-          <p className="reports-eyebrow">CRYOGUARD / AUDIT CENTER</p>
+          <p className="reports-eyebrow">
+            CRYOGUARD / AUDIT CENTER
+          </p>
           <h1>Compliance Reports</h1>
           <p className="reports-subtitle">
             Review shipment compliance and temperature records.
@@ -226,12 +236,13 @@ const handleAddReport = (event) => {
         </div>
       </header>
 
+      {/* Summary cards */}
       <section className="reports-summary">
         <article className="summary-card">
           <div className="summary-icon total-icon">▤</div>
           <div>
             <p>Total Reports</p>
-            <h2>{reports.length}</h2>
+            <h2>{totalReports}</h2>
             <span>Available for review</span>
           </div>
         </article>
@@ -255,16 +266,20 @@ const handleAddReport = (event) => {
         </article>
       </section>
 
+      {/* Report records */}
       <section className="report-records">
         <div className="records-header">
           <div>
             <h2>Report Records</h2>
-            <p>Shipment audit and temperature compliance details</p>
+            <p>
+              Shipment audit and temperature compliance details
+            </p>
           </div>
 
           <div className="records-actions">
             <span className="report-count">
-              {reports.length} {reports.length === 1 ? "report" : "reports"}
+              {totalReports}{" "}
+              {totalReports === 1 ? "report" : "reports"}
             </span>
 
             <button
@@ -281,10 +296,15 @@ const handleAddReport = (event) => {
         </div>
 
         {showForm && (
-          <form className="add-report-form" onSubmit={handleAddReport}>
+          <form
+            className="add-report-form"
+            onSubmit={handleAddReport}
+          >
             <div className="form-heading">
               <h3>Add New Report</h3>
-              <p>Enter the shipment and temperature details below.</p>
+              <p>
+                Enter the shipment and temperature details below.
+              </p>
             </div>
 
             <div className="form-grid">
@@ -379,14 +399,21 @@ const handleAddReport = (event) => {
             )}
 
             <div className="form-actions">
-              <button type="button" className="cancel-btn" onClick={() => {
-                setShowForm(false);
-                setFormError("");
-              }}>
+              <button
+                type="button"
+                className="cancel-btn"
+                onClick={() => {
+                  setShowForm(false);
+                  setFormError("");
+                }}
+              >
                 Cancel
               </button>
 
-              <button type="submit" className="save-report-btn">
+              <button
+                type="submit"
+                className="save-report-btn"
+              >
                 Save Report
               </button>
             </div>
@@ -417,7 +444,9 @@ const handleAddReport = (event) => {
                     <strong className="shipment-id">
                       {report.shipmentId}
                     </strong>
-                    <span className="cargo-name">{report.cargo}</span>
+                    <span className="cargo-name">
+                      {report.cargo}
+                    </span>
                   </td>
 
                   <td>{report.route}</td>
@@ -427,7 +456,9 @@ const handleAddReport = (event) => {
                     {report.minTemp}°C to {report.maxTemp}°C
                   </td>
 
-                  <td className="reading-value">{report.reading}°C</td>
+                  <td className="reading-value">
+                    {report.reading}°C
+                  </td>
 
                   <td>
                     <span
