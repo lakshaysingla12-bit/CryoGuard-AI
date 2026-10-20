@@ -1,51 +1,16 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Inventory.css";
 
-const initialInventory = [
-  {
-    id: 1,
-    name: "Temperature Sensors",
-    sku: "CG-SEN-001",
-    category: "Sensors",
-    quantity: 45,
-    minStock: 10,
-    location: "Warehouse A",
-  },
-  {
-    id: 2,
-    name: "Cooling Units",
-    sku: "CG-CL-002",
-    category: "Cooling Equipment",
-    quantity: 8,
-    minStock: 10,
-    location: "Warehouse B",
-  },
-  {
-    id: 3,
-    name: "Insulated Containers",
-    sku: "CG-CON-003",
-    category: "Packaging",
-    quantity: 0,
-    minStock: 5,
-    location: "Warehouse A",
-  },
-  {
-    id: 4,
-    name: "GPS Trackers",
-    sku: "CG-GPS-004",
-    category: "Tracking Devices",
-    quantity: 22,
-    minStock: 8,
-    location: "Warehouse C",
-  },
-];
+const API_URL = "http://localhost:3001/inventory";
 
 function Inventory() {
-  const [inventory, setInventory] = useState(initialInventory);
+  const [inventory, setInventory] = useState([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
   const [showForm, setShowForm] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const [form, setForm] = useState({
     name: "",
@@ -56,9 +21,36 @@ function Inventory() {
     location: "",
   });
 
+  // GET: Fetch inventory from JSON Server
+  const fetchInventory = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const response = await fetch(API_URL);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch inventory.");
+      }
+
+      const data = await response.json();
+      setInventory(data);
+    } catch (err) {
+      setError("Cannot load inventory. Check whether JSON Server is running.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchInventory();
+  }, []);
+
   const getStatus = (item) => {
-    if (item.quantity === 0) return "Out of Stock";
-    if (item.quantity <= item.minStock) return "Low Stock";
+    if (Number(item.quantity) === 0) return "Out of Stock";
+    if (Number(item.quantity) <= Number(item.minStock)) {
+      return "Low Stock";
+    }
     return "In Stock";
   };
 
@@ -68,29 +60,35 @@ function Inventory() {
       item.sku.toLowerCase().includes(search.toLowerCase()) ||
       item.category.toLowerCase().includes(search.toLowerCase());
 
-    const status = getStatus(item);
-    const matchesFilter = filter === "All" || status === filter;
+    const matchesFilter =
+      filter === "All" || getStatus(item) === filter;
 
     return matchesSearch && matchesFilter;
   });
 
   const totalItems = inventory.length;
-  const lowStock = inventory.filter(
-    (item) => item.quantity > 0 && item.quantity <= item.minStock
-  ).length;
-  const outOfStock = inventory.filter(
-    (item) => item.quantity === 0
-  ).length;
+
   const totalUnits = inventory.reduce(
-    (total, item) => total + item.quantity,
+    (total, item) => total + Number(item.quantity),
     0
   );
+
+  const lowStock = inventory.filter(
+    (item) =>
+      Number(item.quantity) > 0 &&
+      Number(item.quantity) <= Number(item.minStock)
+  ).length;
+
+  const outOfStock = inventory.filter(
+    (item) => Number(item.quantity) === 0
+  ).length;
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleAddInventory = (e) => {
+  // POST: Save a new product in db.json
+  const handleAddInventory = async (e) => {
     e.preventDefault();
 
     const quantity = Number(form.quantity);
@@ -112,45 +110,79 @@ function Inventory() {
       return;
     }
 
-    if (
-      inventory.some(
-        (item) => item.sku.toLowerCase() === form.sku.trim().toLowerCase()
-      )
-    ) {
+    const duplicateSKU = inventory.some(
+      (item) =>
+        item.sku.toLowerCase() === form.sku.trim().toLowerCase()
+    );
+
+    if (duplicateSKU) {
       alert("This SKU already exists. Please use a unique SKU.");
       return;
     }
 
     const newItem = {
-      id: Date.now(),
-      ...form,
       name: form.name.trim(),
       sku: form.sku.trim(),
       category: form.category.trim(),
-      location: form.location.trim(),
       quantity,
       minStock,
+      location: form.location.trim(),
     };
 
-    setInventory((previous) => [...previous, newItem]);
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newItem),
+      });
 
-    setForm({
-      name: "",
-      sku: "",
-      category: "",
-      quantity: "",
-      minStock: "",
-      location: "",
-    });
+      if (!response.ok) {
+        throw new Error("Could not save inventory item.");
+      }
 
-    setShowForm(false);
+      const savedItem = await response.json();
+
+      setInventory((previous) => [...previous, savedItem]);
+
+      setForm({
+        name: "",
+        sku: "",
+        category: "",
+        quantity: "",
+        minStock: "",
+        location: "",
+      });
+
+      setShowForm(false);
+      alert("Inventory item saved successfully!");
+    } catch (err) {
+      alert("Failed to save item. Check whether JSON Server is running.");
+    }
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this inventory item?")) {
-      setInventory((previous) =>
-        previous.filter((item) => item.id !== id)
+  // DELETE: Remove a product from db.json
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this item?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${API_URL}/${encodeURIComponent(id)}`,
+        { method: "DELETE" }
       );
+
+      if (!response.ok) {
+        throw new Error("Could not delete inventory item.");
+      }
+
+      setInventory((previous) =>
+        previous.filter((item) => String(item.id) !== String(id))
+      );
+    } catch (err) {
+      alert("Failed to delete item. Please try again.");
     }
   };
 
@@ -197,7 +229,10 @@ function Inventory() {
       </div>
 
       {showForm && (
-        <form className="inventory-form" onSubmit={handleAddInventory}>
+        <form
+          className="inventory-form"
+          onSubmit={handleAddInventory}
+        >
           <h2>Add New Inventory Item</h2>
 
           <div className="inventory-form-grid">
@@ -305,45 +340,67 @@ function Inventory() {
             </thead>
 
             <tbody>
-              {filteredInventory.map((item) => {
-                const status = getStatus(item);
-
-                return (
-                  <tr key={item.id}>
-                    <td className="inventory-product-name">{item.name}</td>
-                    <td>{item.sku}</td>
-                    <td>{item.category}</td>
-                    <td>{item.quantity}</td>
-                    <td>{item.minStock}</td>
-                    <td>{item.location}</td>
-                    <td>
-                      <span
-                        className={`inventory-status ${status
-                          .toLowerCase()
-                          .replaceAll(" ", "-")}`}
-                      >
-                        {status}
-                      </span>
-                    </td>
-                    <td>
-                      <button
-                        className="inventory-delete-btn"
-                        onClick={() => handleDelete(item.id)}
-                        aria-label={`Delete ${item.name}`}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-
-              {filteredInventory.length === 0 && (
+              {loading ? (
+                <tr>
+                  <td colSpan="8" className="inventory-empty">
+                    Loading inventory...
+                  </td>
+                </tr>
+              ) : error ? (
+                <tr>
+                  <td colSpan="8" className="inventory-empty">
+                    {error}
+                    <br />
+                    <button
+                      className="inventory-save-btn"
+                      onClick={fetchInventory}
+                      style={{ marginTop: "12px" }}
+                    >
+                      Retry
+                    </button>
+                  </td>
+                </tr>
+              ) : filteredInventory.length === 0 ? (
                 <tr>
                   <td colSpan="8" className="inventory-empty">
                     No inventory items found.
                   </td>
                 </tr>
+              ) : (
+                filteredInventory.map((item) => {
+                  const status = getStatus(item);
+
+                  return (
+                    <tr key={item.id}>
+                      <td className="inventory-product-name">
+                        {item.name}
+                      </td>
+                      <td>{item.sku}</td>
+                      <td>{item.category}</td>
+                      <td>{item.quantity}</td>
+                      <td>{item.minStock}</td>
+                      <td>{item.location}</td>
+                      <td>
+                        <span
+                          className={`inventory-status ${status
+                            .toLowerCase()
+                            .replaceAll(" ", "-")}`}
+                        >
+                          {status}
+                        </span>
+                      </td>
+                      <td>
+                        <button
+                          className="inventory-delete-btn"
+                          onClick={() => handleDelete(item.id)}
+                          aria-label={`Delete ${item.name}`}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>
