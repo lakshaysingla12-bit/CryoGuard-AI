@@ -402,3 +402,405 @@
     margin-left: 38px;
   }
 }
+
+
+/* ========================================
+   INTERACTIVE ALERTS ENHANCEMENTS
+   Append at the bottom of Alerts.css
+======================================== */
+
+/* Smooth page entrance */
+.alerts-page {
+  animation: alertsFadeIn 0.45s ease-out both;
+}
+
+@keyframes alertsFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Statistics cards: lift on hover */
+.alerts-page .row.g-3 .card-box {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.alerts-page .row.g-3 .card-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 0;
+  background: #0284c7;
+  border-radius: 0 0 5px 0;
+  transition: height 0.25s ease;
+}
+
+.alerts-page .row.g-3 .card-box:hover {
+  transform: translateY(-4px);
+  border-color: #bfdbfe;
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.09);
+}
+
+.alerts-page .row.g-3 .card-box:hover::before {
+  height: 100%;
+}
+
+/* Main alert panel */
+.alerts-page > .card-box {
+  transition:
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.alerts-page > .card-box:hover {
+  border-color: #d4e2f3;
+  box-shadow: 0 10px 28px rgba(20, 35, 59, 0.055);
+}
+
+/* Alert rows */
+.alerts-page .alert-row {
+  position: relative;
+  border-radius: 10px;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    padding 0.2s ease;
+}
+
+.alerts-page .alert-row:hover {
+  background: #f0f7ff;
+  transform: translateX(3px);
+}
+
+/* Critical alert icon animation */
+.alerts-page .alert-row .bi-exclamation-octagon {
+  animation: criticalPulse 2s ease-in-out infinite;
+}
+
+@keyframes criticalPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.72;
+  }
+}
+
+/* Buttons: tactile interaction */
+.alerts-page .btn {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.18s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.alerts-page .btn:hover {
+  transform: translateY(-2px);
+}
+
+.alerts-page .btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.alerts-page .btn:focus-visible {
+  outline: 3px solid rgba(2, 132, 199, 0.3);
+  outline-offset: 3px;
+}
+
+/* Selected filter emphasis */
+.alerts-page .btn-info {
+  box-shadow: 0 3px 9px rgba(37, 99, 235, 0.1);
+}
+
+.alerts-page .btn-info:hover {
+  box-shadow: 0 5px 14px rgba(37, 99, 235, 0.18);
+}
+
+/* Form controls */
+.worker-alerts-page .form-control,
+.worker-alerts-page .form-select {
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.worker-alerts-page .form-control:hover,
+.worker-alerts-page .form-select:hover {
+  border-color: #93c5fd;
+}
+
+.worker-alerts-page .form-control:focus,
+.worker-alerts-page .form-select:focus {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.13);
+}
+
+/* Report form entrance */
+.worker-alerts-page form {
+  animation: reportFormIn 0.3s ease-out both;
+}
+
+@keyframes reportFormIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Status badges */
+.alerts-page .alert-row .badge {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.alerts-page .alert-row:hover .badge {
+  transform: scale(1.04);
+}
+
+/* Dark mode interactions */
+body.dark-mode .alerts-page .row.g-3 .card-box:hover,
+html.dark-mode .alerts-page .row.g-3 .card-box:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .alerts-page .alert-row:hover,
+html.dark-mode .alerts-page .alert-row:hover {
+  background: #172b45;
+}
+
+body.dark-mode .alerts-page > .card-box:hover,
+html.dark-mode .alerts-page > .card-box:hover {
+  border-color: #334d70;
+}
+
+/* Respect reduced-motion accessibility settings */
+@media (prefers-reduced-motion: reduce) {
+  .alerts-page,
+  .alerts-page *,
+  .alerts-page *::before,
+  .alerts-page *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Mobile: avoid horizontal movement */
+@media (max-width: 520px) {
+  .alerts-page .alert-row:hover {
+    transform: none;
+  }
+
+  .alerts-page .row.g-3 .card-box:hover {
+    transform: translateY(-2px);
+  }
+}
+
+
+/* Fix Worker Alerts statistic card layout */
+.worker-alerts-page .row.g-3 .card-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+}
+
+.worker-alerts-page .row.g-3 .card-box > div {
+  width: 100%;
+}
+
+.worker-alerts-page .row.g-3 .card-box .text-secondary {
+  display: block;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.worker-alerts-page .row.g-3 .card-box h3 {
+  display: block;
+  margin: 0 !important;
+  font-size: 30px;
+  line-height: 1.3;
+  font-weight: 700;
+  color: #17243a;
+}
+
+
+/* ========================================
+   FIX WORKER REPORT ISSUE FORM
+======================================== */
+
+/* Form card */
+.worker-alerts-page .card-box:has(form) {
+  padding: 28px 30px;
+  overflow: visible;
+}
+
+.worker-alerts-page form {
+  width: 100%;
+  margin-top: 24px;
+}
+
+/* Proper responsive Bootstrap grid */
+.worker-alerts-page form .row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 28px;
+  margin: 0;
+}
+
+.worker-alerts-page form .row > [class*="col-"] {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.worker-alerts-page form .row > .col-12 {
+  grid-column: 1 / -1;
+}
+
+/* Labels */
+.worker-alerts-page form .form-label {
+  display: block;
+  margin-bottom: 9px;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* Inputs and dropdowns */
+.worker-alerts-page form .form-control,
+.worker-alerts-page form .form-select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 11px 13px;
+  background-color: #ffffff;
+  color: #17243a;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: none;
+  appearance: auto;
+}
+
+/* Textarea */
+.worker-alerts-page form textarea.form-control {
+  min-height: 120px;
+  width: 100%;
+  resize: vertical;
+}
+
+/* Placeholder */
+.worker-alerts-page form .form-control::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+
+/* Hover and focus */
+.worker-alerts-page form .form-control:hover,
+.worker-alerts-page form .form-select:hover {
+  border-color: #93c5fd;
+}
+
+.worker-alerts-page form .form-control:focus,
+.worker-alerts-page form .form-select:focus {
+  background-color: #ffffff;
+  color: #17243a;
+  border-color: #0284c7;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.12);
+}
+
+/* Submit button */
+.worker-alerts-page form button[type="submit"] {
+  min-height: 44px;
+  padding: 11px 22px;
+  background: #0284c7;
+  color: #ffffff;
+  border: 1px solid #0284c7;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+  cursor: pointer;
+}
+
+.worker-alerts-page form button[type="submit"]:hover {
+  background: #0369a1;
+  border-color: #0369a1;
+}
+
+.worker-alerts-page form button[type="submit"]:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Dark mode */
+body.dark-mode .worker-alerts-page form .form-label,
+html.dark-mode .worker-alerts-page form .form-label {
+  color: #dbeafe;
+}
+
+body.dark-mode .worker-alerts-page form .form-control,
+body.dark-mode .worker-alerts-page form .form-select,
+html.dark-mode .worker-alerts-page form .form-control,
+html.dark-mode .worker-alerts-page form .form-select {
+  background-color: #0b1425;
+  color: #f1f5f9;
+  border-color: #334155;
+}
+
+body.dark-mode .worker-alerts-page form .form-control:focus,
+body.dark-mode .worker-alerts-page form .form-select:focus,
+html.dark-mode .worker-alerts-page form .form-control:focus,
+html.dark-mode .worker-alerts-page form .form-select:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.12);
+}
+
+/* Tablet and mobile */
+@media (max-width: 700px) {
+  .worker-alerts-page .card-box:has(form) {
+    padding: 20px 16px;
+  }
+
+  .worker-alerts-page form .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .worker-alerts-page form .row > .col-12 {
+    grid-column: auto;
+  }
+}
