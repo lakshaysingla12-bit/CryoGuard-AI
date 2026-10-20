@@ -1,31 +1,84 @@
 {
+  "vehicles": [
+    {
+      "id": "CRYO-101",
+      "shipmentId": "SHP-7821",
+      "driver": "Driver A",
+      "origin": "Chandigarh",
+      "destination": "Delhi",
+      "lat": 30.7333,
+      "lng": 76.7794,
+      "temperature": 4.2,
+      "targetTemperature": 5,
+      "minTemperature": 2,
+      "maxTemperature": 8,
+      "status": "In Transit"
+    },
+    {
+      "id": "CRYO-102",
+      "shipmentId": "SHP-7822",
+      "driver": "Driver B",
+      "origin": "Ludhiana",
+      "destination": "Amritsar",
+      "lat": 30.901,
+      "lng": 75.8573,
+      "temperature": 8.7,
+      "targetTemperature": 4,
+      "minTemperature": 2,
+      "maxTemperature": 8,
+      "status": "In Transit"
+    },
+    {
+      "id": "CRYO-103",
+      "shipmentId": "SHP-7823",
+      "driver": "Driver C",
+      "origin": "Delhi",
+      "destination": "Jaipur",
+      "lat": 28.6139,
+      "lng": 77.209,
+      "temperature": 3.8,
+      "targetTemperature": 4,
+      "minTemperature": 2,
+      "maxTemperature": 8,
+      "status": "In Transit"
+    }
+  ],
   "inventory": [
     {
-      "id": "2",
-      "name": "Cooling Units",
-      "sku": "CG-CL-002",
-      "category": "Cooling Equipment",
-      "quantity": 8,
-      "minStock": 10,
-      "location": "Warehouse B"
+      "id": "INV-102",
+      "name": "Vaccines",
+      "category": "Medicine",
+      "quantity": 80,
+      "unit": "Doses",
+      "minStock": 20,
+      "status": "Available"
     },
     {
-      "id": "3",
-      "name": "Insulated Containers",
-      "sku": "CG-CON-003",
-      "category": "Packaging",
-      "quantity": 0,
-      "minStock": 5,
-      "location": "Warehouse A"
+      "id": "INV-103",
+      "name": "Blood Samples",
+      "category": "Biological Samples",
+      "quantity": 45,
+      "unit": "Samples",
+      "minStock": 15,
+      "status": "Available"
     },
     {
-      "id": "4",
-      "name": "GPS Trackers",
-      "sku": "CG-GPS-004",
-      "category": "Tracking Devices",
-      "quantity": 22,
-      "minStock": 8,
-      "location": "Warehouse C"
+      "id": "INV-104",
+      "name": "Diagnostic Kits",
+      "category": "Medical Supplies",
+      "quantity": 12,
+      "unit": "Kits",
+      "minStock": 20,
+      "status": "Low Stock"
+    },
+    {
+      "id": "INV-105",
+      "name": "Plasma Units",
+      "category": "Blood Products",
+      "quantity": 60,
+      "unit": "Units",
+      "minStock": 15,
+      "status": "Available"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
