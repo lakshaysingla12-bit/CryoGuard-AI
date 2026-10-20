@@ -62,61 +62,118 @@ function Reports() {
     }));
   };
 
-  const handleAddReport = (event) => {
-    event.preventDefault();
-    setFormError("");
 
-    const minTemp = Number(formData.minTemp);
-    const maxTemp = Number(formData.maxTemp);
-    const reading = Number(formData.reading);
+const handleAddReport = (event) => {
+  event.preventDefault();
+  setFormError("");
 
-    if (
-      !formData.shipmentId.trim() ||
-      !formData.cargo.trim() ||
-      !formData.route.trim() ||
-      !formData.date ||
-      formData.minTemp === "" ||
-      formData.maxTemp === "" ||
-      formData.reading === ""
-    ) {
-      setFormError("Please fill in all fields.");
-      return;
-    }
+  const shipmentId = formData.shipmentId.trim();
+  const cargo = formData.cargo.trim();
+  const route = formData.route.trim();
 
-    if (minTemp > maxTemp) {
-      setFormError(
-        "Minimum temperature cannot be greater than maximum temperature."
-      );
-      return;
-    }
+  const minTemp = Number(formData.minTemp);
+  const maxTemp = Number(formData.maxTemp);
+  const reading = Number(formData.reading);
 
-    const isWithinRange = reading >= minTemp && reading <= maxTemp;
+  // 1. Required fields
+  if (
+    !shipmentId ||
+    !cargo ||
+    !route ||
+    !formData.date ||
+    formData.minTemp === "" ||
+    formData.maxTemp === "" ||
+    formData.reading === ""
+  ) {
+    setFormError("Please fill in all fields.");
+    return;
+  }
 
-    const newReport = {
-      id: `RPT-${String(
-        reports.reduce((max, report) => {
-          const match = report.id.match(/(\d+)$/);
-          return Math.max(max, match ? Number(match[1]) : 0);
-        }, 0) + 1
-      ).padStart(3, "0")}`,
-      shipmentId: formData.shipmentId.trim(),
-      cargo: formData.cargo.trim(),
-      route: formData.route.trim(),
-      date: formData.date,
-      minTemp,
-      maxTemp,
-      reading,
-      status: isWithinRange ? "Compliant" : "Needs review",
-      auditor: "Rohit Kumar",
-    };
+  // 2. Shipment ID format
+  if (!/^SHP-\d{4,}$/.test(shipmentId)) {
+    setFormError("Shipment ID must look like SHP-1027.");
+    return;
+  }
 
-    setReports((previous) => [newReport, ...previous]);
-    setFormData({
-      ...emptyForm,
-      date: new Date().toISOString().slice(0, 10),
-    });
-    setShowForm(false);
+  // 3. Date validation
+  const selectedDate = new Date(`${formData.date}T00:00:00`);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  if (Number.isNaN(selectedDate.getTime())) {
+    setFormError("Please enter a valid report date.");
+    return;
+  }
+
+  if (selectedDate > today) {
+    setFormError("Report date cannot be in the future.");
+    return;
+  }
+
+  // 4. Numeric validation
+  if (
+    !Number.isFinite(minTemp) ||
+    !Number.isFinite(maxTemp) ||
+    !Number.isFinite(reading)
+  ) {
+    setFormError("Please enter valid numeric temperature values.");
+    return;
+  }
+
+  // 5. Temperature range validation
+  if (minTemp >= maxTemp) {
+    setFormError(
+      "Minimum temperature must be less than maximum temperature."
+    );
+    return;
+  }
+
+  // 6. Basic plausible temperature limits
+  if (
+    minTemp < -273.15 ||
+    maxTemp > 1000 ||
+    reading < -273.15 ||
+    reading > 1000
+  ) {
+    setFormError(
+      "Temperature values must be between -273.15°C and 1000°C."
+    );
+    return;
+  }
+
+  // 7. Calculate compliance from the permitted range
+  const isWithinRange = reading >= minTemp && reading <= maxTemp;
+
+  const nextNumber =
+    reports.reduce((max, report) => {
+      const match = report.id.match(/(\d+)$/);
+      return Math.max(max, match ? Number(match[1]) : 0);
+    }, 0) + 1;
+
+  const newReport = {
+    id: `RPT-${String(nextNumber).padStart(3, "0")}`,
+    shipmentId,
+    cargo,
+    route,
+    date: formData.date,
+    minTemp,
+    maxTemp,
+    reading,
+    status: isWithinRange ? "Compliant" : "Needs review",
+    auditor: "Rohit Kumar",
   };
+
+  setReports((previous) => [newReport, ...previous]);
+
+  setFormData({
+    ...emptyForm,
+    date: new Date().toISOString().slice(0, 10),
+  });
+
+  setShowForm(false);
+  setFormError("");
+};
+
 
   const handleDownload = (report) => {
     const reportText = [
