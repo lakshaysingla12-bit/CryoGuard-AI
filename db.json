@@ -1,0 +1,32 @@
+{
+  "inventory": [
+    {
+      "id": "2",
+      "name": "Cooling Units",
+      "sku": "CG-CL-002",
+      "category": "Cooling Equipment",
+      "quantity": 8,
+      "minStock": 10,
+      "location": "Warehouse B"
+    },
+    {
+      "id": "3",
+      "name": "Insulated Containers",
+      "sku": "CG-CON-003",
+      "category": "Packaging",
+      "quantity": 0,
+      "minStock": 5,
+      "location": "Warehouse A"
+    },
+    {
+      "id": "4",
+      "name": "GPS Trackers",
+      "sku": "CG-GPS-004",
+      "category": "Tracking Devices",
+      "quantity": 22,
+      "minStock": 8,
+      "location": "Warehouse C"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
