@@ -1,106 +1,108 @@
-import { AlertTriangle, Thermometer, Truck, MapPin } from "lucide-react";
+import { useState } from "react";
+import { api } from "../api/client";
+import { useLive } from "../context/LiveContext.jsx";
+import useFetch from "../context/useFetch.js";
+import PageHeader from "../components/Alerts/PageHeader.jsx";
+import StatsRow from "../components/Alerts/StatsRow.jsx";
+import StatusBadge from "../components/Alerts/StatusBadge.jsx";
 import "./Alerts.css";
+import { alertIcon, timeAgo } from "../utils/format.js";
+
+const levels = ["All", "Critical", "Warning"];
 
 function Alerts() {
-  const alerts = [
-    {
-      id: 1,
-      title: "Temperature above safe limit",
-      shipment: "SHP-7821",
-      location: "Cold Room 2",
-      time: "10 minutes ago",
-      type: "Critical"
-    },
-    {
-      id: 2,
-      title: "Shipment inspection pending",
-      shipment: "SHP-7822",
-      location: "Dock Area 1",
-      time: "35 minutes ago",
-      type: "Warning"
-    },
-    {
-      id: 3,
-      title: "Cold-chain connection unstable",
-      shipment: "SHP-7823",
-      location: "Loading Bay 3",
-      time: "1 hour ago",
-      type: "Warning"
-    }
-  ];
+  const { alertCount } = useLive();
+  const [status, setStatus] = useState("open");
+  const [level, setLevel] = useState("All");
 
-  const handleAcknowledge = (title) => {
-    alert(`Alert acknowledged: ${title}`);
-  };
+  // reloads by itself when a new alert arrives or a filter changes
+  const query = `/alerts?status=${status}` + (level !== "All" ? `&level=${level}` : "");
+  const { data, loading, reload } = useFetch(query, [alertCount]);
+  const { data: openAlertsData, reload: reloadOpenAlerts } = useFetch("/alerts?status=open", [alertCount]);
+  const openAlerts = openAlertsData || [];
+  const openCount = openAlerts.length;
+  const criticalCount = openAlerts.filter((alert) => alert.level === "Critical").length;
+  const warningCount = Math.max(0, openCount - criticalCount);
+
+  async function resolve(id) {
+    await api(`/alerts/${id}/resolve`, { method: "PATCH" });
+    reload();
+    reloadOpenAlerts();
+  }
 
   return (
     <div className="alerts-page">
+      <PageHeader title="Alerts" subtitle="Temperature, door and AI warnings from your fleet" />
 
-      <div className="alerts-header">
-        <div>
-          <h1>Alerts</h1>
-          <p>Review and respond to cold-chain alerts.</p>
+      <div className="row g-3 mb-3">
+        <div className="col-sm-6 col-xl-4">
+          <StatsRow icon="bi-bell" color="info" value={openCount} label="Open alerts" />
+        </div>
+        <div className="col-sm-6 col-xl-4">
+          <StatsRow icon="bi-exclamation-octagon" color="danger" value={criticalCount} label="Critical" />
+        </div>
+        <div className="col-sm-6 col-xl-4">
+          <StatsRow icon="bi-exclamation-triangle" color="warning" value={warningCount} label="Warnings" />
+        </div>
+      </div>
+
+      <div className="card-box">
+        <div className="d-flex flex-wrap justify-content-between gap-3 mb-2">
+          <div className="btn-group btn-group-sm">
+            {["open", "resolved"].map((s) => (
+              <button
+                key={s}
+                className={"btn " + (status === s ? "btn-info" : "btn-outline-secondary")}
+                onClick={() => setStatus(s)}
+              >
+                {s === "open" ? "Open" : "Resolved"}
+              </button>
+            ))}
+          </div>
+
+          <div className="d-flex flex-wrap align-items-center gap-2">
+            <span className="small text-secondary align-self-center">Severity</span>
+            {levels.map((l) => (
+              <button
+                key={l}
+                className={"btn btn-sm " + (level === l ? "btn-info" : "btn-outline-secondary")}
+                onClick={() => setLevel(l)}
+              >
+                {l}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <span className="alerts-count">
-          {alerts.length} Active
-        </span>
-      </div>
+        {!loading && data?.length === 0 && (
+          <p className="text-secondary text-center my-4">
+            <i className="bi bi-check-circle text-success me-2"></i>
+            {status === "open" ? "No open alerts. Everything looks good." : "No resolved alerts to show."}
+          </p>
+        )}
 
+        {data?.map((a) => (
+          <div className="alert-row" key={a.id}>
+            <i className={"bi alert-icon " + alertIcon(a.level)}></i>
 
-      <div className="alerts-list">
-
-        {alerts.map((alert) => (
-          <div className="alert-card" key={alert.id}>
-
-            <div className={`alert-icon ${alert.type.toLowerCase()}`}>
-              {alert.type === "Critical" ? (
-                <Thermometer size={22} />
-              ) : (
-                <AlertTriangle size={22} />
-              )}
+            <div className="flex-grow-1">
+              <div className="fw-medium">{a.type}</div>
+              <small className="text-secondary">
+                {a.vehicleId} · {a.shipmentId} · {timeAgo(new Date(a.createdAt).getTime())}
+              </small>
+              <div className="small">{a.message}</div>
             </div>
 
+            <StatusBadge status={a.level} />
 
-            <div className="alert-info">
-
-              <div className="alert-title-row">
-                <h3>{alert.title}</h3>
-
-                <span className={`alert-badge ${alert.type.toLowerCase()}`}>
-                  {alert.type}
-                </span>
-              </div>
-
-              <p>
-                <Truck size={14} />
-                Shipment #{alert.shipment}
-              </p>
-
-              <p>
-                <MapPin size={14} />
-                {alert.location}
-              </p>
-
-              <span className="alert-time">
-                {alert.time}
-              </span>
-
-            </div>
-
-
-            <button
-              className="acknowledge-button"
-              onClick={() => handleAcknowledge(alert.title)}
-            >
-              Acknowledge
-            </button>
-
+            {!a.resolved && (
+              <button className="btn btn-outline-info btn-sm" onClick={() => resolve(a.id)}>
+                Mark resolved
+              </button>
+            )}
           </div>
         ))}
-
       </div>
-
     </div>
   );
 }
