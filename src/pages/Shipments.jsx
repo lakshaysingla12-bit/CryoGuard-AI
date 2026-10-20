@@ -1,132 +1,498 @@
-import { Truck, MapPin, Clock } from "lucide-react";
+
+import { useMemo, useState } from "react";
 import "./Shipments.css";
 
+const initialShipments = [
+  {
+    id: "SHP-1021",
+    cargo: "Prime Cut Beef & Frozen Poultry",
+    route: "Mumbai Central Hub → Pune Mega Cold Hub",
+    vehicle: "TRK-01",
+    minTemp: -22,
+    maxTemp: -18,
+    temperature: -18.2,
+    started: "19 Oct at 08:55 PM",
+    status: "In Transit",
+  },
+  {
+    id: "SHP-1022",
+    cargo: "COVID-19 mRNA Vaccines (Ultra-Cold)",
+    route: "Serum Bio-Depot Pune → Delhi AIIMS Central",
+    vehicle: "TRK-02",
+    minTemp: -80,
+    maxTemp: -60,
+    temperature: -68.4,
+    started: "19 Oct at 07:55 PM",
+    status: "In Transit",
+  },
+  {
+    id: "SHP-1023",
+    cargo: "Artisan Gourmet Gelato & Ice Creams",
+    route: "Amul Depot Anand → Surat Supermarket Hub",
+    vehicle: "TRK-03",
+    minTemp: -25,
+    maxTemp: -18,
+    temperature: -14.2,
+    started: "19 Oct at 06:55 PM",
+    status: "Critical",
+  },
+  {
+    id: "SHP-1024",
+    cargo: "Fresh Strawberries & Exotic Blueberries",
+    route: "Mahabaleshwar Farms → Mumbai Domestic Terminal",
+    vehicle: "TRK-04",
+    minTemp: 1,
+    maxTemp: 4,
+    temperature: 5.1,
+    started: "19 Oct at 05:55 PM",
+    status: "Delayed",
+  },
+];
+
+const filters = ["All", "In Transit", "Delayed", "Critical", "Delivered"];
+
 function Shipments() {
+  const [shipments, setShipments] = useState(initialShipments);
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [search, setSearch] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [error, setError] = useState("");
+
+  const [form, setForm] = useState({
+    cargo: "",
+    route: "",
+    vehicle: "",
+    minTemp: "",
+    maxTemp: "",
+    temperature: "",
+  });
+
+  const counts = useMemo(
+    () => ({
+      total: shipments.length,
+      transit: shipments.filter((s) => s.status === "In Transit").length,
+      delayed: shipments.filter((s) => s.status === "Delayed").length,
+      critical: shipments.filter((s) => s.status === "Critical").length,
+      delivered: shipments.filter((s) => s.status === "Delivered").length,
+    }),
+    [shipments]
+  );
+
+  const visibleShipments = useMemo(() => {
+    const query = search.toLowerCase().trim();
+
+    return shipments.filter((shipment) => {
+      const matchesFilter =
+        activeFilter === "All" || shipment.status === activeFilter;
+
+      const matchesSearch = [
+        shipment.id,
+        shipment.cargo,
+        shipment.route,
+        shipment.vehicle,
+        shipment.status,
+      ].some((value) => value.toLowerCase().includes(query));
+
+      return matchesFilter && matchesSearch;
+    });
+  }, [shipments, activeFilter, search]);
+
+  const handleFormChange = (event) => {
+    const { name, value } = event.target;
+    setForm((previous) => ({ ...previous, [name]: value }));
+  };
+
+  const handleAddShipment = (event) => {
+    event.preventDefault();
+    setError("");
+
+    const minTemp = Number(form.minTemp);
+    const maxTemp = Number(form.maxTemp);
+    const temperature = Number(form.temperature);
+
+    if (
+      !form.cargo.trim() ||
+      !form.route.trim() ||
+      !form.vehicle.trim() ||
+      form.minTemp === "" ||
+      form.maxTemp === "" ||
+      form.temperature === ""
+    ) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
+    if (
+      !Number.isFinite(minTemp) ||
+      !Number.isFinite(maxTemp) ||
+      !Number.isFinite(temperature) ||
+      minTemp >= maxTemp
+    ) {
+      setError("Enter valid temperatures. Minimum must be less than maximum.");
+      return;
+    }
+
+    const nextNumber =
+      shipments.reduce((max, shipment) => {
+        const match = shipment.id.match(/\d+$/);
+        return Math.max(max, match ? Number(match[0]) : 0);
+      }, 1020) + 1;
+
+    const status =
+      temperature < minTemp || temperature > maxTemp
+        ? "Critical"
+        : "In Transit";
+
+    const newShipment = {
+      id: `SHP-${nextNumber}`,
+      cargo: form.cargo.trim(),
+      route: form.route.trim(),
+      vehicle: form.vehicle.trim().toUpperCase(),
+      minTemp,
+      maxTemp,
+      temperature,
+      started: new Date().toLocaleString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      }),
+      status,
+    };
+
+    setShipments((previous) => [newShipment, ...previous]);
+    setForm({
+      cargo: "",
+      route: "",
+      vehicle: "",
+      minTemp: "",
+      maxTemp: "",
+      temperature: "",
+    });
+    setShowForm(false);
+    setActiveFilter("All");
+    setSearch("");
+  };
+
+  const handleDownload = (shipment) => {
+    const text = [
+      "CRYOGUARD - SHIPMENT DETAILS",
+      "----------------------------",
+      `Shipment ID: ${shipment.id}`,
+      `Cargo: ${shipment.cargo}`,
+      `Route: ${shipment.route}`,
+      `Vehicle: ${shipment.vehicle}`,
+      `Safe temperature range: ${shipment.minTemp}°C to ${shipment.maxTemp}°C`,
+      `Current temperature: ${shipment.temperature}°C`,
+      `Status: ${shipment.status}`,
+      `Started: ${shipment.started}`,
+    ].join("\n");
+
+    const url = URL.createObjectURL(
+      new Blob([text], { type: "text/plain;charset=utf-8" })
+    );
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${shipment.id}.txt`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="shipments-page">
+      <header className="shipments-topbar">
+        <div className="shipment-search top-search">
+          <span>⌕</span>
+          <input
+            type="search"
+            placeholder="Search shipments, vehicles, locations..."
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            aria-label="Search shipments"
+          />
+        </div>
 
-      <div className="shipments-header">
+        <div className="shipments-user">
+          <button
+            type="button"
+            className="topbar-icon"
+            aria-label="Notifications"
+            title="Notifications"
+          >
+            ♧
+            <span className="notification-dot">2</span>
+          </button>
+          <div className="user-avatar">R</div>
+          <div>
+            <strong>Rohit Kumar</strong>
+            <span>Worker Portal</span>
+          </div>
+        </div>
+      </header>
+
+      <div className="shipments-title-row">
         <div>
-          <h1>Active Shipments</h1>
-          <p>Monitor shipments currently assigned to you.</p>
+          <h1>Shipments</h1>
+          <p>Every temperature-sensitive route, from pickup to delivery</p>
         </div>
 
-        <span className="shipment-count">
-          3 Active
-        </span>
+        <button
+          type="button"
+          className="new-shipment-btn"
+          onClick={() => {
+            setShowForm((previous) => !previous);
+            setError("");
+          }}
+        >
+          {showForm ? "− Cancel" : "+ New Shipment"}
+        </button>
       </div>
 
+      <section className="shipment-stats">
+        <article className="shipment-stat">
+          <div className="stat-icon blue">⬡</div>
+          <div>
+            <strong>{counts.total}</strong>
+            <span>Total shipments</span>
+          </div>
+        </article>
 
-      <div className="shipments-list">
+        <article className="shipment-stat">
+          <div className="stat-icon cyan">▱</div>
+          <div>
+            <strong>{counts.transit}</strong>
+            <span>In transit</span>
+          </div>
+        </article>
 
-        <div className="shipment-card">
+        <article className="shipment-stat">
+          <div className="stat-icon yellow">◷</div>
+          <div>
+            <strong>{counts.delayed}</strong>
+            <span>Delayed</span>
+          </div>
+        </article>
 
-          <div className="shipment-icon">
-            <Truck size={22} />
+        <article className="shipment-stat">
+          <div className="stat-icon red">⚠</div>
+          <div>
+            <strong>{counts.critical}</strong>
+            <span>Critical</span>
+          </div>
+        </article>
+
+        <article className="shipment-stat">
+          <div className="stat-icon green">✓</div>
+          <div>
+            <strong>{counts.delivered}</strong>
+            <span>Delivered</span>
+          </div>
+        </article>
+      </section>
+
+      {showForm && (
+        <form className="shipment-form" onSubmit={handleAddShipment}>
+          <div className="shipment-form-heading">
+            <h2>Create New Shipment</h2>
+            <p>Enter the cargo, route, vehicle and temperature details.</p>
           </div>
 
-          <div className="shipment-info">
-            <h3>Shipment #SHP-7821</h3>
+          <div className="shipment-form-grid">
+            <label>
+              Cargo name
+              <input
+                name="cargo"
+                value={form.cargo}
+                onChange={handleFormChange}
+                placeholder="e.g. Medical supplies"
+                required
+              />
+            </label>
 
-            <p>
-              <MapPin size={14} />
-              Cold Room 2 → Distribution Center
-            </p>
+            <label>
+              Route
+              <input
+                name="route"
+                value={form.route}
+                onChange={handleFormChange}
+                placeholder="e.g. Delhi → Chandigarh"
+                required
+              />
+            </label>
 
-            <p>
-              <Clock size={14} />
-              In Progress
-            </p>
+            <label>
+              Vehicle ID
+              <input
+                name="vehicle"
+                value={form.vehicle}
+                onChange={handleFormChange}
+                placeholder="e.g. TRK-05"
+                required
+              />
+            </label>
+
+            <label>
+              Minimum temperature (°C)
+              <input
+                name="minTemp"
+                type="number"
+                step="any"
+                value={form.minTemp}
+                onChange={handleFormChange}
+                required
+              />
+            </label>
+
+            <label>
+              Maximum temperature (°C)
+              <input
+                name="maxTemp"
+                type="number"
+                step="any"
+                value={form.maxTemp}
+                onChange={handleFormChange}
+                required
+              />
+            </label>
+
+            <label>
+              Current temperature (°C)
+              <input
+                name="temperature"
+                type="number"
+                step="any"
+                value={form.temperature}
+                onChange={handleFormChange}
+                required
+              />
+            </label>
           </div>
 
-          <div className="shipment-right">
-            <span className="shipment-status">
-              In Progress
-            </span>
+          {error && <p className="shipment-form-error">{error}</p>}
 
+          <div className="shipment-form-actions">
             <button
-  className="view-button"
-  onClick={() => alert("Shipment #SHP-7821 details")}
->
-  View Details
-</button>
+              type="button"
+              className="shipment-cancel-btn"
+              onClick={() => {
+                setShowForm(false);
+                setError("");
+              }}
+            >
+              Cancel
+            </button>
+            <button type="submit" className="new-shipment-btn">
+              Save Shipment
+            </button>
+          </div>
+        </form>
+      )}
+
+      <section className="shipment-table-card">
+        <div className="shipment-table-toolbar">
+          <div className="shipment-filters">
+            {filters.map((filter) => (
+              <button
+                type="button"
+                key={filter}
+                className={`shipment-filter ${
+                  activeFilter === filter ? "active" : ""
+                }`}
+                onClick={() => setActiveFilter(filter)}
+              >
+                {filter}
+              </button>
+            ))}
           </div>
 
+          <div className="shipment-search table-search">
+            <input
+              type="search"
+              placeholder="Filter by id, cargo, city..."
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              aria-label="Filter shipments"
+            />
+          </div>
         </div>
 
+        <div className="shipment-table-scroll">
+          <table className="shipment-table">
+            <thead>
+              <tr>
+                <th>SHIPMENT</th>
+                <th>CARGO</th>
+                <th>ROUTE</th>
+                <th>VEHICLE</th>
+                <th>SAFE RANGE</th>
+                <th>TEMP NOW</th>
+                <th>STARTED</th>
+                <th>STATUS</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
 
-        <div className="shipment-card">
+            <tbody>
+              {visibleShipments.map((shipment) => (
+                <tr key={shipment.id}>
+                  <td className="shipment-id-cell">{shipment.id}</td>
+                  <td className="shipment-cargo-cell">{shipment.cargo}</td>
+                  <td className="shipment-route-cell">{shipment.route}</td>
+                  <td>{shipment.vehicle}</td>
+                  <td>
+                    {shipment.minTemp}° to {shipment.maxTemp}°C
+                  </td>
+                  <td
+                    className={
+                      shipment.temperature < shipment.minTemp ||
+                      shipment.temperature > shipment.maxTemp
+                        ? "temperature-alert"
+                        : ""
+                    }
+                  >
+                    {shipment.temperature}°C
+                  </td>
+                  <td>{shipment.started}</td>
+                  <td>
+                    <span
+                      className={`shipment-status status-${shipment.status
+                        .toLowerCase()
+                        .replaceAll(" ", "-")}`}
+                    >
+                      {shipment.status}
+                    </span>
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      className="shipment-download-btn"
+                      title={`Download ${shipment.id}`}
+                      aria-label={`Download ${shipment.id}`}
+                      onClick={() => handleDownload(shipment)}
+                    >
+                      ⇩
+                    </button>
+                  </td>
+                </tr>
+              ))}
 
-          <div className="shipment-icon">
-            <Truck size={22} />
-          </div>
-
-          <div className="shipment-info">
-            <h3>Shipment #SHP-7822</h3>
-
-            <p>
-              <MapPin size={14} />
-              Dock Area 1 → Warehouse
-            </p>
-
-            <p>
-              <Clock size={14} />
-              In Progress
-            </p>
-          </div>
-
-          <div className="shipment-right">
-            <span className="shipment-status">
-              In Progress
-            </span>
-
-           <button
-  className="view-button"
-  onClick={() => alert("Shipment #SHP-7821 details")}
->
-  View Details
-</button>
-          </div>
-
+              {visibleShipments.length === 0 && (
+                <tr>
+                  <td colSpan="9" className="shipment-empty">
+                    No shipments match your search or selected filter.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
 
-
-        <div className="shipment-card">
-
-          <div className="shipment-icon">
-            <Truck size={22} />
-          </div>
-
-          <div className="shipment-info">
-            <h3>Shipment #SHP-7823</h3>
-
-            <p>
-              <MapPin size={14} />
-              Loading Bay 3 → Distribution Center
-            </p>
-
-            <p>
-              <Clock size={14} />
-              In Progress
-            </p>
-          </div>
-
-          <div className="shipment-right">
-            <span className="shipment-status">
-              In Progress
-            </span>
-<button
-  className="view-button"
-  onClick={() => alert("Shipment #SHP-7821 details")}
->
-  View Details
-</button>
-          </div>
-
+        <div className="shipment-table-footer">
+          Showing {visibleShipments.length} of {shipments.length} shipments
         </div>
-
-      </div>
-
+      </section>
     </div>
   );
 }
