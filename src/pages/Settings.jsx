@@ -1,33 +1,29 @@
-import { useState } from "react";
+
 import {
   Settings as SettingsIcon,
   Bell,
   Shield,
   Moon,
-  Save
+  Save,
+  Check,
 } from "lucide-react";
+import { useSettings } from "../context/SettingsContext";
 import "./Settings.css";
 
 function Settings() {
-  const [notifications, setNotifications] = useState(true);
-  const [alerts, setAlerts] = useState(true);
-  const [darkMode, setDarkMode] = useState(false);
-
-  const handleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
+  const { settings, updateSetting, showToast } = useSettings();
 
   const handleSave = () => {
-    alert("Settings saved successfully!");
+    // Settings are already saved automatically by SettingsContext.
+    showToast("Your settings have been saved!");
   };
 
   return (
-    <div className={`settings-page ${darkMode ? "dark-mode" : ""}`}>
-
+    <div className="settings-page">
       <div className="settings-header">
         <div>
           <h1>Settings</h1>
-          <p>Manage your worker dashboard preferences.</p>
+          <p>Manage your Worker Dashboard preferences.</p>
         </div>
 
         <div className="settings-icon">
@@ -36,86 +32,111 @@ function Settings() {
       </div>
 
       <div className="settings-card">
+        <div className="settings-section-heading">
+          <h2>Preferences</h2>
+          <p>Choose how CryoGuard works for you.</p>
+        </div>
 
-        {/* Notifications */}
         <div className="setting-item">
           <div className="setting-info">
             <div className="setting-item-icon">
               <Bell size={19} />
             </div>
-
             <div>
               <h3>Notifications</h3>
-              <p>Receive important dashboard notifications.</p>
+              <p>Enable or mute in-app notification messages.</p>
             </div>
           </div>
 
           <label className="toggle">
             <input
               type="checkbox"
-              checked={notifications}
-              onChange={() => setNotifications(!notifications)}
+              checked={settings.notifications}
+              onChange={(e) => {
+                updateSetting("notifications", e.target.checked);
+                showToast(
+                  e.target.checked
+                    ? "Notifications enabled"
+                    : "Notifications muted",
+                  e.target.checked ? "success" : "warning"
+                );
+              }}
             />
-            <span className="slider"></span>
+            <span className="slider" />
           </label>
         </div>
 
-
-        {/* Safety Alerts */}
         <div className="setting-item">
           <div className="setting-info">
             <div className="setting-item-icon">
               <Shield size={19} />
             </div>
-
             <div>
               <h3>Safety Alerts</h3>
-              <p>Receive alerts for cold-chain issues.</p>
+              <p>
+                Control in-app warnings for cold-chain issues.
+                Monitoring itself remains active.
+              </p>
             </div>
           </div>
 
           <label className="toggle">
             <input
               type="checkbox"
-              checked={alerts}
-              onChange={() => setAlerts(!alerts)}
+              checked={settings.alerts}
+              onChange={(e) => {
+                updateSetting("alerts", e.target.checked);
+                showToast(
+                  e.target.checked
+                    ? "Safety alert messages enabled"
+                    : "Safety alert messages muted",
+                  e.target.checked ? "success" : "warning"
+                );
+              }}
             />
-            <span className="slider"></span>
+            <span className="slider" />
           </label>
         </div>
 
-
-        {/* Dark Mode */}
         <div className="setting-item">
           <div className="setting-info">
             <div className="setting-item-icon">
               <Moon size={19} />
             </div>
-
             <div>
               <h3>Dark Mode</h3>
-              <p>Change the appearance of the dashboard.</p>
+              <p>Change the appearance across the dashboard.</p>
             </div>
           </div>
 
           <label className="toggle">
             <input
               type="checkbox"
-              checked={darkMode}
-              onChange={handleDarkMode}
+              checked={settings.darkMode}
+              onChange={(e) => {
+                updateSetting("darkMode", e.target.checked);
+                showToast(
+                  e.target.checked
+                    ? "Dark mode enabled"
+                    : "Light mode enabled"
+                );
+              }}
             />
-            <span className="slider"></span>
+            <span className="slider" />
           </label>
         </div>
 
+        <div className="settings-footer">
+          <span className="settings-saved-note">
+            <Check size={15} /> Preferences save automatically
+          </span>
 
-        <button className="save-settings" onClick={handleSave}>
-          <Save size={16} />
-          Save Settings
-        </button>
-
+          <button className="save-settings" onClick={handleSave}>
+            <Save size={16} />
+            Save Settings
+          </button>
+        </div>
       </div>
-
     </div>
   );
 }
