@@ -1,227 +1,404 @@
+
+/* ========================================
+   CRYOGUARD — ALERTS PAGE
+   ======================================== */
+
 .alerts-page {
-  min-height: 100vh;
   width: 100%;
+  min-height: 100%;
+  padding: 28px 32px;
   box-sizing: border-box;
-  background: #f7f9fc;
-  padding: 30px 40px;
-  color: #1f2937;
+  background: #f5f8fc;
+  color: #17243a;
 }
 
-.alerts-header {
+/* Page heading */
+.alerts-page .page-title {
+  margin: 0 0 6px;
+  color: #14233b;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.alerts-page .page-title + p {
+  margin: 0 0 24px;
+  color: #8996a9;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ========================================
+   STATISTICS CARDS
+   ======================================== */
+
+.alerts-page .row.g-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: 0 0 26px;
+}
+
+.alerts-page .row.g-3 > div {
+  width: auto;
+  min-width: 0;
+  padding: 0;
+}
+
+.alerts-page .row.g-3 .card-box {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 25px;
-}
-
-.alerts-header h1 {
-  margin: 0 0 6px;
-  font-size: 26px;
-  color: #172033;
-}
-
-.alerts-header p {
+  min-height: 124px;
+  height: 100%;
   margin: 0;
-  color: #6b7280;
+  padding: 22px 24px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(20, 35, 59, 0.035);
+}
+
+/* Content inside each statistics card */
+.alerts-page .row.g-3 .card-box > .d-flex {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Statistics icon */
+.alerts-page .stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: #edf4ff;
+  font-size: 21px;
+}
+
+.alerts-page .stat-icon i {
+  line-height: 1;
+}
+
+/* Number and horizontal line */
+.alerts-page .stat-value {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: 0 0 6px;
+  color: #17243a;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Line appears to the right of each number */
+.alerts-page .row.g-3 .stat-value::after {
+  content: "";
+  display: block;
+  flex: 1 1 auto;
+  min-width: 20px;
+  height: 1px;
+  background: #dce5f0;
+}
+
+/* Allow the number and line to use remaining card width */
+.alerts-page .row.g-3 .card-box > .d-flex > div:last-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.alerts-page .stat-label {
+  color: #8996a9;
   font-size: 14px;
+  line-height: 1.4;
 }
 
-.alerts-count {
-  padding: 8px 14px;
-  border-radius: 20px;
-  background: #fff1f1;
-  color: #dc2626;
-  font-size: 13px;
-  font-weight: 600;
+/* ========================================
+   MAIN ALERTS CARD
+   ======================================== */
+
+.alerts-page > .card-box {
+  margin: 0;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(20, 35, 59, 0.035);
 }
 
-.alerts-list {
+/* Status and severity filter area */
+.alerts-page
+  > .card-box
+  > .d-flex.flex-wrap.justify-content-between {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  align-items: flex-start;
+  gap: 18px;
+  margin: 0 0 12px !important;
 }
 
-.alert-card {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  padding: 20px;
+/* Open / Resolved buttons */
+.alerts-page .btn-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Severity label and buttons */
+.alerts-page
+  > .card-box
+  > .d-flex.flex-wrap.justify-content-between
+  > .d-flex {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.alerts-page .card-box .text-secondary {
+  color: #8996a9 !important;
+}
+
+/* All filter buttons */
+.alerts-page .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  margin: 0;
+  padding: 8px 16px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  box-shadow: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+/* Selected filter */
+.alerts-page .btn-info {
+  background: #e8f1ff;
+  border: 1px solid #cfe0ff;
+  color: #2875ff;
+}
+
+.alerts-page .btn-info:hover {
+  background: #dbe9ff;
+  border-color: #bfd6ff;
+  color: #185ed5;
+}
+
+/* Unselected filters */
+.alerts-page .btn-outline-secondary {
+  background: #ffffff;
+  border: 1px solid #dfe7f1;
+  color: #66758a;
+}
+
+.alerts-page .btn-outline-secondary:hover {
+  background: #eef3f9;
+  border-color: #d5deea;
+  color: #17243a;
+}
+
+/* Resolve button */
+.alerts-page .btn-outline-info {
+  background: #ffffff;
+  border: 1px solid #b9d4ff;
+  color: #2875ff;
+}
+
+.alerts-page .btn-outline-info:hover {
+  background: #e8f1ff;
+  border-color: #a8caff;
+  color: #185ed5;
+}
+
+/* ========================================
+   INDIVIDUAL ALERT ROWS
+   ======================================== */
+
+.alerts-page .alert-row {
   display: flex;
   align-items: center;
   gap: 18px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 116px;
+  padding: 22px 12px;
+  border-bottom: 1px solid #edf1f6;
+  box-sizing: border-box;
 }
 
-.alert-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+.alerts-page .alert-row:last-child {
+  border-bottom: none;
 }
 
-.alert-icon {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+/* Alert icon */
+.alerts-page .alert-row .alert-icon {
+  flex: 0 0 28px;
+  width: 28px;
+  font-size: 22px;
+  text-align: center;
+  line-height: 1.3;
 }
 
-.alert-icon.critical {
-  background: #fee2e2;
-  color: #dc2626;
+/* Alert text section */
+.alerts-page .alert-row .flex-grow-1 {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
-.alert-icon.warning {
-  background: #fff4e5;
-  color: #d97706;
-}
-
-.alert-info {
-  flex: 1;
-}
-
-.alert-title-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
-}
-
-.alert-title-row h3 {
-  margin: 0;
+.alerts-page .alert-row .fw-medium {
+  margin: 0 0 7px;
+  color: #17243a;
   font-size: 15px;
-  color: #172033;
-}
-
-.alert-badge {
-  padding: 4px 8px;
-  border-radius: 20px;
-  font-size: 10px;
   font-weight: 600;
+  line-height: 1.45;
 }
 
-.alert-badge.critical {
-  background: #fee2e2;
-  color: #dc2626;
-}
-
-.alert-badge.warning {
-  background: #fff4e5;
-  color: #d97706;
-}
-
-.alert-info p {
-  margin: 5px 0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #6b7280;
-  font-size: 12px;
-}
-
-.alert-time {
+.alerts-page .alert-row small {
   display: block;
-  margin-top: 8px;
-  color: #9ca3af;
-  font-size: 11px;
-}
-
-.acknowledge-button {
-  border: 1px solid #dbe3ea;
-  background: white;
-  color: #2563eb;
-  padding: 8px 13px;
-  border-radius: 8px;
-  cursor: pointer;
+  margin-bottom: 7px;
+  color: #8996a9;
   font-size: 12px;
+  line-height: 1.5;
+}
+
+.alerts-page .alert-row .small {
+  color: #526176;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Severity badge */
+.alerts-page .alert-row .badge {
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding: 7px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
   white-space: nowrap;
-  transition: all 0.2s ease;
 }
 
-.acknowledge-button:hover {
-  background: #eff6ff;
-  border-color: #93c5fd;
+/* Keep resolve button aligned */
+.alerts-page .alert-row .btn {
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
+/* Empty-state message */
+.alerts-page .card-box > p.text-secondary {
+  padding: 24px 8px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+}
 
-/* Tablet */
+/* ========================================
+   RESPONSIVE LAYOUT
+   ======================================== */
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .alerts-page {
-    padding: 22px;
+    padding: 24px;
   }
 
-  .alert-card {
-    align-items: flex-start;
+  .alerts-page .row.g-3 {
+    gap: 14px;
   }
 
-  .acknowledge-button {
-    margin-left: auto;
-  }
-}
-
-
-/* Mobile */
-
-@media (max-width: 600px) {
-  .alerts-page {
-    padding: 15px;
+  .alerts-page .row.g-3 .card-box {
+    padding: 18px;
   }
 
-  .alerts-header h1 {
-    font-size: 21px;
-  }
-
-  .alerts-header p {
-    font-size: 12px;
-  }
-
-  .alerts-count {
-    font-size: 11px;
-    padding: 6px 9px;
-  }
-
-  .alert-card {
-    padding: 15px;
+  .alerts-page .row.g-3 .card-box > .d-flex {
     gap: 12px;
+  }
+}
+
+@media (max-width: 800px) {
+  .alerts-page {
+    padding: 20px;
+  }
+
+  .alerts-page .row.g-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .alerts-page .row.g-3 > div:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .alerts-page .alert-row {
     flex-wrap: wrap;
+    gap: 12px;
+    padding: 18px 6px;
   }
 
-  .alert-icon {
-    width: 40px;
-    height: 40px;
-  }
-
-  .alert-info {
-    min-width: calc(100% - 55px);
-  }
-
-  .alert-title-row {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .acknowledge-button {
-    width: 100%;
+  .alerts-page .alert-row .badge {
     margin-left: 0;
   }
 }
 
+@media (max-width: 520px) {
+  .alerts-page {
+    padding: 14px;
+  }
 
-/* Very small screens */
+  .alerts-page .page-title {
+    font-size: 24px;
+  }
 
-@media (max-width: 400px) {
-  .alerts-header {
+  .alerts-page .row.g-3 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .alerts-page .row.g-3 > div:last-child {
+    grid-column: auto;
+  }
+
+  .alerts-page .row.g-3 .card-box {
+    min-height: 104px;
+    padding: 18px;
+  }
+
+  .alerts-page > .card-box {
+    padding: 16px;
+  }
+
+  .alerts-page
+    > .card-box
+    > .d-flex.flex-wrap.justify-content-between
+    > .d-flex {
+    gap: 8px;
+  }
+
+  .alerts-page .card-box .btn {
+    padding: 8px 11px;
+  }
+
+  .alerts-page .alert-row {
     gap: 10px;
+    padding: 18px 2px;
   }
 
-  .alerts-header h1 {
-    font-size: 19px;
+  .alerts-page .alert-row .flex-grow-1 {
+    flex-basis: calc(100% - 44px);
   }
 
-  .alert-title-row h3 {
-    font-size: 14px;
+  .alerts-page .alert-row .badge {
+    margin-left: 38px;
   }
 }
