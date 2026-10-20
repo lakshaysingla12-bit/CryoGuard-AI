@@ -3,8 +3,18 @@
   height: 100vh;
   background-color: #071a2b;
   color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  z-index: 1000;
 }
 
+.app-layout > main {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  min-width: 0;
+}
 .sidebar-header {
   height: 64px;
   display: flex;
