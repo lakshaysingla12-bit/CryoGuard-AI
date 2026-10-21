@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import PageHeader from "../components/PageHeader.jsx";
+import { useLive } from "../context/LiveContext.jsx";
 
 function Settings() {
   const { user } = useAuth();
+  const { showToast } = useLive();
   const [form, setForm] = useState(null);
   const [message, setMessage] = useState({ type: "", text: "" });
 
@@ -27,8 +29,10 @@ function Settings() {
       const saved = await api("/settings", { method: "PUT", body: form });
       setForm(saved);
       setMessage({ type: "success", text: "Settings saved" });
+      showToast({ title: "Settings saved", message: `${user.companyName || "Company"} settings have been updated.`, kind: "success" });
     } catch (err) {
       setMessage({ type: "danger", text: err.message });
+      showToast({ title: "Could not save settings", message: err.message, kind: "error" });
     }
   }
 
@@ -53,18 +57,11 @@ function Settings() {
               <div className="card-box h-100">
                 <h5 className="card-title-text">Alert rules</h5>
                 <div className="row">
-                  <div className="col-6">
-                    <label className="form-label">Warning margin (°C)</label>
-                    <input type="number" step="0.5" className="form-control" name="warningMargin" value={form.warningMargin} onChange={handleChange} />
-                  </div>
-                  <div className="col-6">
+                  <div className="col-12 col-md-6">
                     <label className="form-label">AI look-ahead (min)</label>
                     <input type="number" step="10" className="form-control" name="aiHorizonMinutes" value={form.aiHorizonMinutes} onChange={handleChange} />
                   </div>
                 </div>
-                <small className="text-secondary d-block mt-2">
-                  A vehicle turns "warning" when it is this close to its limit.
-                </small>
               </div>
             </div>
 

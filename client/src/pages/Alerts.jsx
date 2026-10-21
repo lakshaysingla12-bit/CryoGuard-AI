@@ -10,7 +10,7 @@ import { alertIcon, timeAgo } from "../utils";
 const levels = ["All", "Critical", "Warning"];
 
 function Alerts() {
-  const { alertCount } = useLive();
+  const { alertCount, showToast } = useLive();
   const [status, setStatus] = useState("open");
   const [level, setLevel] = useState("All");
 
@@ -24,9 +24,14 @@ function Alerts() {
   const warningCount = Math.max(0, openCount - criticalCount);
 
   async function resolve(id) {
-    await api(`/alerts/${id}/resolve`, { method: "PATCH" });
-    reload();
-    reloadOpenAlerts();
+    try {
+      await api(`/alerts/${id}/resolve`, { method: "PATCH" });
+      reload();
+      reloadOpenAlerts();
+      showToast({ title: "Alert resolved", message: `${id} has been marked resolved.`, kind: "success" });
+    } catch (error) {
+      showToast({ title: "Could not resolve alert", message: error.message, kind: "error" });
+    }
   }
 
   return (

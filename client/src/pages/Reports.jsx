@@ -5,8 +5,10 @@ import PageHeader from "../components/PageHeader.jsx";
 import StatCard from "../components/StatsRow.jsx";
 import StatusBadge from "../components/StatusBadge.jsx";
 import { ErrorMessage, Loading } from "../components/Loading.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 
 function Reports() {
+  const { user } = useAuth();
   const { data, loading, error } = useFetch("/reports");
   const [downloading, setDownloading] = useState("");
   const reports = data || [];
@@ -32,7 +34,9 @@ function Reports() {
     <>
       <PageHeader
         title="Compliance Reports"
-        subtitle="Review audit results and download report copies"
+        subtitle={user?.companyId
+          ? `Destination auditors' reports for ${user.companyName} shipments`
+          : "Review audit results sent by destination facility auditors"}
       />
 
       <div className="row g-3 mb-4">
@@ -55,8 +59,11 @@ function Reports() {
               <thead>
                 <tr>
                   <th>Report</th>
-                  <th>Date</th>
+                  <th>Source company</th>
+                  <th>Destination facility</th>
                   <th>Auditor</th>
+                  <th>Received temp</th>
+                  <th>Cargo condition</th>
                   <th>Result</th>
                   <th></th>
                 </tr>
@@ -70,8 +77,23 @@ function Reports() {
                         <div className="fw-semibold">{report.title}</div>
                         <small className="text-secondary">{report.id}</small>
                       </td>
-                      <td>{report.date ? new Date(`${report.date}T00:00:00`).toLocaleDateString() : "—"}</td>
+                      <td>
+                        {report.companyName || "—"}
+                        <small className="d-block text-secondary">{report.companyId || ""}</small>
+                      </td>
+                      <td>
+                        {report.facilityName || report.hospitalName || "—"}
+                        <small className="d-block text-secondary">{report.facilityId || report.hospitalId || ""} · {report.date ? new Date(`${report.date}T00:00:00`).toLocaleDateString() : "Date pending"}</small>
+                      </td>
                       <td>{report.auditor || "—"}</td>
+                      <td>
+                        {report.temperatureAtDelivery ?? "—"}{report.temperatureAtDelivery !== undefined ? report.temperatureUnit || "°C" : ""}
+                        <small className="d-block text-secondary">{report.temperatureWithinRange === undefined ? "Check pending" : report.temperatureWithinRange ? "Within safe range" : "Outside safe range"}</small>
+                      </td>
+                      <td>
+                        {report.qualityCondition || "Pending"}
+                        <small className="d-block text-secondary">Packaging: {report.packagingCondition || "Pending"}</small>
+                      </td>
                       <td><StatusBadge status={isPassed ? "Compliant" : "Needs review"} /></td>
                       <td className="text-end">
                         <button

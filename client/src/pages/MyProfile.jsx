@@ -3,8 +3,12 @@ import {
   getMyProfile,
   updateMyProfile,
 } from "../api/myProfileApi.js";
+import { useAuth } from "../context/AuthContext.jsx";
+import { useLive } from "../context/LiveContext.jsx";
 
 export default function MyProfile() {
+  const { user, updateCurrentUser } = useAuth();
+  const { showToast } = useLive();
   const [form, setForm] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -21,7 +25,7 @@ export default function MyProfile() {
         setForm({
           ...myProfile,
           role: "Manager",
-          team: "Manager",
+          team: myProfile.companyName || "Manager",
         });
       })
       .catch((err) => {
@@ -65,8 +69,10 @@ export default function MyProfile() {
       setForm({
         ...updated,
         role: "Manager",
-        team: "Manager",
+        team: updated.companyName || "Manager",
       });
+
+      updateCurrentUser({ name: updated.name, email: updated.email, location: updated.location, phone: updated.phone });
 
       window.dispatchEvent(
         new CustomEvent("cryoguard-demo-profile-updated", {
@@ -79,6 +85,7 @@ export default function MyProfile() {
       );
 
       setSaved(true);
+      showToast({ title: "Profile saved", message: "Your manager profile has been updated.", kind: "success" });
     } catch (err) {
       console.error("My Profile save error:", err);
       setError(err.message || "Profile save nahi ho payi.");
@@ -137,7 +144,7 @@ export default function MyProfile() {
 
         <div>
           <h2 className="h5 mb-1">{form.name}</h2>
-          <div className="text-secondary">Manager</div>
+          <div className="text-secondary">{form.companyName || "Manager"}</div>
         </div>
       </div>
 
@@ -183,10 +190,20 @@ export default function MyProfile() {
             <input
               className="form-control"
               name="team"
-              value="Manager"
+              value={form.companyName || user?.companyName || "Manager"}
               readOnly
             />
           </label>
+
+          {form.companyId && <label>
+            Company ID
+            <input className="form-control" value={form.companyId} readOnly />
+          </label>}
+
+          {form.managerId && <label>
+            Manager ID
+            <input className="form-control" value={form.managerId} readOnly />
+          </label>}
 
           <label>
             Location
@@ -224,12 +241,7 @@ export default function MyProfile() {
             {saving ? "Saving…" : "Save profile"}
           </button>
 
-          {saved && (
-            <span className="text-success small">
-              <i className="bi bi-check-circle me-1" />
-              Profile saved
-            </span>
-          )}
+          {saved && <span className="text-success small"><i className="bi bi-check-circle me-1" />Profile saved</span>}
         </div>
       </form>
     </div>

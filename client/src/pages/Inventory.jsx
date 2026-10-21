@@ -6,6 +6,7 @@ import StatusBadge from "../components/StatusBadge";
 import StatsRow from "../components/StatsRow";
 import Modal from "../components/Modal";
 import { ErrorMessage, Loading } from "../components/Loading";
+import { useLive } from "../context/LiveContext.jsx";
 
 function Inventory() {
   const { data, loading, error, reload } = useFetch("/inventory", { interval: 10000 });
@@ -101,6 +102,7 @@ function Inventory() {
 }
 
 function UpdateStockModal({ item, onClose, onSaved }) {
+  const { showToast } = useLive();
   const [qty, setQty] = useState(item.qty);
   const [error, setError] = useState("");
 
@@ -108,9 +110,11 @@ function UpdateStockModal({ item, onClose, onSaved }) {
     event.preventDefault();
     try {
       await api(`/inventory/${item.sku}`, { method: "PATCH", body: { qty: Number(qty) } });
+      showToast({ title: "Stock updated", message: `${item.name} quantity is now ${qty}.`, kind: "success" });
       onSaved();
     } catch (err) {
       setError(err.message);
+      showToast({ title: "Could not update stock", message: err.message, kind: "error" });
     }
   }
 
@@ -130,6 +134,7 @@ function UpdateStockModal({ item, onClose, onSaved }) {
 }
 
 function AddItemModal({ units, onClose, onSaved }) {
+  const { showToast } = useLive();
   const [form, setForm] = useState({ sku: "", name: "", unitId: units[0]?.id || "", qty: 0, minStock: 100 });
   const [error, setError] = useState("");
 
@@ -141,9 +146,11 @@ function AddItemModal({ units, onClose, onSaved }) {
     event.preventDefault();
     try {
       await api("/inventory", { method: "POST", body: { ...form, qty: Number(form.qty), minStock: Number(form.minStock) } });
+      showToast({ title: "Inventory item added", message: `${form.name} · ${form.sku}`, kind: "success" });
       onSaved();
     } catch (err) {
       setError(err.message);
+      showToast({ title: "Could not add inventory item", message: err.message, kind: "error" });
     }
   }
 
