@@ -8,6 +8,89 @@
   left: 0;
   overflow-y: auto;
   z-index: 1000;
+  transition: width 0.25s ease;
+}
+
+.sidebar-collapsed .sidebar {
+  width: 72px;
+}
+
+.app-layout.sidebar-collapsed > main {
+  margin-left: 72px;
+  width: calc(100% - 72px);
+}
+
+.sidebar-collapsed .sidebar-header {
+  justify-content: center;
+  gap: 4px;
+  padding: 0 6px;
+}
+
+.sidebar-collapsed .logo-text {
+  display: none;
+}
+
+.sidebar-collapsed .logo-icon {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+}
+
+.sidebar-collapsed .sidebar-toggle {
+  width: 26px;
+  height: 30px;
+  margin-left: 0;
+  flex: 0 0 auto;
+}
+
+.sidebar-collapsed .sidebar-nav {
+  padding-right: 8px;
+  padding-left: 8px;
+}
+
+.sidebar-collapsed .nav-item {
+  justify-content: center;
+  padding-right: 8px;
+  padding-left: 8px;
+}
+
+.sidebar-collapsed .nav-label,
+.sidebar-collapsed .nav-item .badge,
+.sidebar-collapsed .connection-box {
+  display: none;
+}
+
+.sidebar-toggle {
+  width: 34px;
+  height: 34px;
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  border: 1px solid #1e3448;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.sidebar-toggle:hover {
+  background-color: #10283b;
+  color: white;
+}
+
+html:not(.dark-mode) .sidebar-toggle {
+  border-color: #dbe3ec;
+}
+
+html:not(.dark-mode) .sidebar-toggle:hover {
+  background-color: #e2e8f0;
+  color: #0f172a;
+}
+
+html:not(.dark-mode) .sidebar {
+  background-color: #f1f5f9;
+  color: #0f172a;
+  border-right: 1px solid #e2e8f0;
 }
 
 .app-layout > main {
@@ -22,6 +105,10 @@
   gap: 10px;
   padding: 0 20px;
   border-bottom: 1px solid #1e3448;
+}
+
+html:not(.dark-mode) .sidebar-header {
+  border-bottom-color: #dbe3ec;
 }
 
 .logo-icon {
@@ -70,6 +157,15 @@
   color: white;
 }
 
+html:not(.dark-mode) .nav-item {
+  color: #475569;
+}
+
+html:not(.dark-mode) .nav-item:hover {
+  background-color: #e2e8f0;
+  color: #0f172a;
+}
+
 .nav-label {
   flex: 1;
 }
@@ -92,14 +188,27 @@
   border-radius: 10px;
 }
 
+html:not(.dark-mode) .connection-box {
+  border-color: #dbe3ec;
+  background-color: #f8fafc;
+}
+
 .connection-box p {
   margin: 0;
   font-size: 12px;
   color: #94a3b8;
 }
 
+html:not(.dark-mode) .connection-box p {
+  color: #64748b;
+}
+
 .connection-box p span {
   color: #7dd3fc;
+}
+
+html:not(.dark-mode) .connection-box p span {
+  color: #0369a1;
 }
 
 .status-dot {
@@ -113,6 +222,11 @@
 .active-nav-item {
   background-color: #10283b;
   color: white;
+}
+
+html:not(.dark-mode) .active-nav-item {
+  background-color: #dbeafe;
+  color: #1d4ed8;
 }
 
 .nav-item {

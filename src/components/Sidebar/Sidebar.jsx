@@ -7,7 +7,9 @@ import {
   Bell,
   FileBarChart2,
   Users,
-  Settings
+  Settings,
+  ChevronLeft,
+  PanelLeftOpen,
 } from "lucide-react";
 
 import { useNavigate, useLocation } from "react-router-dom";
@@ -36,11 +38,12 @@ const navItems = [
   { id: "settings", label: "Settings", icon: "Settings", path: "/settings" }
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ collapsed, onToggle }) {
   const navigate = useNavigate();
   const location = useLocation();
 
   return (
+    <>
     <aside className="sidebar">
 
       {/* Logo */}
@@ -52,6 +55,16 @@ export default function Sidebar() {
         <span className="logo-text">
           CryoGuard <span>AI</span>
         </span>
+
+        <button
+          className="sidebar-toggle"
+          type="button"
+          onClick={onToggle}
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          {collapsed ? <PanelLeftOpen size={18} /> : <ChevronLeft size={18} />}
+        </button>
       </div>
 
 
@@ -72,6 +85,8 @@ export default function Sidebar() {
                 isActive ? "active-nav-item" : ""
               }`}
               onClick={() => navigate(item.path)}
+              title={item.label}
+              aria-label={item.label}
             >
 
               <Icon size={17} />
@@ -105,5 +120,6 @@ export default function Sidebar() {
       </div>
 
     </aside>
+    </>
   );
 }
