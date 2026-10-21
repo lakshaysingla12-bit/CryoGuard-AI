@@ -10,6 +10,13 @@ import Modal from "../components/Modal.jsx";
 import StatsRow from "../components/StatsRow.jsx";
 import { formatDateTime } from "../utils";
 
+function formatDeliveryDate(value) {
+  if (!value) return "Date not set";
+  const date = new Date(`${String(value).slice(0, 10)}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return "Date not set";
+  return date.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+}
+
 const filters = ["All", "In Transit", "Delayed", "Critical", "Delivered"];
 
 function Shipments() {
@@ -29,8 +36,8 @@ function Shipments() {
     .filter(
       (s) =>
         !text ||
-        [s.id, s.cargo, s.origin, s.destination, s.vehicleId, s.workerName, s.workerId].some((field) =>
-          field.toLowerCase().includes(text)
+        [s.id, s.cargo, s.origin, s.sourceName, s.companyName, s.destination, s.facilityId, s.vehicleId, s.workerName, s.workerId].some((field) =>
+          String(field || "").toLowerCase().includes(text)
         )
     );
 
@@ -80,7 +87,12 @@ function Shipments() {
             className="form-control form-control-sm w-auto"
             placeholder="Filter by id, cargo, city..."
             value={search}
-            onChange={(e) => setParams(e.target.value ? { q: e.target.value } : {})}
+            onChange={(e) => {
+              const next = new URLSearchParams(params);
+              if (e.target.value) next.set("q", e.target.value);
+              else next.delete("q");
+              setParams(next);
+            }}
           />
         </div>
 
@@ -90,7 +102,8 @@ function Shipments() {
               <tr>
                 <th>Shipment</th>
                 <th>Cargo</th>
-                <th>Route</th>
+                <th>Source company</th>
+                <th>Destination facility</th>
                 <th>Vehicle</th>
                 <th>Safe range</th>
                 <th>Temp now</th>
@@ -104,7 +117,33 @@ function Shipments() {
                 <tr key={s.id}>
                   <td className="fw-semibold">{s.id}</td>
                   <td>{s.cargo}</td>
-                  <td>{s.origin} → {s.destination}</td>
+                  <td className="shipment-route-cell">
+                    <details className="shipment-detail-disclosure">
+                      <summary>
+                        <span className="fw-semibold">{s.companyName || s.sourceName || s.origin}</span>
+                        <i className="bi bi-chevron-down" aria-hidden="true" />
+                      </summary>
+                      <div className="shipment-detail-content">
+                        <div><strong>ID:</strong> {s.companyId || "—"}</div>
+                        <div><strong>Dispatch:</strong> {s.sourceName || "Dispatch location"} · {s.originCity || s.origin || "—"}</div>
+                      </div>
+                    </details>
+                  </td>
+                  <td className="shipment-route-cell">
+                    <details className="shipment-detail-disclosure">
+                      <summary>
+                        <span className="fw-semibold">{s.destinationOrganizationName || s.facilityName || s.destination}</span>
+                        <i className="bi bi-chevron-down" aria-hidden="true" />
+                      </summary>
+                      <div className="shipment-detail-content">
+                        <div><strong>Facility / login ID:</strong> {s.destinationOrganizationId || s.facilityId || s.destinationFacilityId || "—"}</div>
+                        <div><strong>Location:</strong> {s.destinationCity || s.destination} · <strong>Auditor:</strong> {s.auditorName || "Unassigned"}</div>
+                      </div>
+                    </details>
+                    <small className={`shipment-delivery-date ${s.displayStatus === "Delivered" ? "is-delivered" : "is-expected"}`}>
+                      {s.displayStatus === "Delivered" ? "Delivered" : "Expected delivery"}: {formatDeliveryDate(s.displayStatus === "Delivered" ? (s.deliveryDate || s.deliveredAt) : (s.expectedDeliveryDate || s.expectedDeliveryAt))}
+                    </small>
+                  </td>
                   <td>{s.vehicleId}</td>
                   <td>{s.minTemp}° to {s.maxTemp}°C</td>
                   <td>{s.currentTemp !== null ? s.currentTemp + "°C" : "-"}</td>
@@ -145,13 +184,14 @@ function Shipments() {
 }
 
 function NewShipmentForm({ hasIdleVehicle, onClose, onCreated }) {
-  const { vehicles } = useLive();
+  const { vehicles, showToast } = useLive();
   const options = useFetch("/options");
 
   const [form, setForm] = useState({
-    cargo: "COVID Vaccines",
-    origin: "Chandigarh",
+    cargo: "Pharmaceuticals & Vaccines",
+    origin: "Pune",
     destination: "Delhi",
+    destinationFacilityId: "",
     vehicleId: "",
     minTemp: 2,
     maxTemp: 8,
@@ -168,7 +208,16 @@ function NewShipmentForm({ hasIdleVehicle, onClose, onCreated }) {
   // picking a cargo fills in its normal temperature range
   function handleCargoChange(e) {
     const type = options.data.cargoTypes.find((c) => c.name === e.target.value);
-    setForm({ ...form, cargo: type.name, minTemp: type.min, maxTemp: type.max });
+    const matchingSources = options.data.sources.filter((source) => source.cargoCategory === type.name);
+    const matchingFacilities = options.data.facilities.filter((facility) => facility.cargoType === type.name);
+    const origin = matchingSources.some((source) => source.location === form.origin)
+      ? form.origin
+      : matchingSources[0]?.location || "";
+    const selectedFacility = matchingFacilities.find((facility) => facility.id === form.destinationFacilityId)
+      || matchingFacilities.find((facility) => facility.location === form.destination)
+      || matchingFacilities[0];
+    const destination = selectedFacility?.location || "";
+    setForm({ ...form, cargo: type.name, origin, destination, destinationFacilityId: selectedFacility?.id || "", minTemp: type.min, maxTemp: type.max });
   }
 
   async function handleSubmit(e) {
@@ -177,9 +226,11 @@ function NewShipmentForm({ hasIdleVehicle, onClose, onCreated }) {
     setBusy(true);
     try {
       await api("/shipments/create", { method: "POST", body: form });
+      showToast({ title: "Shipment created", message: `${form.cargo} · ${form.origin} → ${form.destination}`, kind: "success" });
       onCreated();
     } catch (err) {
       setError(err.message);
+      showToast({ title: "Could not create shipment", message: err.message, kind: "error" });
       setBusy(false);
     }
   }
@@ -203,15 +254,29 @@ function NewShipmentForm({ hasIdleVehicle, onClose, onCreated }) {
 
           <div className="row mb-3">
             <div className="col">
-              <label className="form-label">From</label>
+              <label className="form-label">Cargo source company</label>
               <select className="form-select" name="origin" value={form.origin} onChange={handleChange}>
-                {options.data.locations.map((l) => <option key={l}>{l}</option>)}
+                {options.data.sources.filter((source) => source.cargoCategory === form.cargo).map((source) => (
+                  <option key={source.id} value={source.location}>{source.companyName} · {source.name} · {source.location}</option>
+                ))}
               </select>
             </div>
             <div className="col">
-              <label className="form-label">To</label>
-              <select className="form-select" name="destination" value={form.destination} onChange={handleChange}>
-                {options.data.locations.map((l) => <option key={l}>{l}</option>)}
+              <label className="form-label">Receiving facility</label>
+              <select
+                className="form-select"
+                name="destinationFacilityId"
+                value={form.destinationFacilityId || options.data.facilities.find((facility) => facility.location === form.destination && facility.cargoType === form.cargo)?.id || ""}
+                onChange={(event) => {
+                  const facility = options.data.facilities.find((entry) => entry.id === event.target.value);
+                  setForm({ ...form, destinationFacilityId: facility?.id || "", destination: facility?.location || "" });
+                }}
+                required
+              >
+                <option value="">Choose a receiving organization</option>
+                {options.data.facilities.filter((facility) => facility.cargoType === form.cargo).map((facility) => (
+                  <option key={facility.id} value={facility.id}>{facility.name} · {facility.location} · {facility.id}</option>
+                ))}
               </select>
             </div>
           </div>
