@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { api } from "../api/client";
 
 const LiveContext = createContext(null);
@@ -32,29 +32,7 @@ export function LiveProvider({ children }) {
   const [tick, setTick] = useState(0);
   const [connected, setConnected] = useState(false);
   const [toasts, setToasts] = useState([]);
-
-  const refresh = useCallback(async () => {
-    try {
-      const [nextVehicles, nextShipments, nextAlerts] = await Promise.all([
-        api("/vehicles"),
-        api("/shipments"),
-        api("/alerts"),
-      ]);
-      setVehicles(nextVehicles);
-      setShipments(nextShipments);
-      setAlerts(nextAlerts);
-      setConnected(true);
-      setTick((value) => value + 1);
-    } catch {
-      setConnected(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    refresh();
-    const timer = window.setInterval(refresh, 5000);
-    return () => window.clearInterval(timer);
-  }, [refresh]);
+  const seenAlertIds = useRef(null);
 
   const dismissToast = useCallback((id) => {
     setToasts((current) => current.filter((toast) => toast.id !== id));
@@ -63,7 +41,37 @@ export function LiveProvider({ children }) {
   const showToast = useCallback((alert) => {
     const toast = { ...alert, id: alert.id || `toast-${Date.now()}` };
     setToasts((current) => [...current, toast].slice(-4));
-  }, []);
+    window.setTimeout(() => dismissToast(toast.id), alert.duration || 4200);
+  }, [dismissToast]);
+
+  const refresh = useCallback(async () => {
+    try {
+      const [nextVehicles, nextShipments, nextAlerts] = await Promise.all([
+        api("/vehicles"),
+        api("/shipments"),
+        api("/alerts"),
+      ]);
+      if (seenAlertIds.current) {
+        const previousIds = seenAlertIds.current;
+        nextAlerts.filter((alert) => !previousIds.has(alert.id) && !alert.resolved)
+          .forEach((alert) => showToast(alert));
+      }
+      seenAlertIds.current = new Set(nextAlerts.map((alert) => alert.id));
+      setVehicles(nextVehicles);
+      setShipments(nextShipments);
+      setAlerts(nextAlerts);
+      setConnected(true);
+      setTick((value) => value + 1);
+    } catch {
+      setConnected(false);
+    }
+  }, [showToast]);
+
+  useEffect(() => {
+    refresh();
+    const timer = window.setInterval(refresh, 5000);
+    return () => window.clearInterval(timer);
+  }, [refresh]);
 
   const summary = useMemo(
     () => makeSummary(vehicles, alerts, shipments),

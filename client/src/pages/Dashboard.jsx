@@ -8,8 +8,10 @@ import StatusBadge from "../components/StatusBadge.jsx";
 import FleetMap from "../components/LiveFleetMap.jsx";
 import TeamSupervision from "../components/TeamSupervision.jsx";
 import { alertIcon, timeAgo } from "../utils";
+import { useAuth } from "../context/AuthContext.jsx";
 
 function Dashboard() {
+  const { user } = useAuth();
   const { vehicles, summary, tick, alertCount } = useLive();
 
   const alerts = useFetch("/alerts?status=open&limit=5", [alertCount]);
@@ -28,7 +30,7 @@ function Dashboard() {
 
   return (
     <>
-      <PageHeader title="Dashboard" subtitle="Live overview of your cold chain operations" />
+      <PageHeader title="Dashboard" subtitle={user?.companyId ? `Cold-chain operations · ${user.companyName}` : "Live overview of your cold chain operations"} />
 
       {/* ---------- summary cards ---------- */}
       <div className="row g-3 mb-4">

@@ -12,6 +12,7 @@ import Users from "./pages/Users.jsx";
 import MyProfile from "./pages/MyProfile.jsx";
 import Settings from "./pages/Settings.jsx";
 import AiPredictions from "./pages/AiPredictions.jsx";
+import WorkerProfile from "./pages/WorkerProfile.jsx";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/workers/:workerId" element={<WorkerProfile />} />
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="*" element={<Navigate to="/" replace />} />

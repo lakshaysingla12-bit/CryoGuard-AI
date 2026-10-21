@@ -3,19 +3,25 @@ import { Link } from "react-router-dom";
 import { api } from "../api/client.js";
 import useFetch from "../context/useFetch.js";
 import { useLive } from "../context/LiveContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import Modal from "./Modal.jsx";
 import StatusBadge from "./StatusBadge.jsx";
 
 function TeamSupervision() {
-  const { tick } = useLive();
+  const { user: manager } = useAuth();
+  const { tick, showToast } = useLive();
   const { data: users } = useFetch("/users");
-  const { data: assignments } = useFetch("/assignments", [tick]);
+  const { data: assignments, reload: reloadAssignments } = useFetch("/assignments", [tick]);
   const { data: shipments } = useFetch("/shipments", [tick]);
   const { data: messages, reload: reloadMessages } = useFetch("/messages");
   const [messagingWorker, setMessagingWorker] = useState(null);
   const [messageText, setMessageText] = useState("");
   const [messageError, setMessageError] = useState("");
   const [sending, setSending] = useState(false);
+  const [taskDialog, setTaskDialog] = useState(null);
+  const [taskForm, setTaskForm] = useState({ task: "", shipmentId: "", dueAt: "", priority: "Normal", status: "Assigned" });
+  const [taskError, setTaskError] = useState("");
+  const [savingTask, setSavingTask] = useState(false);
 
   if (!users || !assignments || !shipments) {
     return (
@@ -26,11 +32,10 @@ function TeamSupervision() {
     );
   }
 
-  const manager = users.find((user) => user.role === "Manager");
   const workers = users.filter((user) => user.role === "Worker");
-  const teamAssignments = assignments.filter((assignment) =>
-    !manager || assignment.supervisorId === manager.id
-  );
+  const teamAssignments = manager?.companyId
+    ? assignments.filter((assignment) => assignment.companyId === manager.companyId || assignment.supervisorId === manager.id)
+    : assignments;
   const shipmentById = new Map(shipments.map((shipment) => [shipment.id, shipment]));
   const rows = workers.map((worker) => {
     const assigned = teamAssignments.filter((assignment) => assignment.workerId === worker.id);
@@ -42,10 +47,71 @@ function TeamSupervision() {
     }).length;
 
     return { worker, assigned, completed, active, attention };
-  }).filter((row) => row.assigned.length > 0);
+  });
 
   const activeCount = rows.reduce((total, row) => total + row.active.length, 0);
   const attentionCount = rows.reduce((total, row) => total + row.attention, 0);
+
+  function openTaskDialog(worker, assignment = null) {
+    setTaskDialog({ worker, assignment });
+    setTaskForm({
+      task: assignment?.task || "",
+      shipmentId: assignment?.shipmentId || "",
+      dueAt: assignment?.dueAt || "",
+      priority: assignment?.priority || "Normal",
+      status: assignment?.status || "Assigned",
+    });
+    setTaskError("");
+  }
+
+  async function saveTask(event) {
+    event.preventDefault();
+    if (!taskDialog || !taskForm.task.trim()) return;
+    setSavingTask(true);
+    setTaskError("");
+    const shipment = shipments.find((entry) => entry.id === taskForm.shipmentId);
+    const payload = {
+      task: taskForm.task.trim(),
+      workerId: taskDialog.worker.id,
+      workerName: taskDialog.worker.name,
+      supervisorId: manager?.id || "mgr-001",
+      companyId: shipment?.companyId || manager?.companyId || taskDialog.worker.companyId || "",
+      companyName: shipment?.companyName || manager?.companyName || taskDialog.worker.companyName || "",
+      companyManagerId: manager?.id || "mgr-001",
+      companyManagerName: manager?.name || "Aarav Sharma",
+      auditorId: shipment?.auditorId || "",
+      hospitalId: shipment?.hospitalId || "",
+      hospitalName: shipment?.hospitalName || "",
+      facilityId: shipment?.facilityId || "",
+      facilityName: shipment?.facilityName || "",
+      shipmentId: shipment?.id || "",
+      vehicleId: shipment?.vehicleId || "",
+      dueAt: taskForm.dueAt.trim(),
+      priority: taskForm.priority,
+      status: taskForm.status,
+    };
+    try {
+      if (taskDialog.assignment) {
+        await api(`/assignments/${encodeURIComponent(taskDialog.assignment.id)}`, {
+          method: "PATCH",
+          body: payload,
+        });
+      } else {
+        await api("/assignments", {
+          method: "POST",
+          body: { id: `ASN-${Date.now()}`, ...payload },
+        });
+      }
+      await reloadAssignments();
+      setTaskDialog(null);
+      showToast({ title: taskDialog.assignment ? "Task updated" : "Task assigned", message: `${payload.task} · ${taskDialog.worker.name}`, kind: "success" });
+    } catch (error) {
+      setTaskError(error.message || "Task could not be saved. Please try again.");
+      showToast({ title: "Could not save task", message: error.message, kind: "error" });
+    } finally {
+      setSavingTask(false);
+    }
+  }
 
   async function sendMessage(event) {
     event.preventDefault();
@@ -63,6 +129,8 @@ function TeamSupervision() {
           toUserId: messagingWorker.id,
           fromUserId: manager?.id || "mgr-001",
           fromName: manager?.name || "Supervisor",
+          companyId: manager?.companyId || messagingWorker.companyId || "",
+          companyName: manager?.companyName || messagingWorker.companyName || "",
           message: text,
           sentAt: new Date().toISOString(),
           read: false,
@@ -71,8 +139,10 @@ function TeamSupervision() {
       await reloadMessages();
       setMessagingWorker(null);
       setMessageText("");
+      showToast({ title: "Message sent", message: `Your note was sent to ${messagingWorker.name}.`, kind: "success" });
     } catch (error) {
       setMessageError(error.message || "Message could not be sent. Please try again.");
+      showToast({ title: "Could not send message", message: error.message, kind: "error" });
     } finally {
       setSending(false);
     }
@@ -83,71 +153,85 @@ function TeamSupervision() {
     <section className="card-box mb-4" aria-labelledby="team-supervision-title">
       <div className="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
         <div>
-          <h5 id="team-supervision-title" className="card-title-text mb-1">Team Supervision</h5>
+          <h5 id="team-supervision-title" className="card-title-text mb-1">Driver &amp; Worker Supervision</h5>
           <p className="text-secondary small mb-0">
-            {rows.length} workers · {activeCount} active assignments · {attentionCount} shipments need attention
+            {rows.length} drivers · {activeCount} active tasks · {attentionCount} tasks linked to shipments that need attention
           </p>
         </div>
-        <Link to="/users" className="text-decoration-none small">Manage workers</Link>
+        <Link to="/users" className="btn btn-outline-info manage-workers-button">
+          <i className="bi bi-people me-2" aria-hidden="true" />Manage workers
+        </Link>
       </div>
 
       <div className="table-responsive">
-        <table className="table align-middle mb-0">
+        <table className="table align-middle mb-0 supervision-table">
+          <colgroup>
+            <col className="supervision-col-worker" />
+            <col className="supervision-col-tasks" />
+            <col className="supervision-col-progress" />
+            <col className="supervision-col-attention" />
+            <col className="supervision-col-actions" />
+          </colgroup>
           <thead>
             <tr>
-              <th>Worker</th>
-              <th>Assignments</th>
-              <th>Completed</th>
+              <th>Driver / worker</th>
+              <th>Tasks</th>
+              <th>Completion</th>
               <th>Needs attention</th>
-              <th>Current task</th>
-              <th></th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {rows.map(({ worker, assigned, completed, active, attention }) => {
               const progress = assigned.length ? Math.round((completed / assigned.length) * 100) : 0;
-              const nextTask = active[0];
               const latestMessage = messages?.filter((entry) => entry.workerId === worker.id)
                 .sort((a, b) => new Date(b.sentAt) - new Date(a.sentAt))[0];
               return (
                 <tr key={worker.id}>
                   <td>
                     <div className="fw-semibold">{worker.name}</div>
-                    <small className="text-secondary">{worker.location || worker.team || "Worker"}</small>
-                    <div><small className="text-secondary">{latestMessage ? `Last message: ${latestMessage.message}` : "No supervisor message yet"}</small></div>
+                    <small className="d-block text-secondary">{worker.location || worker.team || "Worker"}</small>
+                    <details className="worker-description-disclosure">
+                      <summary><i className="bi bi-person-lines-fill" aria-hidden="true" /> Worker details</summary>
+                      <div className="worker-description-content">
+                        <div><strong>Worker ID:</strong> {worker.id}</div>
+                        <div><strong>Supervisor message:</strong> {latestMessage?.message || "No supervisor message yet"}</div>
+                      </div>
+                    </details>
                   </td>
                   <td>{active.length} active <span className="text-secondary">/ {assigned.length} total</span></td>
-                  <td style={{ minWidth: 130 }}>
-                    <div className="d-flex align-items-center gap-2">
-                      <div className="progress flex-grow-1" style={{ height: 6 }}>
-                        <div className="progress-bar bg-success" style={{ width: `${progress}%` }} />
-                      </div>
+                  <td className="supervision-attention-cell">
+                    <div className="d-flex justify-content-between gap-2 mb-1">
+                      <small className="text-secondary">{completed}/{assigned.length} complete</small>
                       <small className="num">{progress}%</small>
                     </div>
+                    <div className="progress" style={{ height: 6 }}>
+                        <div className="progress-bar bg-success" style={{ width: `${progress}%` }} />
+                    </div>
                   </td>
-                  <td>
+                  <td className="supervision-actions-cell">
                     {attention > 0 ? (
                       <span><StatusBadge status="Warning" /> <small className="text-secondary">{attention}</small></span>
                     ) : <span className="text-secondary">None</span>}
                   </td>
                   <td>
-                    {nextTask ? (
-                      <>
-                        <div>{nextTask.task}</div>
-                        <small className="text-secondary">{nextTask.shipmentId}</small>
-                      </>
-                    ) : <span className="text-secondary">No open tasks</span>}
-                  </td>
-                  <td className="text-end">
-                    <button
-                      className="btn btn-outline-info btn-sm me-2"
-                      onClick={() => { setMessagingWorker(worker); setMessageText(""); setMessageError(""); }}
-                    >
-                      Message
-                    </button>
-                    <Link className="btn btn-outline-secondary btn-sm" to={`/shipments?q=${encodeURIComponent(worker.name)}`}>
-                      View shipments
-                    </Link>
+                    <div className="d-grid gap-2 supervision-actions">
+                      <button
+                        className="btn btn-info btn-sm"
+                        onClick={() => openTaskDialog(worker)}
+                      >
+                        Assign task
+                      </button>
+                      <button
+                        className="btn btn-outline-info btn-sm"
+                        onClick={() => { setMessagingWorker(worker); setMessageText(""); setMessageError(""); }}
+                      >
+                        Message
+                      </button>
+                      <Link className="btn btn-outline-secondary btn-sm" to={`/workers/${encodeURIComponent(worker.id)}`}>
+                        View tasks
+                      </Link>
+                    </div>
                   </td>
                 </tr>
               );
@@ -157,6 +241,83 @@ function TeamSupervision() {
         {rows.length === 0 && <p className="text-secondary text-center mt-3 mb-0">No worker assignments are linked to this supervisor yet.</p>}
       </div>
     </section>
+    {taskDialog && (
+      <Modal
+        title={`${taskDialog.assignment ? "Edit" : "Assign"} task · ${taskDialog.worker.name}`}
+        onClose={() => !savingTask && setTaskDialog(null)}
+      >
+        <form onSubmit={saveTask}>
+          <label className="form-label" htmlFor="supervisor-task">Task</label>
+          <input
+            id="supervisor-task"
+            className="form-control mb-3"
+            maxLength={120}
+            required
+            value={taskForm.task}
+            onChange={(event) => setTaskForm({ ...taskForm, task: event.target.value })}
+            placeholder="e.g. Confirm cargo seal"
+          />
+          <label className="form-label" htmlFor="task-shipment">Related shipment (optional)</label>
+          <select
+            id="task-shipment"
+            className="form-select mb-3"
+            value={taskForm.shipmentId}
+            onChange={(event) => setTaskForm({ ...taskForm, shipmentId: event.target.value })}
+          >
+            <option value="">No shipment linked</option>
+            {shipments.filter((shipment) => shipment.workerId === taskDialog.worker.id).map((shipment) => (
+              <option key={shipment.id} value={shipment.id}>
+                {shipment.id} · {shipment.origin} → {shipment.destination} · {shipment.displayStatus}
+              </option>
+            ))}
+          </select>
+          <div className="row g-3 mb-3">
+            <div className="col-sm-6">
+              <label className="form-label" htmlFor="task-due">Due</label>
+              <input
+                id="task-due"
+                className="form-control"
+                maxLength={40}
+                value={taskForm.dueAt}
+                onChange={(event) => setTaskForm({ ...taskForm, dueAt: event.target.value })}
+                placeholder="e.g. 1h 30m"
+              />
+            </div>
+            <div className="col-sm-6">
+              <label className="form-label" htmlFor="task-priority">Priority</label>
+              <select
+                id="task-priority"
+                className="form-select"
+                value={taskForm.priority}
+                onChange={(event) => setTaskForm({ ...taskForm, priority: event.target.value })}
+              >
+                <option>Normal</option><option>Medium</option><option>High</option>
+              </select>
+            </div>
+          </div>
+          {taskDialog.assignment && (
+            <>
+              <label className="form-label" htmlFor="task-status">Status</label>
+              <select
+                id="task-status"
+                className="form-select mb-3"
+                value={taskForm.status}
+                onChange={(event) => setTaskForm({ ...taskForm, status: event.target.value })}
+              >
+                <option>Assigned</option><option>In Progress</option><option>Completed</option>
+              </select>
+            </>
+          )}
+          {taskError && <div className="text-danger small mb-3" role="alert">{taskError}</div>}
+          <div className="d-flex justify-content-end gap-2">
+            <button type="button" className="btn btn-outline-secondary" onClick={() => setTaskDialog(null)} disabled={savingTask}>Cancel</button>
+            <button type="submit" className="btn btn-primary" disabled={savingTask || !taskForm.task.trim()}>
+              {savingTask ? "Saving…" : taskDialog.assignment ? "Save changes" : "Assign task"}
+            </button>
+          </div>
+        </form>
+      </Modal>
+    )}
     {messagingWorker && (
       <Modal title={`Message ${messagingWorker.name}`} onClose={() => !sending && setMessagingWorker(null)}>
         <form onSubmit={sendMessage}>
