@@ -654,11 +654,7 @@ function Monitoring() {
             )}
           </div>
 
-          <p className="monitoring-demo-note">
-            <Activity size={15} />
-            Demo mode: saving changes the backend target setting only. Current
-            temperatures and GPS positions are simulated.
-          </p>
+         
         </section>
       )}
     </main>
