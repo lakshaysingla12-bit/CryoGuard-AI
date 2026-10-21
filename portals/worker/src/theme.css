@@ -1,0 +1,327 @@
+/* One source of truth: SettingsContext sets data-theme on html and body. */
+:root,
+html[data-theme="light"], body[data-theme="light"] {
+  color-scheme: light;
+  --w-bg: #f8fafc;
+  --w-panel: #ffffff;
+  --w-panel-soft: #f1f5f9;
+  --w-border: #e2e8f0;
+  --w-text: #0f172a;
+  --w-muted: #64748b;
+  --cg-bg: #f3f7fc;
+  --cg-panel: #ffffff;
+  --cg-panel-soft: #f7faff;
+  --cg-border: #dce5ef;
+  --cg-text: #17283e;
+  --cg-muted: #63758b;
+  --ship-bg: #f8fafc;
+  --ship-panel: #ffffff;
+  --ship-border: #e2e8f0;
+  --ship-text: #0f172a;
+  --ship-muted: #64748b;
+}
+
+html[data-theme="dark"], body[data-theme="dark"] {
+  color-scheme: dark;
+  --w-bg: #080f1d;
+  --w-panel: #111c2e;
+  --w-panel-soft: #17263b;
+  --w-border: #263750;
+  --w-text: #e2e8f0;
+  --w-muted: #9aabc0;
+  --cg-bg: #080f1d;
+  --cg-panel: #111c2e;
+  --cg-panel-soft: #17263b;
+  --cg-border: #263750;
+  --cg-text: #e2e8f0;
+  --cg-muted: #9aabc0;
+  --ship-bg: #080f1d;
+  --ship-panel: #111c2e;
+  --ship-border: #263750;
+  --ship-text: #e2e8f0;
+  --ship-muted: #9aabc0;
+}
+
+html[data-theme="light"], body[data-theme="light"],
+body[data-theme="light"] #root, body[data-theme="light"] .app-layout,
+body[data-theme="light"] .app-layout > main {
+  background-color: var(--w-bg) !important;
+  color: var(--w-text);
+}
+
+html[data-theme="dark"], body[data-theme="dark"],
+body[data-theme="dark"] #root, body[data-theme="dark"] .app-layout,
+body[data-theme="dark"] .app-layout > main {
+  background-color: var(--w-bg) !important;
+  color: var(--w-text);
+}
+
+body[data-theme] {
+  background-color: var(--w-bg);
+  color: var(--w-text);
+}
+
+body[data-theme] :is(.app-layout, .app-layout > main, #root) {
+  color: var(--w-text);
+}
+
+.portal-logout-btn {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--w-border);
+  border-radius: 10px;
+  color: var(--w-muted);
+  background: var(--w-panel);
+  cursor: pointer;
+  transition: color 140ms ease, background-color 140ms ease, border-color 140ms ease;
+}
+
+.portal-logout-btn:hover {
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, .45);
+  background: color-mix(in srgb, #ef4444 9%, var(--w-panel));
+}
+
+.portal-logout-btn:focus-visible {
+  outline: 2px solid #22c5e8;
+  outline-offset: 2px;
+}
+
+.inventory-heading-actions,
+.settings-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+/* Main page canvases */
+body[data-theme="dark"] :is(.worker-dashboard, .inventory-page, .shipments-page, .delivery-page, .monitoring-page, .alerts-page, .worker-alerts-page, .settings-page) {
+  background-color: var(--w-bg) !important;
+  color: var(--w-text) !important;
+}
+
+/* Dashboard cards and page panels */
+body[data-theme="dark"] :is(.dashboard-card, .stat-card, .chart-card, .table-container, .report-card, .inventory-stat-card, .inventory-form, .inventory-table-card, .shipment-table-card, .shipment-form, .shipment-stat, .shipments-topbar, .delivery-profile, .delivery-stat, .delivery-panel, .monitoring-panel, .monitoring-stat-card, .settings-card, .setting-item, .section-panel, .temperature-details, .worker-alerts-page .card-box) {
+  background-color: var(--w-panel) !important;
+  color: var(--w-text);
+  border-color: var(--w-border) !important;
+  box-shadow: none;
+}
+
+/* Alerts had page-specific white card rules with higher specificity. */
+body[data-theme="dark"] .alerts-page .row.g-3 .card-box,
+body[data-theme="dark"] .alerts-page > .card-box {
+  background: var(--w-panel) !important;
+  color: var(--w-text) !important;
+  border-color: var(--w-border) !important;
+}
+body[data-theme="dark"] .alerts-page :is(.page-title, .stat-value, .stat-label, .card-box h1, .card-box h2, .card-box h3, .card-box h4, .card-box h5, .card-box .fw-semibold, .alert-title, .alert-row strong, .alert-row h3, .alert-row .fw-medium) {
+  color: var(--w-text) !important;
+}
+body[data-theme="dark"] .alerts-page :is(.page-title + p, .text-secondary, .stat-label, .alert-row p, .alert-row small, .alert-row .small) {
+  color: var(--w-muted) !important;
+}
+body[data-theme="dark"] .alerts-page .alert-row {
+  color: var(--w-text) !important;
+  background-color: transparent !important;
+  border-color: var(--w-border) !important;
+}
+body[data-theme="dark"] .worker-alerts-page :is(.form-label, .fw-semibold, h5, .small) {
+  color: var(--w-text) !important;
+}
+body[data-theme="dark"] .worker-alerts-page form :is(.form-control, .form-select):focus {
+  background-color: #0b1627 !important;
+  color: var(--w-text) !important;
+}
+body[data-theme="dark"] .worker-alerts-page .alerts-page,
+body[data-theme="dark"] .worker-alerts-page .alert-info {
+  background-color: var(--w-panel-soft) !important;
+  color: var(--w-text) !important;
+  border-color: var(--w-border) !important;
+}
+body[data-theme="dark"] .alerts-page :is(.btn-outline-secondary, .btn-outline-info) {
+  background: var(--w-panel-soft) !important;
+  color: #b8d7ff !important;
+  border-color: #344963 !important;
+}
+
+/* Text and controls on every worker page */
+body[data-theme="dark"] :is(.worker-dashboard, .inventory-page, .shipments-page, .delivery-page, .monitoring-page, .alerts-page, .worker-alerts-page, .settings-page) :is(h1, h2, h3, h4, th, .inventory-heading h1, .inventory-stat-card h2, .inventory-form h2, .inventory-toolbar h2, .delivery-stat strong) {
+  color: var(--w-text) !important;
+}
+body[data-theme="dark"] :is(.inventory-page, .shipments-page, .delivery-page, .monitoring-page, .alerts-page, .worker-alerts-page, .settings-page) :is(p, small, label, .subtitle, .inventory-heading p, .inventory-toolbar p, .delivery-subtitle, .delivery-toolbar p) {
+  color: var(--w-muted);
+}
+body[data-theme="dark"] :is(.inventory-page, .shipments-page, .delivery-page, .monitoring-page, .alerts-page, .worker-alerts-page, .settings-page) :is(input:not([type="checkbox"]), select, textarea, .form-control, .form-select) {
+  background-color: #0b1627 !important;
+  color: var(--w-text) !important;
+  border-color: #33465e !important;
+}
+body[data-theme="dark"] :is(.inventory-table, .shipment-table, .delivery-page table, .alerts-page table) :is(th, td) {
+  color: var(--w-text);
+  border-color: var(--w-border) !important;
+}
+
+body[data-theme="dark"] :is(.inventory-form-grid, .inventory-controls, .shipment-search, .shipment-filter, .shipment-form-grid, .shipment-filters, .checkpoint-form, .checkpoint-grid, .delivery-destination, .delivery-detail, .delivery-shipment-option, .delivery-note, .journey-stop, .detail-tile, .vehicle-list-item, .temperature-control, .temperature-edit-form, .monitoring-search, .monitoring-filters) {
+  background-color: var(--w-panel-soft) !important;
+  color: var(--w-text);
+  border-color: var(--w-border) !important;
+}
+
+/* Temperature rows are buttons, so reset the browser's light button face. */
+.worker-dashboard .temperature-row {
+  width: 100%;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--w-border);
+  text-align: left;
+}
+.worker-dashboard .temperature-row:hover { background: var(--w-panel-soft); }
+body[data-theme="dark"] .worker-dashboard .temperature-row,
+body[data-theme="dark"] .worker-dashboard .temperature-row:hover {
+  color: var(--w-text) !important;
+  background: var(--w-panel) !important;
+  border-top-color: var(--w-border) !important;
+}
+body[data-theme="dark"] .worker-dashboard .temperature-row:hover { background: var(--w-panel-soft) !important; }
+body[data-theme="dark"] .temperature-details :is(h3, span, strong, button) { color: var(--w-text); }
+body[data-theme="dark"] .temperature-details .temperature-detail-row { border-color: var(--w-border); }
+
+/* Keep semantic status colors, selected filters, and primary action colors. */
+body[data-theme="dark"] :is(.success, .status-success, .normal, .status-delivered) { color: #4ade80 !important; }
+body[data-theme="dark"] :is(.warning, .status-warning, .warning-text, .status-delayed) { color: #fbbf24 !important; }
+body[data-theme="dark"] :is(.danger, .status-danger, .status-critical) { color: #f87171 !important; }
+
+/* Worker dashboard cards use their own legacy class names. */
+body[data-theme="dark"] .worker-dashboard {
+  background: var(--w-bg) !important;
+  color: var(--w-text) !important;
+}
+body[data-theme="dark"] .worker-dashboard :is(.worker-header, .welcome-card, .score-card, .summary-card, .dashboard-card, .section-panel, .profile-modal, .temperature-details) {
+  background: var(--w-panel) !important;
+  color: var(--w-text) !important;
+  border-color: var(--w-border) !important;
+}
+body[data-theme="dark"] .worker-dashboard :is(.worker-title h2, .worker-profile span, .welcome-content h1, .score-card h3, .score, .summary-card h3, .summary-card strong, .dashboard-card h2, .dashboard-card h3, .section-panel h2, .details-header h2, .detail-row strong, .detail-description h3, .profile-modal h2, .profile-form label, .temperature-row h3) {
+  color: var(--w-text) !important;
+}
+body[data-theme="dark"] .worker-dashboard :is(.welcome-content p, .score-subtext, .summary-card p, .assignment-info p, .temperature-legend, .training-info p, .message-content p, .message-time, .section-panel p, .details-header p, .detail-row, .detail-row span, .detail-description p, .profile-modal-header p) {
+  color: var(--w-muted) !important;
+}
+body[data-theme="dark"] .worker-dashboard :is(.summary-icon, .assignment-icon, .message-icon, .profile-avatar) {
+  background: var(--w-panel-soft) !important;
+  border-color: var(--w-border) !important;
+}
+body[data-theme="dark"] .worker-dashboard :is(.assignment-item, .message-item, .temperature-row, .detail-description) {
+  border-color: var(--w-border) !important;
+}
+body[data-theme="dark"] .worker-dashboard :is(.assignment-item:hover, .temperature-row:hover) {
+  background: var(--w-panel-soft) !important;
+}
+body[data-theme="dark"] .worker-dashboard :is(.section-header button, .training-content button, .cancel-profile) {
+  background: var(--w-panel-soft) !important;
+  color: #b8d7ff !important;
+  border-color: var(--w-border) !important;
+}
+body[data-theme="dark"] .worker-dashboard .progress-bar {
+  background: #334155 !important;
+}
+body[data-theme="dark"] .worker-dashboard .profile-form input {
+  background: #0b1627 !important;
+  color: var(--w-text) !important;
+  border-color: #33465e !important;
+}
+
+/* Delivery Tracking had fixed white list surfaces and dark text overrides. */
+body[data-theme="dark"] .delivery-page :is(.delivery-shipment-list, .delivery-shipment-option, .delivery-destination, .checkpoint-form, .delivery-controls select) {
+  background: var(--w-panel) !important;
+  color: var(--w-text) !important;
+  border-color: var(--w-border) !important;
+}
+body[data-theme="dark"] .delivery-page .delivery-shipment-option.selected {
+  background: #172b46 !important;
+  border-color: #3b82f6 !important;
+  box-shadow: inset 3px 0 #3b82f6;
+}
+body[data-theme="dark"] .delivery-page :is(.delivery-shipment-option strong, .delivery-destination strong, .delivery-stat strong, .delivery-detail-heading strong, .checkpoint-form h3, .checkpoint-form label, .journey-heading, .journey-stop-heading h4, .delivery-toolbar h2) {
+  color: var(--w-text) !important;
+}
+body[data-theme="dark"] .delivery-page :is(.delivery-shipment-option > span:nth-of-type(2), .delivery-destination span, .delivery-stat span, .delivery-detail-heading p, .checkpoint-form > p, .delivery-subtitle, .delivery-toolbar p, .journey-stop-heading p, .journey-time, .delivery-empty) {
+  color: var(--w-muted) !important;
+}
+body[data-theme="dark"] .delivery-page :is(.delivery-toolbar, .delivery-controls, .delivery-shipment-list, .delivery-detail, .checkpoint-form) {
+  border-color: var(--w-border) !important;
+}
+body[data-theme="dark"] .delivery-page :is(.delivery-controls input, .delivery-controls select, .checkpoint-form input, .checkpoint-form select, .checkpoint-form textarea) {
+  background: #0b1627 !important;
+  color: var(--w-text) !important;
+  border-color: #33465e !important;
+}
+body[data-theme="dark"] .delivery-page :is(.delivery-success, .delivery-error) {
+  background: var(--w-panel-soft) !important;
+  border: 1px solid var(--w-border);
+}
+
+/* Shipment table legacy colors had low contrast against dark surfaces. */
+body[data-theme="dark"] .shipments-page :is(.shipments-topbar, .shipment-stat, .shipment-table-card, .shipment-form) {
+  background: var(--w-panel) !important;
+  color: var(--w-text) !important;
+  border-color: var(--w-border) !important;
+}
+body[data-theme="dark"] .shipments-page :is(.shipment-search, .shipment-filter:not(.active), .shipment-download-btn, .shipment-cancel-btn) {
+  background: var(--w-panel-soft) !important;
+  color: var(--w-text) !important;
+  border-color: var(--w-border) !important;
+}
+body[data-theme="dark"] .shipments-page :is(.shipments-user strong, .shipments-title-row h1, .shipment-stat strong, .shipment-table .shipment-id-cell, .shipment-cargo-cell, .shipment-form-heading h2, .shipment-form-grid label) {
+  color: var(--w-text) !important;
+}
+body[data-theme="dark"] .shipments-page :is(.shipments-user span, .shipments-title-row p, .shipment-stat span, .shipment-table td, .shipment-table-footer, .shipment-empty) {
+  color: var(--w-muted) !important;
+}
+body[data-theme="dark"] .shipments-page .shipment-table th {
+  color: var(--w-muted) !important;
+  background: var(--w-panel-soft) !important;
+}
+body[data-theme="dark"] .shipments-page .shipment-table td {
+  border-color: var(--w-border) !important;
+}
+body[data-theme="dark"] .shipments-page .shipment-table tbody tr:hover {
+  background: #17263b !important;
+}
+body[data-theme="dark"] .shipments-page :is(.shipment-table-toolbar, .shipment-table-footer) {
+  border-color: var(--w-border) !important;
+}
+
+/* Inventory page table and product-name rules also had fixed light colors. */
+body[data-theme="dark"] .inventory-page :is(.inventory-stat-card, .inventory-form, .inventory-table-card) {
+  background: var(--w-panel) !important;
+  color: var(--w-text) !important;
+  border-color: var(--w-border) !important;
+}
+body[data-theme="dark"] .inventory-page .inventory-table th {
+  color: var(--w-muted) !important;
+  background: var(--w-panel-soft) !important;
+  border-color: var(--w-border) !important;
+}
+body[data-theme="dark"] .inventory-page .inventory-table td {
+  color: var(--w-text) !important;
+  border-color: var(--w-border) !important;
+}
+body[data-theme="dark"] .inventory-page .inventory-product-name {
+  color: var(--w-text) !important;
+}
+body[data-theme="dark"] .inventory-page .inventory-delete-btn {
+  color: #fca5a5 !important;
+  background: #3b2028 !important;
+  border-color: #71333b !important;
+}
+body[data-theme="dark"] .inventory-page .inventory-empty {
+  color: var(--w-muted) !important;
+}

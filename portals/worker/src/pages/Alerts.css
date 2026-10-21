@@ -1,0 +1,766 @@
+
+/* ========================================
+   CRYOGUARD — ALERTS PAGE
+   ======================================== */
+
+.alerts-page {
+  width: 100%;
+  min-height: 100%;
+  padding: 28px 32px;
+  box-sizing: border-box;
+  background: #f5f8fc;
+  color: #17243a;
+}
+
+/* Page heading */
+.alerts-page .page-title {
+  margin: 0 0 6px;
+  color: #14233b;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.alerts-page .page-title + p {
+  margin: 0 0 24px;
+  color: #8996a9;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ========================================
+   STATISTICS CARDS
+   ======================================== */
+
+.alerts-page .row.g-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: 0 0 26px;
+}
+
+.alerts-page .row.g-3 > div {
+  width: auto;
+  min-width: 0;
+  padding: 0;
+}
+
+.alerts-page .row.g-3 .card-box {
+  display: flex;
+  align-items: center;
+  min-height: 124px;
+  height: 100%;
+  margin: 0;
+  padding: 22px 24px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(20, 35, 59, 0.035);
+}
+
+/* Content inside each statistics card */
+.alerts-page .row.g-3 .card-box > .d-flex {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Statistics icon */
+.alerts-page .stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: #edf4ff;
+  font-size: 21px;
+}
+
+.alerts-page .stat-icon i {
+  line-height: 1;
+}
+
+/* Number and horizontal line */
+.alerts-page .stat-value {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: 0 0 6px;
+  color: #17243a;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Line appears to the right of each number */
+.alerts-page .row.g-3 .stat-value::after {
+  content: "";
+  display: block;
+  flex: 1 1 auto;
+  min-width: 20px;
+  height: 1px;
+  background: #dce5f0;
+}
+
+/* Allow the number and line to use remaining card width */
+.alerts-page .row.g-3 .card-box > .d-flex > div:last-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.alerts-page .stat-label {
+  color: #8996a9;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* ========================================
+   MAIN ALERTS CARD
+   ======================================== */
+
+.alerts-page > .card-box {
+  margin: 0;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(20, 35, 59, 0.035);
+}
+
+/* Status and severity filter area */
+.alerts-page
+  > .card-box
+  > .d-flex.flex-wrap.justify-content-between {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  margin: 0 0 12px !important;
+}
+
+/* Open / Resolved buttons */
+.alerts-page .btn-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Severity label and buttons */
+.alerts-page
+  > .card-box
+  > .d-flex.flex-wrap.justify-content-between
+  > .d-flex {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.alerts-page .card-box .text-secondary {
+  color: #8996a9 !important;
+}
+
+/* All filter buttons */
+.alerts-page .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  margin: 0;
+  padding: 8px 16px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  box-shadow: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+/* Selected filter */
+.alerts-page .btn-info {
+  background: #e8f1ff;
+  border: 1px solid #cfe0ff;
+  color: #2875ff;
+}
+
+.alerts-page .btn-info:hover {
+  background: #dbe9ff;
+  border-color: #bfd6ff;
+  color: #185ed5;
+}
+
+/* Unselected filters */
+.alerts-page .btn-outline-secondary {
+  background: #ffffff;
+  border: 1px solid #dfe7f1;
+  color: #66758a;
+}
+
+.alerts-page .btn-outline-secondary:hover {
+  background: #eef3f9;
+  border-color: #d5deea;
+  color: #17243a;
+}
+
+/* Resolve button */
+.alerts-page .btn-outline-info {
+  background: #ffffff;
+  border: 1px solid #b9d4ff;
+  color: #2875ff;
+}
+
+.alerts-page .btn-outline-info:hover {
+  background: #e8f1ff;
+  border-color: #a8caff;
+  color: #185ed5;
+}
+
+/* ========================================
+   INDIVIDUAL ALERT ROWS
+   ======================================== */
+
+.alerts-page .alert-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 116px;
+  padding: 22px 12px;
+  border-bottom: 1px solid #edf1f6;
+  box-sizing: border-box;
+}
+
+.alerts-page .alert-row:last-child {
+  border-bottom: none;
+}
+
+/* Alert icon */
+.alerts-page .alert-row .alert-icon {
+  flex: 0 0 28px;
+  width: 28px;
+  font-size: 22px;
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* Alert text section */
+.alerts-page .alert-row .flex-grow-1 {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.alerts-page .alert-row .fw-medium {
+  margin: 0 0 7px;
+  color: #17243a;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.alerts-page .alert-row small {
+  display: block;
+  margin-bottom: 7px;
+  color: #8996a9;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.alerts-page .alert-row .small {
+  color: #526176;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Severity badge */
+.alerts-page .alert-row .badge {
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding: 7px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Keep resolve button aligned */
+.alerts-page .alert-row .btn {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* Empty-state message */
+.alerts-page .card-box > p.text-secondary {
+  padding: 24px 8px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ========================================
+   RESPONSIVE LAYOUT
+   ======================================== */
+
+@media (max-width: 1100px) {
+  .alerts-page {
+    padding: 24px;
+  }
+
+  .alerts-page .row.g-3 {
+    gap: 14px;
+  }
+
+  .alerts-page .row.g-3 .card-box {
+    padding: 18px;
+  }
+
+  .alerts-page .row.g-3 .card-box > .d-flex {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 800px) {
+  .alerts-page {
+    padding: 20px;
+  }
+
+  .alerts-page .row.g-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .alerts-page .row.g-3 > div:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .alerts-page .alert-row {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 18px 6px;
+  }
+
+  .alerts-page .alert-row .badge {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .alerts-page {
+    padding: 14px;
+  }
+
+  .alerts-page .page-title {
+    font-size: 24px;
+  }
+
+  .alerts-page .row.g-3 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .alerts-page .row.g-3 > div:last-child {
+    grid-column: auto;
+  }
+
+  .alerts-page .row.g-3 .card-box {
+    min-height: 104px;
+    padding: 18px;
+  }
+
+  .alerts-page > .card-box {
+    padding: 16px;
+  }
+
+  .alerts-page
+    > .card-box
+    > .d-flex.flex-wrap.justify-content-between
+    > .d-flex {
+    gap: 8px;
+  }
+
+  .alerts-page .card-box .btn {
+    padding: 8px 11px;
+  }
+
+  .alerts-page .alert-row {
+    gap: 10px;
+    padding: 18px 2px;
+  }
+
+  .alerts-page .alert-row .flex-grow-1 {
+    flex-basis: calc(100% - 44px);
+  }
+
+  .alerts-page .alert-row .badge {
+    margin-left: 38px;
+  }
+}
+
+
+/* ========================================
+   INTERACTIVE ALERTS ENHANCEMENTS
+   Append at the bottom of Alerts.css
+======================================== */
+
+/* Smooth page entrance */
+.alerts-page {
+  animation: alertsFadeIn 0.45s ease-out both;
+}
+
+@keyframes alertsFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Statistics cards: lift on hover */
+.alerts-page .row.g-3 .card-box {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.alerts-page .row.g-3 .card-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 0;
+  background: #0284c7;
+  border-radius: 0 0 5px 0;
+  transition: height 0.25s ease;
+}
+
+.alerts-page .row.g-3 .card-box:hover {
+  transform: translateY(-4px);
+  border-color: #bfdbfe;
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.09);
+}
+
+.alerts-page .row.g-3 .card-box:hover::before {
+  height: 100%;
+}
+
+/* Main alert panel */
+.alerts-page > .card-box {
+  transition:
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.alerts-page > .card-box:hover {
+  border-color: #d4e2f3;
+  box-shadow: 0 10px 28px rgba(20, 35, 59, 0.055);
+}
+
+/* Alert rows */
+.alerts-page .alert-row {
+  position: relative;
+  border-radius: 10px;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    padding 0.2s ease;
+}
+
+.alerts-page .alert-row:hover {
+  background: #f0f7ff;
+  transform: translateX(3px);
+}
+
+/* Critical alert icon animation */
+.alerts-page .alert-row .bi-exclamation-octagon {
+  animation: criticalPulse 2s ease-in-out infinite;
+}
+
+@keyframes criticalPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.72;
+  }
+}
+
+/* Buttons: tactile interaction */
+.alerts-page .btn {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.18s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.alerts-page .btn:hover {
+  transform: translateY(-2px);
+}
+
+.alerts-page .btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.alerts-page .btn:focus-visible {
+  outline: 3px solid rgba(2, 132, 199, 0.3);
+  outline-offset: 3px;
+}
+
+/* Selected filter emphasis */
+.alerts-page .btn-info {
+  box-shadow: 0 3px 9px rgba(37, 99, 235, 0.1);
+}
+
+.alerts-page .btn-info:hover {
+  box-shadow: 0 5px 14px rgba(37, 99, 235, 0.18);
+}
+
+/* Form controls */
+.worker-alerts-page .form-control,
+.worker-alerts-page .form-select {
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.worker-alerts-page .form-control:hover,
+.worker-alerts-page .form-select:hover {
+  border-color: #93c5fd;
+}
+
+.worker-alerts-page .form-control:focus,
+.worker-alerts-page .form-select:focus {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.13);
+}
+
+/* Report form entrance */
+.worker-alerts-page form {
+  animation: reportFormIn 0.3s ease-out both;
+}
+
+@keyframes reportFormIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Status badges */
+.alerts-page .alert-row .badge {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.alerts-page .alert-row:hover .badge {
+  transform: scale(1.04);
+}
+
+/* Respect reduced-motion accessibility settings */
+@media (prefers-reduced-motion: reduce) {
+  .alerts-page,
+  .alerts-page *,
+  .alerts-page *::before,
+  .alerts-page *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Mobile: avoid horizontal movement */
+@media (max-width: 520px) {
+  .alerts-page .alert-row:hover {
+    transform: none;
+  }
+
+  .alerts-page .row.g-3 .card-box:hover {
+    transform: translateY(-2px);
+  }
+}
+
+
+/* Fix Worker Alerts statistic card layout */
+.worker-alerts-page .row.g-3 .card-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+}
+
+.worker-alerts-page .row.g-3 .card-box > div {
+  width: 100%;
+}
+
+.worker-alerts-page .row.g-3 .card-box .text-secondary {
+  display: block;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.worker-alerts-page .row.g-3 .card-box h3 {
+  display: block;
+  margin: 0 !important;
+  font-size: 30px;
+  line-height: 1.3;
+  font-weight: 700;
+  color: #17243a;
+}
+
+
+/* ========================================
+   FIX WORKER REPORT ISSUE FORM
+======================================== */
+
+/* Form card */
+.worker-alerts-page .card-box:has(form) {
+  padding: 28px 30px;
+  overflow: visible;
+}
+
+.worker-alerts-page form {
+  width: 100%;
+  margin-top: 24px;
+}
+
+/* Proper responsive Bootstrap grid */
+.worker-alerts-page form .row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 28px;
+  margin: 0;
+}
+
+.worker-alerts-page form .row > [class*="col-"] {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.worker-alerts-page form .row > .col-12 {
+  grid-column: 1 / -1;
+}
+
+/* Labels */
+.worker-alerts-page form .form-label {
+  display: block;
+  margin-bottom: 9px;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* Inputs and dropdowns */
+.worker-alerts-page form .form-control,
+.worker-alerts-page form .form-select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 11px 13px;
+  background-color: #ffffff;
+  color: #17243a;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: none;
+  appearance: auto;
+}
+
+/* Textarea */
+.worker-alerts-page form textarea.form-control {
+  min-height: 120px;
+  width: 100%;
+  resize: vertical;
+}
+
+/* Placeholder */
+.worker-alerts-page form .form-control::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+
+/* Hover and focus */
+.worker-alerts-page form .form-control:hover,
+.worker-alerts-page form .form-select:hover {
+  border-color: #93c5fd;
+}
+
+.worker-alerts-page form .form-control:focus,
+.worker-alerts-page form .form-select:focus {
+  background-color: #ffffff;
+  color: #17243a;
+  border-color: #0284c7;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.12);
+}
+
+/* Submit button */
+.worker-alerts-page form button[type="submit"] {
+  min-height: 44px;
+  padding: 11px 22px;
+  background: #0284c7;
+  color: #ffffff;
+  border: 1px solid #0284c7;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+  cursor: pointer;
+}
+
+.worker-alerts-page form button[type="submit"]:hover {
+  background: #0369a1;
+  border-color: #0369a1;
+}
+
+.worker-alerts-page form button[type="submit"]:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Tablet and mobile */
+@media (max-width: 700px) {
+  .worker-alerts-page .card-box:has(form) {
+    padding: 20px 16px;
+  }
+
+  .worker-alerts-page form .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .worker-alerts-page form .row > .col-12 {
+    grid-column: auto;
+  }
+}

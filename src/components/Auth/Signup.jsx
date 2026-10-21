@@ -6,6 +6,7 @@ export default function Signup({
   isOpen = true,
   onClose,
   initialMode = "signup",
+  onAuthenticate,
 }) {
   const [isLogin, setIsLogin] = useState(initialMode === "login");
 
@@ -38,16 +39,14 @@ export default function Signup({
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.email.trim()) {
-      newErrors.email = "Email address is required.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address.";
-    }
+    if (!formData.email.trim()) newErrors.email = isLogin ? "Account ID or email is required." : "Email address is required.";
+    else if (!isLogin && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = "Please enter a valid email address.";
+    if (!formData.role) newErrors.role = "Please select your role.";
 
-    if (!formData.password) {
-      newErrors.password = "Password is required.";
-    } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters.";
+    if (!isLogin) {
+      if (!formData.password) newErrors.password = "Password is required.";
+      else if (formData.password.length < 8) newErrors.password = "Password must be at least 8 characters.";
+      if (!formData.role) newErrors.role = "Please select your role.";
     }
 
     if (!isLogin) {
@@ -56,7 +55,6 @@ export default function Signup({
       } else if (formData.fullName.trim().length < 3) {
         newErrors.fullName = "Name must be at least 3 characters.";
       }
-      if (!formData.role) newErrors.role = "Please select your role.";
       if (!formData.confirmPassword) {
         newErrors.confirmPassword = "Please confirm your password.";
       } else if (formData.password !== formData.confirmPassword) {
@@ -66,14 +64,8 @@ export default function Signup({
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log(
-      "Submit button clicked! Current Mode:",
-      isLogin ? "LOGIN" : "SIGNUP",
-    );
-    console.log("Raw Form State:", formData);
 
     const validationErrors = validateForm();
 
@@ -86,20 +78,17 @@ export default function Signup({
       return;
     }
 
-    console.log(
-      "✅ SUCCESS PAYLOAD:",
-      isLogin ? "Logging in:" : "Signing up:",
-      formData,
-    );
+    if (isLogin && onAuthenticate) {
+      try {
+        await onAuthenticate({ role: formData.role, identifier: formData.email });
+      } catch (error) {
+        setErrors({ email: error.message || "Could not sign in." });
+      }
+      return;
+    }
 
-    // Agar aapne alert lagaya hai:
-    alert(
-      isLogin
-        ? `Logged in as ${formData.email}`
-        : `Account created for ${formData.fullName}`,
-    );
-
-    if (onClose) onClose();
+    alert(`Account created for ${formData.fullName}. Sign up is a demo form for now.`);
+    onClose?.();
   };
 
   const switchMode = (loginState) => {
@@ -172,7 +161,7 @@ export default function Signup({
           <h1>{isLogin ? "Log In to CryoGuard" : "Create Your Account"}</h1>
           <p>
             {isLogin
-              ? "Access your telemetry logs and cold-chain portal."
+              ? "Choose your role and use the ID or email assigned to your account."
               : "Join CryoGuard AI and start monitoring your cold-chain operations."}
           </p>
         </div>
@@ -197,20 +186,20 @@ export default function Signup({
           )}
 
           <div className="auth-field">
-            <label htmlFor="email">Email address</label>
+            <label htmlFor="email">{isLogin ? "Account ID or email" : "Email address"}</label>
             <input
-              type="email"
+              type={isLogin ? "text" : "email"}
               id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="Enter your email"
+              placeholder={isLogin ? "e.g. cmgr-001 or your email" : "Enter your email"}
               className={errors.email ? "auth-input-error" : ""}
             />
             {errors.email && <span className="auth-error">{errors.email}</span>}
           </div>
 
-          {!isLogin && (
+          {(
             <div className="auth-field">
               <label htmlFor="role">Role</label>
               <select
@@ -231,7 +220,7 @@ export default function Signup({
             </div>
           )}
 
-          <div className="auth-field">
+          {!isLogin && <div className="auth-field">
             <label htmlFor="password">Password</label>
             <input
               type="password"
@@ -247,7 +236,7 @@ export default function Signup({
             {errors.password && (
               <span className="auth-error">{errors.password}</span>
             )}
-          </div>
+          </div>}
 
           {!isLogin && (
             <div className="auth-field">
@@ -279,9 +268,7 @@ export default function Signup({
                 <span>Remember me</span>
               </label>
 
-              <a href="#forgot-password" className="auth-forgot">
-                Forgot password?
-              </a>
+              <span className="auth-forgot">Demo access · password login is not configured</span>
             </div>
           )}
 
