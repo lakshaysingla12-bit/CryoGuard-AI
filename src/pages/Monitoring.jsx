@@ -15,16 +15,21 @@ import {
   Truck,
   X,
 } from "lucide-react";
+import { maplibreGL } from "@maplibre/maplibre-gl-leaflet";
+import { setWorkerUrl } from "maplibre-gl";
+import maplibreWorkerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import {
   CircleMarker,
   MapContainer,
   Polyline,
   Popup,
-  TileLayer,
   useMap,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import "maplibre-gl/dist/maplibre-gl.css";
 import "./Monitoring.css";
+
+setWorkerUrl(maplibreWorkerUrl);
 
 const API_URL = "/api/vehicles";
 
@@ -56,6 +61,21 @@ function FitMap({ selectedVehicle, routes }) {
       }
     }
   }, [map, selectedVehicle, routes]);
+
+  return null;
+}
+
+function OpenFreeMapLayer() {
+  const map = useMap();
+
+  useEffect(() => {
+    const layer = maplibreGL({
+      style: "https://tiles.openfreemap.org/styles/liberty",
+    });
+    layer.addTo(map);
+
+    return () => layer.remove();
+  }, [map]);
 
   return null;
 }
@@ -385,10 +405,7 @@ function Monitoring() {
               scrollWheelZoom
               className="monitoring-leaflet-map"
             >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
+              <OpenFreeMapLayer />
 
               {Object.entries(routes).map(([vehicleId, points]) => (
                 <Polyline
