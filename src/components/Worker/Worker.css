@@ -904,6 +904,9 @@
   padding: 7px 10px;
   border-radius: 7px;
   transition: background 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .profile-button:hover {
@@ -1085,28 +1088,20 @@
   }
 }
 
-.language-button {
-  border: none;
-  background: transparent;
-  color: #374151;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 6px 9px;
-  border-radius: 6px;
-  transition: background 0.2s ease;
-}
-
-.language-button:hover {
-  background: #eef6ff;
-  color: #2563eb;
-}
-
 .notification-button {
   border: none;
   background: transparent;
   cursor: pointer;
-  font-size: 18px;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 7px;
+}
+
+.notification-button:hover {
+  background: rgba(0, 0, 0, 0.06);
 }
 
 .temperature-line {

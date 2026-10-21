@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Bell, UserRound } from "lucide-react";
 import { useWorker } from "../../context/WorkerContext";
 function WorkerHeader() {
 
@@ -8,8 +9,6 @@ function WorkerHeader() {
   const {
     worker,
     updateWorker,
-    language,
-    toggleLanguage,
   } = useWorker();
 
   const [showProfile, setShowProfile] = useState(false);
@@ -18,9 +17,6 @@ function WorkerHeader() {
   const [editEmail, setEditEmail] = useState(worker.email);
   const [editPhone, setEditPhone] = useState(worker.phone);
   const [errors, setErrors] = useState({});
-
-  const isHindi = language === "HI";
-
 
 const handleSave = () => {
   const name = editName.trim();
@@ -67,7 +63,7 @@ const handleSave = () => {
 
         <div className="worker-title">
           <h2>
-            {isHindi ? "वर्कर पोर्टल" : "Worker Portal"}
+            Worker Portal
           </h2>
         </div>
 
@@ -76,20 +72,18 @@ const handleSave = () => {
           <button
   onClick={() => navigate("/alerts")}
   className="notification-button"
+  aria-label="Open alerts"
+  title="Alerts"
 >
-  🔔
+  <Bell size={19} />
 </button>
 
-          <button
-            className="language-button"
-            onClick={toggleLanguage}
-          >
-            {language}
-          </button>
+          
 
           
 <button
   className="profile-button"
+  aria-label={`Open My Profile for ${worker.name}`}
   onClick={() => {
     setEditName(worker.name);
     setEditEmail(worker.email);
@@ -98,7 +92,8 @@ const handleSave = () => {
     setShowProfile(true);
   }}
 >
-  👤 {worker.name}
+  <UserRound size={18} aria-hidden="true" />
+  <span>{worker.name}</span>
 </button>
 
 
@@ -118,14 +113,10 @@ const handleSave = () => {
 
               <div>
                 <h2>
-                  {isHindi ? "प्रोफ़ाइल संपादित करें" : "Edit Profile"}
+                  My Profile
                 </h2>
 
-                <p>
-                  {isHindi
-                    ? "अपनी कर्मचारी जानकारी अपडेट करें।"
-                    : "Update your worker details."}
-                </p>
+                <p>View and update your worker details.</p>
               </div>
 
               <button
@@ -139,7 +130,7 @@ const handleSave = () => {
 
 
             <div className="profile-avatar">
-              👤
+              <UserRound size={30} aria-hidden="true" />
             </div>
 
 
@@ -148,7 +139,7 @@ const handleSave = () => {
 
   {/* Full Name */}
   <label>
-    {isHindi ? "पूरा नाम" : "Full Name"}
+    Full Name
 
     <input
       type="text"
@@ -166,7 +157,7 @@ const handleSave = () => {
 
   {/* Email */}
   <label>
-    {isHindi ? "ईमेल" : "Email"}
+    Email
 
     <input
       type="email"
@@ -184,7 +175,7 @@ const handleSave = () => {
 
   {/* Phone */}
   <label>
-    {isHindi ? "फ़ोन" : "Phone"}
+    Phone
 
     <input
       type="tel"
@@ -210,14 +201,14 @@ const handleSave = () => {
                 className="cancel-profile"
                 onClick={handleCancel}
               >
-                {isHindi ? "रद्द करें" : "Cancel"}
+                Cancel
               </button>
 
               <button
                 className="save-profile"
                 onClick={handleSave}
               >
-                {isHindi ? "परिवर्तन सहेजें" : "Save Changes"}
+                Save Changes
               </button>
 
             </div>

@@ -74,7 +74,6 @@ export function WorkerProvider({ children }) {
     phone: "9876543210",
   });
 
-  const [language, setLanguage] = useState("EN");
   const [assignments, setAssignments] = useState(initialAssignments);
 
   function updateWorker(details) {
@@ -82,12 +81,6 @@ export function WorkerProvider({ children }) {
       ...previous,
       ...details,
     }));
-  }
-
-  function toggleLanguage() {
-    setLanguage((previous) =>
-      previous === "EN" ? "HI" : "EN"
-    );
   }
 
   function completeAssignment(id) {
@@ -113,8 +106,6 @@ export function WorkerProvider({ children }) {
       value={{
         worker,
         updateWorker,
-        language,
-        toggleLanguage,
         assignments,
         completeAssignment,
         pendingTasks,
