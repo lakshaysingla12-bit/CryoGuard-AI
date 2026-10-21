@@ -11,15 +11,21 @@ import Alerts from "./pages/Alerts";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import { WorkerProvider } from "./context/WorkerContext";
+import { useState } from "react";
 
 
 function App() {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
   return (
     <SettingsProvider>
       <WorkerProvider>
         <BrowserRouter>
-          <div className="app-layout">
-            <Sidebar />
+          <div className={`app-layout${sidebarCollapsed ? " sidebar-collapsed" : ""}`}>
+            <Sidebar
+              collapsed={sidebarCollapsed}
+              onToggle={() => setSidebarCollapsed((collapsed) => !collapsed)}
+            />
 
             <main>
               <Routes>
