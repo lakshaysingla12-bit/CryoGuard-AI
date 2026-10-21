@@ -31,7 +31,7 @@ const navItems = [
   { id: "inventory", label: "Inventory", icon: "Package2", path: "/inventory" },
   { id: "shipments", label: "Shipments", icon: "Truck", path: "/shipments" },
   { id: "alerts", label: "Alerts", icon: "Bell", badge: "3", path: "/alerts" },
-  { id: "reports", label: "Reports", icon: "FileBarChart2", path: "/reports" },
+ // { id: "reports", label: "Reports", icon: "FileBarChart2", path: "/reports" },
   { id: "users", label: "Users", icon: "Users", path: "/users" },
   { id: "settings", label: "Settings", icon: "Settings", path: "/settings" }
 ];
