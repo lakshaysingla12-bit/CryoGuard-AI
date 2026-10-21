@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import "./Inventory.css";
 
-const API_URL = "http://localhost:3001/inventory";
+const API_URL = "/api/inventory";
 
 function Inventory() {
   const [inventory, setInventory] = useState([]);
@@ -56,9 +56,10 @@ function Inventory() {
 
   const filteredInventory = inventory.filter((item) => {
     const matchesSearch =
-      item.name.toLowerCase().includes(search.toLowerCase()) ||
-      item.sku.toLowerCase().includes(search.toLowerCase()) ||
-      item.category.toLowerCase().includes(search.toLowerCase());
+      (item.name ?? "").toLowerCase().includes(search.toLowerCase()) ||
+      (item.name ?? "").toLowerCase().includes(search.toLowerCase()) ||
+      (item.sku ?? item.id ?? "").toLowerCase().includes(search.toLowerCase()) ||
+      (item.category ?? "").toLowerCase().includes(search.toLowerCase());
 
     const matchesFilter =
       filter === "All" || getStatus(item) === filter;
@@ -112,7 +113,7 @@ function Inventory() {
 
     const duplicateSKU = inventory.some(
       (item) =>
-        item.sku.toLowerCase() === form.sku.trim().toLowerCase()
+        (item.sku ?? "").toLowerCase() === form.sku.trim().toLowerCase()
     );
 
     if (duplicateSKU) {
@@ -375,11 +376,11 @@ function Inventory() {
                       <td className="inventory-product-name">
                         {item.name}
                       </td>
-                      <td>{item.sku}</td>
+                      <td>{item.sku ?? item.id}</td>
                       <td>{item.category}</td>
                       <td>{item.quantity}</td>
                       <td>{item.minStock}</td>
-                      <td>{item.location}</td>
+                      <td>{item.location ?? item.unit ?? "—"}</td>
                       <td>
                         <span
                           className={`inventory-status ${status

@@ -26,7 +26,7 @@ import {
 import "leaflet/dist/leaflet.css";
 import "./Monitoring.css";
 
-const API_URL = "http://localhost:3001/vehicles";
+const API_URL = "/api/vehicles";
 
 const OSRM_URL = "https://router.project-osrm.org/route/v1/driving";
 
