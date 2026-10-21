@@ -238,16 +238,7 @@ function Shipments() {
           <p>Every temperature-sensitive route, from pickup to delivery</p>
         </div>
 
-        <button
-          type="button"
-          className="new-shipment-btn"
-          onClick={() => {
-            setShowForm((previous) => !previous);
-            setError("");
-          }}
-        >
-          {showForm ? "− Cancel" : "+ New Shipment"}
-        </button>
+        
       </div>
 
       <section className="shipment-stats">
@@ -292,103 +283,7 @@ function Shipments() {
         </article>
       </section>
 
-      {showForm && (
-        <form className="shipment-form" onSubmit={handleAddShipment}>
-          <div className="shipment-form-heading">
-            <h2>Create New Shipment</h2>
-            <p>Enter the cargo, route, vehicle and temperature details.</p>
-          </div>
 
-          <div className="shipment-form-grid">
-            <label>
-              Cargo name
-              <input
-                name="cargo"
-                value={form.cargo}
-                onChange={handleFormChange}
-                placeholder="e.g. Medical supplies"
-                required
-              />
-            </label>
-
-            <label>
-              Route
-              <input
-                name="route"
-                value={form.route}
-                onChange={handleFormChange}
-                placeholder="e.g. Delhi → Chandigarh"
-                required
-              />
-            </label>
-
-            <label>
-              Vehicle ID
-              <input
-                name="vehicle"
-                value={form.vehicle}
-                onChange={handleFormChange}
-                placeholder="e.g. TRK-05"
-                required
-              />
-            </label>
-
-            <label>
-              Minimum temperature (°C)
-              <input
-                name="minTemp"
-                type="number"
-                step="any"
-                value={form.minTemp}
-                onChange={handleFormChange}
-                required
-              />
-            </label>
-
-            <label>
-              Maximum temperature (°C)
-              <input
-                name="maxTemp"
-                type="number"
-                step="any"
-                value={form.maxTemp}
-                onChange={handleFormChange}
-                required
-              />
-            </label>
-
-            <label>
-              Current temperature (°C)
-              <input
-                name="temperature"
-                type="number"
-                step="any"
-                value={form.temperature}
-                onChange={handleFormChange}
-                required
-              />
-            </label>
-          </div>
-
-          {error && <p className="shipment-form-error">{error}</p>}
-
-          <div className="shipment-form-actions">
-            <button
-              type="button"
-              className="shipment-cancel-btn"
-              onClick={() => {
-                setShowForm(false);
-                setError("");
-              }}
-            >
-              Cancel
-            </button>
-            <button type="submit" className="new-shipment-btn">
-              Save Shipment
-            </button>
-          </div>
-        </form>
-      )}
 
       <section className="shipment-table-card">
         <div className="shipment-table-toolbar">
