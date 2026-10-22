@@ -21,7 +21,7 @@ const mockConsignments = [
     isToday: true,
     isDocked: true,
     tripStatus: "COMPLETED",
-    dockLocation: "Bay 03 · Dock B",
+    dockLocation: "Terminal · Dock B",
     tripStartTime: "07:30 AM",
     dockArrivalTime: "12:05 PM",
     tripDistanceKm: 42.5,
@@ -29,10 +29,9 @@ const mockConsignments = [
     targetTempBand: { min: -20.0, max: -15.0, unit: "°C" },
     currentTemp: -16.8,
     currentHumidity: 32,
-    eta: "Docked at Bay 03 (Dock B)",
+    eta: "Docked (Dock B)",
     transitExcursionCount: 0,
-    sha256Seal:
-      "a1b2c3d4e5f6789012345678abcdef0123456789abcdef0123456789abcdef01",
+
     carrierDriver: "Marcus Vance (Fleet Logistics)",
     receiverDisposition: "PENDING",
     gps: { lat: 40.758, lng: -73.9855 },
@@ -64,7 +63,7 @@ const mockConsignments = [
     isToday: true,
     isDocked: true,
     tripStatus: "COMPLETED",
-    dockLocation: "Bay 03 · Dock A",
+    dockLocation: "Terminal · Dock A",
     tripStartTime: "05:45 AM",
     dockArrivalTime: "10:35 AM",
     tripDistanceKm: 64.2,
@@ -72,10 +71,9 @@ const mockConsignments = [
     targetTempBand: { min: 2.0, max: 8.0, unit: "°C" },
     currentTemp: 5.4,
     currentHumidity: 45,
-    eta: "Docked at Bay 03 (Dock A)",
+    eta: "Docked (Dock A)",
     transitExcursionCount: 1,
-    sha256Seal:
-      "e7f8a9b0c1d2e3f4567890abcdef1234567890abcdef1234567890abcdef5678",
+
     carrierDriver: "Lydia Chen (MedFreight Express)",
     receiverDisposition: "PENDING",
     gps: { lat: 40.758, lng: -73.986 },
@@ -108,7 +106,7 @@ const mockConsignments = [
     isToday: true,
     isDocked: true,
     tripStatus: "COMPLETED",
-    dockLocation: "Bay 03 · Dock C",
+    dockLocation: "Terminal · Dock C",
     tripStartTime: "06:15 AM",
     dockArrivalTime: "10:05 AM",
     tripDistanceKm: 51.0,
@@ -116,10 +114,9 @@ const mockConsignments = [
     targetTempBand: { min: 2.0, max: 8.0, unit: "°C" },
     currentTemp: 3.9,
     currentHumidity: 40,
-    eta: "Docked at Bay 03 (Dock C)",
+    eta: "Docked (Dock C)",
     transitExcursionCount: 0,
-    sha256Seal:
-      "f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1",
+
     carrierDriver: "Priya Mehta (ColdLink Pharma)",
     receiverDisposition: "ADMITTED",
     storageLocation: "Biologics Storage Unit C-4 (2°C - 8°C)",
@@ -152,7 +149,7 @@ const mockConsignments = [
     isToday: true,
     isDocked: false,
     tripStatus: "IN_TRANSIT",
-    dockLocation: "Allocated: Bay 03 (Dock D)",
+    dockLocation: "Allocated: Dock D",
     tripStartTime: "08:45 AM",
     etaMinutes: 14,
     etaTimestamp: "01:25 AM",
@@ -163,8 +160,7 @@ const mockConsignments = [
     currentHumidity: 38,
     eta: "In Transit — ETA: 14 mins (01:25 AM)",
     transitExcursionCount: 0,
-    sha256Seal:
-      "d4e5f6a7b8c9d0e1f2345678abcdef9012345678abcdef9012345678abcdef90",
+
     carrierDriver: "James Okoro (BioTransit Corp)",
     receiverDisposition: "PENDING",
     gps: { lat: 40.745, lng: -73.998 },
@@ -192,7 +188,7 @@ const mockConsignments = [
     isToday: true,
     isDocked: false,
     tripStatus: "IN_TRANSIT",
-    dockLocation: "Allocated: Bay 03 (Dock B)",
+    dockLocation: "Allocated: Dock B",
     tripStartTime: "09:10 AM",
     etaMinutes: 28,
     etaTimestamp: "01:40 AM",
@@ -203,8 +199,7 @@ const mockConsignments = [
     currentHumidity: 42,
     eta: "In Transit — ETA: 28 mins (01:40 AM)",
     transitExcursionCount: 0,
-    sha256Seal:
-      "88bb77aa66ff55ee44dd33cc22bb11aa00ff99ee88dd77cc66bb55aa44ff33ee",
+
     carrierDriver: "Aleksandr Petrov (ColdStar)",
     receiverDisposition: "PENDING",
     gps: { lat: 40.735, lng: -73.975 },
@@ -231,7 +226,7 @@ const mockConsignments = [
     isToday: false,
     isDocked: true,
     tripStatus: "COMPLETED",
-    dockLocation: "Bay 03 · Dock A",
+    dockLocation: "Terminal · Dock A",
     tripStartTime: "Yesterday 08:30 AM",
     dockArrivalTime: "Yesterday 04:15 PM",
     tripDistanceKm: 78.4,
@@ -241,8 +236,7 @@ const mockConsignments = [
     currentHumidity: 28,
     eta: "Completed & Archived (Oct 20)",
     transitExcursionCount: 0,
-    sha256Seal:
-      "bb82a17684c3d2e1f09876543210abcdef0123456789abcdef0123456789abcd",
+
     carrierDriver: "Robert Langdon (BioLogistics)",
     receiverDisposition: "ADMITTED",
     storageLocation: "Cryo-Vault Alpha (Ultra-Low -80°C Unit 01)",
@@ -264,7 +258,7 @@ const mockConsignments = [
     isToday: false,
     isDocked: true,
     tripStatus: "COMPLETED",
-    dockLocation: "Bay 03 · Dock C",
+    dockLocation: "Terminal · Dock C",
     tripStartTime: "Oct 19 06:00 AM",
     dockArrivalTime: "Oct 19 11:45 AM",
     tripDistanceKm: 62.0,
@@ -274,8 +268,7 @@ const mockConsignments = [
     currentHumidity: 52,
     eta: "Completed & Archived (Oct 19)",
     transitExcursionCount: 2,
-    sha256Seal:
-      "99a1b2c3d4e5f6789012345678abcdef0123456789abcdef0123456789abcdef",
+
     carrierDriver: "Samuel Green (Express Pharma)",
     receiverDisposition: "QUARANTINED",
     quarantineReason: "Thermal Excursion: Exceeded upper tolerance limit by +3.4°C",
