@@ -1,25 +1,17 @@
 import React, { useState } from "react";
 import {
-  ShieldCheck,
   CheckCircle2,
   AlertOctagon,
   FileText,
-  Copy,
-  Check,
-  RotateCw,
   User,
   Truck,
   Thermometer,
   Package,
   Activity,
-  UserCheck,
   MessageSquare,
   Droplets,
   FlaskConical
 } from "lucide-react";
-import TemperatureChart from "./TemperatureChart";
-import { calculateSHA256 } from "../utils/cryptoUtils";
-import { sound } from "../utils/soundFx";
 
 export default function InspectionPanel({
   consignment,
@@ -28,10 +20,7 @@ export default function InspectionPanel({
   onPreviewGRN,
   onAddAuditNote,
   onToast,
-  theme = "dark",
 }) {
-  const [isVerifyingHash, setIsVerifyingHash] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [noteText, setNoteText] = useState("");
   const [showNoteInput, setShowNoteInput] = useState(false);
 
@@ -57,45 +46,9 @@ export default function InspectionPanel({
     c.currentTemp >= c.targetTempBand.min &&
     c.currentTemp <= c.targetTempBand.max;
 
-  const handleVerifyHash = async () => {
-    sound.click();
-    setIsVerifyingHash(true);
-    setTimeout(async () => {
-      try {
-        await calculateSHA256(c);
-        setIsVerifyingHash(false);
-        sound.verified();
-        if (onToast) {
-          onToast({
-            type: "success",
-            title: "SHA-256 Seal Verified",
-            message: "Payload integrity mathematically verified. Zero telemetry tampering.",
-          });
-        }
-      } catch {
-        setIsVerifyingHash(false);
-      }
-    }, 550);
-  };
-
-  const handleCopyHash = () => {
-    sound.click();
-    navigator.clipboard.writeText(c.sha256Seal);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-    if (onToast) {
-      onToast({
-        type: "info",
-        title: "SHA-256 Copied",
-        message: "Hardware seal checksum copied to clipboard.",
-      });
-    }
-  };
-
   const handleSaveNote = (e) => {
     e.preventDefault();
     if (!noteText.trim()) return;
-    sound.click();
     if (onAddAuditNote) {
       onAddAuditNote(c.id, noteText);
     }
@@ -121,16 +74,13 @@ export default function InspectionPanel({
             <span className="icon text-cyan">📡</span>
             <div>
               <h3>Telemetry</h3>
-              <p className="subtitle">Chronological Thermal Stream &amp; Cryptographic Immutability</p>
+              <p className="subtitle">Chronological Thermal Stream</p>
             </div>
           </div>
           <span className="panel-card__batch-pill mono">{c.id}</span>
         </div>
 
-        {/* Recharts Area / Dual-Axis Trend Visualizer */}
-        <TemperatureChart consignment={c} onToast={onToast} theme={theme} />
-
-        {/* Sensor Telemetry Readings Stream Table */}
+        {/* Sensor telemetry: retain the original nine checkpoint log, without a graph. */}
         <div className="telemetry-table-section">
           <div className="section-subhead">
             <span>In-Transit Sensor Log ({c.timeSeriesData.length} checkpoints)</span>
@@ -175,42 +125,6 @@ export default function InspectionPanel({
                 })}
               </tbody>
             </table>
-          </div>
-        </div>
-
-        {/* SHA-256 Cryptographic Hardware Seal */}
-        <div className="sha-digest">
-          <div className="sha-digest__header">
-            <div className="sha-digest__label">
-              <ShieldCheck size={15} className="text-emerald" />
-              <span>SHA-256 Cryptographic Seal</span>
-            </div>
-            <div className="sha-digest__actions">
-              <button
-                className="btn-text-action"
-                onClick={handleCopyHash}
-                title="Copy hash"
-              >
-                {copied ? <Check size={13} className="text-emerald" /> : <Copy size={13} />}
-                <span>{copied ? "Copied" : "Copy"}</span>
-              </button>
-              <button
-                className={`btn-text-action ${isVerifyingHash ? "loading" : ""}`}
-                onClick={handleVerifyHash}
-                disabled={isVerifyingHash}
-                title="Verify SHA-256 hash against payload"
-              >
-                <RotateCw size={13} className={isVerifyingHash ? "spin" : ""} />
-                <span>{isVerifyingHash ? "Verifying..." : "Verify"}</span>
-              </button>
-            </div>
-          </div>
-
-          <div className="sha-digest__value mono">{c.sha256Seal}</div>
-
-          <div className="sha-digest__status">
-            <span className="status-dot" />
-            <span>Hardware Seal Validated · Zero In-Transit Data Alteration</span>
           </div>
         </div>
       </div>
