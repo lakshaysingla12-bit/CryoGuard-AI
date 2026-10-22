@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { FileText, Download, Eye, ShieldCheck, Printer, Search, CheckCircle, AlertTriangle } from "lucide-react";
-import { generateGRN } from "../utils/generateGRN";
-import { sound } from "../utils/soundFx";
+import { useSelector } from "react-redux";
+import { Download, Eye, ShieldCheck, Search } from "lucide-react";
+import { generateGRN } from "../utils/reportUtils";
 
-export default function GRNReportsView({ consignments, onPreviewGRN, onToast }) {
+export default function GRNReportsView({ consignments: propConsignments, onPreviewGRN, onToast }) {
+  const reduxConsignments = useSelector((state) => state.consignments?.items);
+  const consignments = propConsignments || reduxConsignments || [];
+
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
 
@@ -19,7 +22,6 @@ export default function GRNReportsView({ consignments, onPreviewGRN, onToast }) 
   });
 
   const handleDownload = (c) => {
-    sound.click();
     generateGRN(c);
     if (onToast) {
       onToast({
@@ -36,7 +38,7 @@ export default function GRNReportsView({ consignments, onPreviewGRN, onToast }) 
         <div>
           <h2>GxP Goods Receiving Notes (GRN) Archive</h2>
           <p>
-            FDA 21 CFR Part 11 &amp; EU Annex 11 Electronic Receiving Records with Cryptographic Proof of Non-Tampering
+            FDA 21 CFR Part 11 &amp; EU Annex 11 Electronic Receiving Records
           </p>
         </div>
         <div className="reports-header-badge">
@@ -66,13 +68,13 @@ export default function GRNReportsView({ consignments, onPreviewGRN, onToast }) 
             className={`tab-btn ${filter === "admitted" ? "tab-btn--active" : ""}`}
             onClick={() => setFilter("admitted")}
           >
-            Admitted ({consignments.filter(c => c.receiverDisposition === "ADMITTED").length})
+            Admitted ({consignments.filter((c) => c.receiverDisposition === "ADMITTED").length})
           </button>
           <button
             className={`tab-btn ${filter === "quarantined" ? "tab-btn--active" : ""}`}
             onClick={() => setFilter("quarantined")}
           >
-            Quarantined ({consignments.filter(c => c.receiverDisposition === "QUARANTINED").length})
+            Quarantined ({consignments.filter((c) => c.receiverDisposition === "QUARANTINED").length})
           </button>
         </div>
       </div>
@@ -86,7 +88,7 @@ export default function GRNReportsView({ consignments, onPreviewGRN, onToast }) 
             <div key={c.id} className="report-card">
               <div className="report-card__header">
                 <div>
-                  <div className="report-ref mono">GRN-{c.id}-{(c.sha256Seal || "00").slice(0, 6).toUpperCase()}</div>
+                  <div className="report-ref mono">GRN-{c.id}</div>
                   <h3 className="report-drug">{c.drugName}</h3>
                 </div>
                 <span
@@ -123,14 +125,6 @@ export default function GRNReportsView({ consignments, onPreviewGRN, onToast }) 
                   <span className="label">Sign-Off Authority:</span>
                   <span className="val">Dr. Elena Rostova, PharmD</span>
                 </div>
-              </div>
-
-              <div className="report-card__seal">
-                <div className="seal-label">
-                  <ShieldCheck size={12} className="text-emerald" />
-                  <span>SHA-256 Cryptographic Hash Seal</span>
-                </div>
-                <div className="seal-code mono">{c.sha256Seal}</div>
               </div>
 
               <div className="report-card__actions">
