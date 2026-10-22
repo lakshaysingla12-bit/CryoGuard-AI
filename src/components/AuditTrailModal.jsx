@@ -1,14 +1,16 @@
 import React from "react";
-import { History, X, Shield, Clock, Download } from "lucide-react";
-import { exportToCSV } from "../utils/cryptoUtils";
-import { sound } from "../utils/soundFx";
+import { useSelector } from "react-redux";
+import { History, X, Download } from "lucide-react";
+import { exportToCSV } from "../utils/reportUtils";
 
-export default function AuditTrailModal({ auditLogs, onClose, onToast }) {
+export default function AuditTrailModal({ auditLogs: propLogs, onClose, onToast }) {
+  const reduxLogs = useSelector((state) => state.auditLogs?.logs);
+  const auditLogs = propLogs || reduxLogs || [];
+
   const handleExportCSV = () => {
-    sound.click();
     const rows = [
       ["Timestamp", "Actor", "Action Type", "Batch ID", "Details"],
-      ...auditLogs.map(l => [l.timestamp, l.actor, l.action, l.batchId, l.details])
+      ...auditLogs.map((l) => [l.timestamp, l.actor, l.action, l.batchId, l.details]),
     ];
     exportToCSV(`GxP_Audit_Trail_${Date.now()}.csv`, rows);
     if (onToast) {
@@ -27,7 +29,7 @@ export default function AuditTrailModal({ auditLogs, onClose, onToast }) {
           <div className="modal-header__title-group">
             <History className="modal-header__icon text-cyan" size={24} />
             <div>
-              <h3>GxP Receiving Bay Electronic Audit Trail</h3>
+              <h3>GxP Receiving Electronic Audit Trail</h3>
               <p>Immutable Event Sequence (21 CFR Part 11 Electronic Records)</p>
             </div>
           </div>
