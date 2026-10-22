@@ -14,7 +14,7 @@ import {
   Focus,
   Camera,
 } from "lucide-react";
-import { sound } from "../utils/soundFx";
+import { useTheme } from "../context/ThemeContext";
 import StreetViewModal from "./StreetViewModal";
 
 /* ── Custom marker icons ── */
@@ -97,10 +97,10 @@ function MapControlsOverlay({
         type="button"
         className="map-ctrl-btn"
         onClick={onCenterHospital}
-        title="Center on Metro General Hospital Bay 03"
+        title="Center on Metro General Hospital"
       >
         <Navigation size={13} />
-        <span>Bay 03</span>
+        <span>Hospital</span>
       </button>
 
       <button
@@ -130,13 +130,14 @@ export default function ShipmentMap({
   consignments = [],
   activeId,
   onSelect,
-  theme = "dark",
+  theme: propTheme,
 }) {
+  const { theme: contextTheme } = useTheme();
+  const theme = propTheme || contextTheme;
   const activeConsignment = consignments.find((c) => c.id === activeId) || null;
   const [streetViewTarget, setStreetViewTarget] = useState(null);
 
   const handleCenterHospital = () => {
-    sound.click();
     const elem = document.querySelector(".leaflet-container");
     if (elem && elem._leaflet_map) {
       elem._leaflet_map.flyTo([HOSPITAL.lat, HOSPITAL.lng], 14, {
@@ -146,7 +147,6 @@ export default function ShipmentMap({
   };
 
   const handleResetView = () => {
-    sound.click();
     const elem = document.querySelector(".leaflet-container");
     if (elem && elem._leaflet_map) {
       elem._leaflet_map.flyTo([40.755, -73.99], 12, { duration: 0.8 });
@@ -154,7 +154,6 @@ export default function ShipmentMap({
   };
 
   const handleOpenActiveStreetView = () => {
-    sound.click();
     if (activeConsignment && activeConsignment.gps) {
       setStreetViewTarget({
         lat: activeConsignment.gps.lat,
@@ -250,7 +249,7 @@ export default function ShipmentMap({
                   <strong>Metro General Hospital</strong>
                 </div>
                 <div className="popup-sub">
-                  Department of Pharmacy &amp; Biomedical Quality Assurance · Bay 03
+                  Department of Pharmacy &amp; Biomedical Quality Assurance
                 </div>
                 <div className="popup-tag text-emerald">Active Inward Receiving Gate</div>
                 <button
@@ -258,7 +257,6 @@ export default function ShipmentMap({
                   className="popup-streetview-btn"
                   style={{ marginTop: "8px", width: "100%" }}
                   onClick={() => {
-                    sound.click();
                     setStreetViewTarget({
                       lat: HOSPITAL.lat,
                       lng: HOSPITAL.lng,
@@ -268,7 +266,7 @@ export default function ShipmentMap({
                   }}
                 >
                   <Camera size={12} />
-                  <span>Open Street View at Bay 03</span>
+                  <span>Open Street View at Hospital</span>
                 </button>
               </div>
             </Popup>
@@ -305,7 +303,6 @@ export default function ShipmentMap({
                     icon={getVehicleIcon(c)}
                     eventHandlers={{
                       click: () => {
-                        sound.click();
                         onSelect(c.id);
                       },
                     }}
@@ -343,7 +340,7 @@ export default function ShipmentMap({
                         <div className="popup-metric-row">
                           <span className="lbl">Status:</span>
                           <span className="val text-secondary">
-                            {isDocked ? "Docked at Bay 03" : "In-Transit"}
+                            {isDocked ? "Docked at Hospital" : "In-Transit"}
                           </span>
                         </div>
 
@@ -353,7 +350,6 @@ export default function ShipmentMap({
                             className="popup-streetview-btn"
                             onClick={(e) => {
                               e.stopPropagation();
-                              sound.click();
                               handleOpenConsignmentStreetView(c);
                             }}
                             title="Open Street View & Waypoint HUD"
@@ -365,7 +361,6 @@ export default function ShipmentMap({
                             type="button"
                             className="popup-inspect-btn"
                             onClick={() => {
-                              sound.click();
                               onSelect(c.id);
                             }}
                           >
