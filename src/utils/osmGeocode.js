@@ -9,9 +9,9 @@ const addressCache = new Map();
 
 // Known Manhattan locations fallback for instant offline/zero-latency display
 const KNOWN_LOCATIONS = {
-  "40.758,-73.9855": "Metro General Hospital · Receiving Bay 03 (W 45th St & 7th Ave)",
-  "40.758,-73.986": "Receiving Bay 03 · Gate A (W 45th St & 7th Ave, Manhattan)",
-  "40.758,-73.984": "Receiving Bay 03 · Gate C (Broadway & W 45th St, Manhattan)",
+  "40.758,-73.9855": "Metro General Hospital · Receiving Terminal Dock B (W 45th St & 7th Ave)",
+  "40.758,-73.986": "Receiving Terminal · Gate A (W 45th St & 7th Ave, Manhattan)",
+  "40.758,-73.984": "Receiving Terminal · Gate C (Broadway & W 45th St, Manhattan)",
   "40.745,-73.998": "7th Avenue & W 24th Street, Chelsea, New York, NY",
   "40.735,-73.975": "1st Avenue & E 20th Street, Peter Cooper Village, New York, NY",
   "40.755,-73.990": "Midtown South Fleet Corridor, Manhattan, New York, NY",
