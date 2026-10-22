@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { PlusCircle, Truck, ThermometerSnowflake, X, FileText } from "lucide-react";
-import { calculateSHA256 } from "../utils/cryptoUtils";
-import { sound } from "../utils/soundFx";
 
 export default function NewConsignmentModal({ onClose, onAdd }) {
   const [drugName, setDrugName] = useState("Pembrolizumab Monoclonal Antibody (Keytruda)");
@@ -32,7 +30,7 @@ export default function NewConsignmentModal({ onClose, onAdd }) {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const batchId = `BATCH-${Math.floor(1000 + Math.random() * 9000)}`;
 
@@ -65,7 +63,7 @@ export default function NewConsignmentModal({ onClose, onAdd }) {
       isToday: true,
       isDocked: eta.toLowerCase().includes("dock"),
       tripStatus: eta.toLowerCase().includes("dock") ? "COMPLETED" : "IN_TRANSIT",
-      dockLocation: "Bay 03 · Dock B",
+      dockLocation: "Dock B",
       transitExcursionCount: 0,
       carrierDriver,
       receiverDisposition: "PENDING",
@@ -79,10 +77,6 @@ export default function NewConsignmentModal({ onClose, onAdd }) {
       timeSeriesData: timeSeries,
     };
 
-    const seal = await calculateSHA256(payload);
-    payload.sha256Seal = seal;
-
-    sound.success();
     onAdd(payload);
     onClose();
   };
