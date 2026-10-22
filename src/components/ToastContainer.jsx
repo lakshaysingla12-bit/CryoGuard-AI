@@ -5,7 +5,7 @@ export default function ToastContainer({ toasts, onDismiss }) {
   if (!toasts || toasts.length === 0) return null;
 
   return (
-    <div className="toast-container">
+    <div className="toast-container" aria-live="polite">
       {toasts.map((t) => {
         const icons = {
           success: <CheckCircle2 size={18} className="toast__icon toast__icon--success" />,
@@ -22,12 +22,15 @@ export default function ToastContainer({ toasts, onDismiss }) {
               <div className="toast__message">{t.message}</div>
             </div>
             <button
+              type="button"
               className="toast__close-btn"
               onClick={() => onDismiss(t.id)}
               aria-label="Dismiss notification"
+              title="Dismiss"
             >
               <X size={14} />
             </button>
+            <div className="toast__progress-bar" />
           </div>
         );
       })}
