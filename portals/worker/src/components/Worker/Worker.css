@@ -499,6 +499,27 @@
   color: #9ca3af;
 }
 
+.worker-problem-report {
+  display: grid;
+  gap: 7px;
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid #dbe3ef;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.worker-report-heading { display: flex; align-items: center; gap: 7px; margin-bottom: 2px; color: #b45309; font-size: 12px; }
+.worker-report-label { margin-top: 3px; color: #374151; font-size: 10px; font-weight: 600; }
+.worker-problem-report input,
+.worker-problem-report select,
+.worker-problem-report textarea { width: 100%; border: 1px solid #d1d5db; border-radius: 6px; padding: 8px 9px; background: #fff; color: #172033; font: inherit; font-size: 11px; }
+.worker-problem-report textarea { resize: vertical; }
+.worker-report-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.worker-report-footer span { color: #15803d; font-size: 10px; }
+.worker-report-footer button { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 6px; padding: 8px 11px; background: #0891b2; color: #fff; font-size: 11px; font-weight: 600; }
+.worker-report-footer button:disabled { cursor: not-allowed; opacity: .55; }
+
 /* Fix dashboard text colors */
 
 .dashboard-card {

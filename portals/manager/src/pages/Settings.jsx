@@ -6,14 +6,19 @@ import { useLive } from "../context/LiveContext.jsx";
 
 function Settings() {
   const { user } = useAuth();
-  const { showToast } = useLive();
+  const { showToast, setToastNotificationsEnabled } = useLive();
   const [form, setForm] = useState(null);
   const [message, setMessage] = useState({ type: "", text: "" });
 
   const canEdit = user.role === "Manager";
 
   useEffect(() => {
-    api("/settings").then(setForm);
+    api("/settings").then((settings) => {
+      const next = { ...settings, toastNotifications: settings.toastNotifications !== false };
+      setForm(next);
+      setToastNotificationsEnabled(next.toastNotifications);
+      localStorage.setItem("cryoguard_toast_notifications", String(next.toastNotifications));
+    });
   }, []);
 
   // one handler for every input, it uses the input's name
@@ -27,7 +32,10 @@ function Settings() {
     e.preventDefault();
     try {
       const saved = await api("/settings", { method: "PUT", body: form });
-      setForm(saved);
+      const next = { ...saved, toastNotifications: saved.toastNotifications !== false };
+      setForm(next);
+      setToastNotificationsEnabled(next.toastNotifications);
+      localStorage.setItem("cryoguard_toast_notifications", String(next.toastNotifications));
       setMessage({ type: "success", text: "Settings saved" });
       showToast({ title: "Settings saved", message: `${user.companyName || "Company"} settings have been updated.`, kind: "success" });
     } catch (err) {
@@ -67,19 +75,11 @@ function Settings() {
 
             <div className="col-12">
               <div className="card-box">
-                <h5 className="card-title-text">Fleet and notifications</h5>
+                <h5 className="card-title-text">Notifications</h5>
 
-                <div className="form-check form-switch mb-2">
-                  <input className="form-check-input" type="checkbox" id="autoDispatch" name="autoDispatch" checked={form.autoDispatch} onChange={handleChange} />
-                  <label className="form-check-label" htmlFor="autoDispatch">Send vehicles back automatically after a delivery</label>
-                </div>
-                <div className="form-check form-switch mb-2">
-                  <input className="form-check-input" type="checkbox" id="emailAlerts" name="emailAlerts" checked={form.emailAlerts} onChange={handleChange} />
-                  <label className="form-check-label" htmlFor="emailAlerts">Email critical alerts</label>
-                </div>
                 <div className="form-check form-switch">
-                  <input className="form-check-input" type="checkbox" id="smsAlerts" name="smsAlerts" checked={form.smsAlerts} onChange={handleChange} />
-                  <label className="form-check-label" htmlFor="smsAlerts">SMS critical alerts</label>
+                  <input className="form-check-input" type="checkbox" id="toastNotifications" name="toastNotifications" checked={form.toastNotifications} onChange={handleChange} />
+                  <label className="form-check-label" htmlFor="toastNotifications">Show toast notifications</label>
                 </div>
               </div>
             </div>

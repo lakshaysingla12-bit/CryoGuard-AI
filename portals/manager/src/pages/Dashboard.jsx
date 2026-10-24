@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { useLive } from "../context/LiveContext.jsx";
 import useFetch from "../context/useFetch.js";
@@ -10,25 +11,19 @@ import FleetMap from "../components/LiveFleetMap.jsx";
 import TeamSupervision from "../components/TeamSupervision.jsx";
 import { alertIcon, timeAgo } from "../utils";
 import { useAuth } from "../context/AuthContext.jsx";
+import { setShipmentStatusFilter } from "../store/dashboardSlice.js";
+
+const shipmentFilterOptions = ["All", "In Transit", "Delayed", "Critical", "Delivered"];
 
 function Dashboard() {
   const { user } = useAuth();
   const { vehicles, summary, tick, alertCount } = useLive();
   const [selectedVehicleId, setSelectedVehicleId] = useState(null);
+  const dispatch = useDispatch();
+  const shipmentStatusFilter = useSelector((state) => state.dashboard.shipmentStatusFilter);
 
   const alerts = useFetch("/alerts?status=open&limit=5", [alertCount]);
   const shipments = useFetch("/shipments", [tick]);
-
-  const selectedVehicle = useMemo(() => {
-    if (!selectedVehicleId) return null;
-    return (vehicles || []).find(
-      (v) => v.id === selectedVehicleId || v.shipmentId === selectedVehicleId
-    ) || null;
-  }, [vehicles, selectedVehicleId]);
-
-  if (!summary) return <p className="text-secondary">Loading dashboard...</p>;
-
-  const inTransit = (shipments.data || []).filter((s) => s.status === "In Transit").slice(0, 5);
 
   const inTransitVehicles = useMemo(() => {
     return (vehicles || []).filter((v) => {
@@ -45,6 +40,19 @@ function Dashboard() {
     });
   }, [vehicles]);
 
+  const selectedVehicle = useMemo(() => {
+    if (!selectedVehicleId) return null;
+    return (vehicles || []).find(
+      (v) => v.id === selectedVehicleId || v.shipmentId === selectedVehicleId
+    ) || null;
+  }, [vehicles, selectedVehicleId]);
+
+  if (!summary) return <p className="text-secondary">Loading dashboard...</p>;
+
+  const inTransit = (shipments.data || []).filter((s) => s.status === "In Transit").slice(0, 5);
+  const visibleShipments = (shipments.data || [])
+    .filter((shipment) => shipmentStatusFilter === "All" || shipment.displayStatus === shipmentStatusFilter)
+    .slice(0, 5);
   const shipmentStatuses = [
     { label: "On track", value: summary.statusBreakdown["On track"] || 0, color: "#38bdf8" },
     { label: "Delayed", value: summary.statusBreakdown.Delayed || 0, color: "#fbbf24" },
@@ -110,7 +118,7 @@ function Dashboard() {
       <div className="row g-3 mb-4">
         <div className="col-lg-8">
           <div className="card-box h-100">
-            <div className="d-flex justify-content-between align-items-center mb-3">
+            <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
               <h5 className="card-title-text mb-0">Live Fleet Tracking</h5>
               <div className="d-flex gap-3 small">
                 <span><i className="bi bi-circle-fill text-success me-1"></i>Normal</span>
@@ -188,8 +196,24 @@ function Dashboard() {
         <div className="col-lg-8">
           <div className="card-box h-100">
             <div className="d-flex justify-content-between align-items-center mb-3">
-              <h5 className="card-title-text mb-0">Shipments On The Road</h5>
-              <Link to="/shipments" className="text-decoration-none small">View all</Link>
+              <h5 className="card-title-text mb-0">
+                {shipmentStatusFilter === "In Transit" ? "Shipments On The Road" : "Shipments"}
+              </h5>
+              <div className="d-flex align-items-center gap-2 dashboard-shipment-controls">
+                <select
+                  className="form-select form-select-sm dashboard-shipment-filter"
+                  aria-label="Filter dashboard shipments by status"
+                  value={shipmentStatusFilter}
+                  onChange={(event) => dispatch(setShipmentStatusFilter(event.target.value))}
+                >
+                  {shipmentFilterOptions.map((status) => (
+                    <option key={status} value={status}>{status === "All" ? "All statuses" : status}</option>
+                  ))}
+                </select>
+                <Link to="/shipments" className="text-decoration-none small dashboard-view-all">
+                  View all <i className="bi bi-arrow-right" aria-hidden="true" />
+                </Link>
+              </div>
             </div>
 
             <div className="table-responsive">
@@ -204,7 +228,7 @@ function Dashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {inTransit.map((s) => (
+                  {visibleShipments.map((s) => (
                     <tr key={s.id}>
                       <td>
                         {s.id}
@@ -220,6 +244,18 @@ function Dashboard() {
                       <td><StatusBadge status={s.displayStatus} /></td>
                     </tr>
                   ))}
+                  {visibleShipments.length === 0 && (
+                    <tr>
+                      <td colSpan="5" className="text-center text-secondary py-4">No shipments match this status.</td>
+                    </tr>
+                  )}
+                  {visibleShipments.length === 0 && (
+                    <tr>
+                      <td colSpan="5" className="text-center text-secondary py-4">
+                        No shipments match this status.
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>

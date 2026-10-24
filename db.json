@@ -19778,7 +19778,8 @@
       "emailAlerts": true,
       "smsAlerts": false,
       "companyId": "MCPE-001",
-      "managerId": "cmgr-001"
+      "managerId": "cmgr-001",
+      "toastNotifications": true
     },
     {
       "id": "settings-cmgr-002",

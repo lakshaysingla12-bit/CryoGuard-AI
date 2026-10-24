@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useLive } from "../context/LiveContext";
 import { getMyProfile } from "../api/myProfileApi.js";
 import { useTheme } from "../context/ThemeContext.jsx";
@@ -9,8 +9,6 @@ function Topbar() {
   const { summary } = useLive();
   const { theme, toggleTheme } = useTheme();
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
-  const [search, setSearch] = useState("");
   const [profile, setProfile] = useState({ name: "Aarav Sharma" });
 
   useEffect(() => {
@@ -29,11 +27,6 @@ function Topbar() {
     };
   }, []);
 
-  function handleSearch(event) {
-    event.preventDefault();
-    navigate("/shipments?q=" + encodeURIComponent(search.trim()));
-  }
-
   const displayName = user?.companyId ? user.name : profile.name;
   const initials = displayName
     .split(/\s+/)
@@ -44,16 +37,16 @@ function Topbar() {
 
   return (
     <header className="topbar">
-      <form className="search-box" onSubmit={handleSearch}>
-        <i className="bi bi-search"></i>
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search shipments, vehicles, locations..."
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
-      </form>
+      {user?.companyId && (
+        <div className="company-context d-none d-lg-flex" title={`${user.companyName} · ${user.companyId}`}>
+          <span className="company-context-icon"><i className="bi bi-buildings" /></span>
+          <span className="company-context-copy">
+            <small>COMPANY PORTAL</small>
+            <strong>{user.companyName}</strong>
+          </span>
+          <span className="company-code-pill">{user.companyId}</span>
+        </div>
+      )}
 
       <div className="d-flex align-items-center gap-3">
         <Link to="/alerts" className="icon-btn position-relative" aria-label="Alerts">
@@ -72,17 +65,6 @@ function Topbar() {
         >
           <i className={`bi ${theme === "dark" ? "bi-sun" : "bi-moon-stars"}`} />
         </button>
-
-        {user?.companyId && (
-          <div className="company-context d-none d-lg-flex" title={`${user.companyName} · ${user.companyId}`}>
-            <span className="company-context-icon"><i className="bi bi-buildings" /></span>
-            <span className="company-context-copy">
-              <small>COMPANY PORTAL</small>
-              <strong>{user.companyName}</strong>
-            </span>
-            <span className="company-code-pill">{user.companyId}</span>
-          </div>
-        )}
 
         <Link
           to="/my-profile"
@@ -105,6 +87,7 @@ function Topbar() {
         >
           <i className="bi bi-box-arrow-right"></i>
         </button>
+
       </div>
     </header>
   );

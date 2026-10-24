@@ -1,3 +1,5 @@
+import { jsPDF } from "jspdf";
+
 const API_BASE = "/api";
 const TOKEN_KEY = "cryoguard_token";
 const LEGACY_COMPANY_IDS = {
@@ -179,7 +181,8 @@ export async function api(path, { method = "GET", body } = {}) {
     const scope = getDemoScope();
     const facilities = await request("/facilities");
     const sources = await request("/sources");
-    const source = sources.find((entry) => entry.location === body.origin && entry.cargoCategory === body.cargo);
+    const source = sources.find((entry) => entry.id === body.sourceId && entry.cargoCategory === body.cargo)
+      || sources.find((entry) => entry.location === body.origin && entry.cargoCategory === body.cargo);
     if (!source) throw new Error("No cargo source is configured for this cargo type and city yet.");
     if (scope?.type === "company" && source.companyId !== scope.id) throw new Error("This source is outside your company.");
     if (scope?.type === "company" && vehicle.companyId !== scope.id) throw new Error("Select a vehicle assigned to your company.");
@@ -568,30 +571,65 @@ export async function api(path, { method = "GET", body } = {}) {
   return request(`${route}${url.search}`, { method: verb, ...(body === undefined ? {} : { body }) });
 }
 
-export async function downloadFile(_path, filename, report) {
-  const content = [
-    "CryoGuard AI - Demo Compliance Report",
-    `Report: ${report?.title || filename}`,
-    `Shipment: ${report?.shipmentId || "—"}`,
-    `Source company: ${report?.companyName || "—"} (${report?.companyId || "—"})`,
-    `Destination: ${report?.facilityName || report?.hospitalName || "—"} (${report?.facilityId || report?.hospitalId || "—"})`,
-    `Auditor: ${report?.auditor || "—"}`,
-    `Received temperature: ${report?.temperatureAtDelivery ?? "—"}${report?.temperatureUnit || "°C"}`,
-    `Temperature within safe range: ${report?.temperatureWithinRange === undefined ? "Not recorded" : report.temperatureWithinRange ? "Yes" : "No"}`,
-    `Cargo condition: ${report?.qualityCondition || "Not recorded"}`,
-    `Packaging condition: ${report?.packagingCondition || "Not recorded"}`,
-    `Audit notes: ${report?.auditNotes || "—"}`,
-    `Generated: ${new Date().toLocaleString()}`,
-    `Result: ${report?.status || "Pending"}`,
-    "",
-    "This is a frontend demo report generated from shared JSON data.",
-  ].join("\n");
+export async function downloadFile(_path, filename, report = {}) {
+  const pdf = new jsPDF({ unit: "mm", format: "a4" });
+  const left = 18;
+  const right = 192;
+  let y = 24;
 
-  const blob = new Blob([content], { type: "text/plain" });
-  const objectUrl = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = objectUrl;
-  link.download = filename.replace(/\.pdf$/i, ".txt");
-  link.click();
-  URL.revokeObjectURL(objectUrl);
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(18);
+  pdf.setTextColor(14, 116, 144);
+  pdf.text("CryoGuard AI", left, y);
+  y += 9;
+  pdf.setFontSize(13);
+  pdf.setTextColor(30, 41, 59);
+  pdf.text("Compliance Report", left, y);
+  y += 5;
+  pdf.setDrawColor(56, 189, 248);
+  pdf.line(left, y, right, y);
+  y += 9;
+
+  const details = [
+    ["Report", report.title || "Shipment compliance report"],
+    ["Shipment", report.shipmentId || report.id || "—"],
+    ["Cargo", report.cargo || report.category || "—"],
+    ["Source company", `${report.companyName || "—"}${report.companyId ? ` (${report.companyId})` : ""}`],
+    ["Dispatch source", `${report.sourceName || report.sourceLocation || report.origin || "—"}${report.originCity ? ` · ${report.originCity}` : ""}`],
+    ["Destination", `${report.facilityName || report.hospitalName || report.destination || "—"}${report.facilityId || report.hospitalId ? ` (${report.facilityId || report.hospitalId})` : ""}`],
+    ["Auditor", report.auditorName || report.auditor || "—"],
+    ["Vehicle", report.vehicleId || "—"],
+    ["Safe temperature range", report.minTemp != null || report.maxTemp != null ? `${report.minTemp ?? "—"}°C to ${report.maxTemp ?? "—"}°C` : "—"],
+    ["Temperature at delivery", report.temperatureAtDelivery != null ? `${report.temperatureAtDelivery}${report.temperatureUnit || "°C"}` : report.currentTemp != null || report.temp != null ? `${report.currentTemp ?? report.temp}°C` : "—"],
+    ["Temperature within range", report.temperatureWithinRange === undefined ? "Not recorded" : report.temperatureWithinRange ? "Yes" : "No"],
+    ["Cargo condition", report.qualityCondition || "Not recorded"],
+    ["Packaging condition", report.packagingCondition || "Not recorded"],
+    ["Audit notes", report.auditNotes || "—"],
+    ["Shipment status", report.displayStatus || report.status || "Pending"],
+    ["Report result", report.status || "Pending"],
+    ["Generated", new Date().toLocaleString("en-IN")],
+  ];
+
+  pdf.setFontSize(10);
+  for (const [label, rawValue] of details) {
+    const value = String(rawValue);
+    const lines = pdf.splitTextToSize(value, 126);
+    const rowHeight = Math.max(7, lines.length * 5);
+    if (y + rowHeight > 278) {
+      pdf.addPage();
+      y = 20;
+    }
+    pdf.setFont("helvetica", "bold");
+    pdf.setTextColor(71, 85, 105);
+    pdf.text(`${label}:`, left, y);
+    pdf.setFont("helvetica", "normal");
+    pdf.setTextColor(15, 23, 42);
+    pdf.text(lines, 66, y);
+    y += rowHeight;
+  }
+
+  pdf.setFontSize(8);
+  pdf.setTextColor(100, 116, 139);
+  pdf.text("Generated from CryoGuard AI demo data.", left, Math.min(y + 5, 287));
+  pdf.save(filename.replace(/\.(pdf|txt)$/i, "") + ".pdf");
 }
