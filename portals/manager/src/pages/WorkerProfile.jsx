@@ -12,7 +12,7 @@ function WorkerProfile() {
   const { tick } = useLive();
   const { data: users } = useFetch("/users");
   const { data: shipments, loading } = useFetch("/shipments", [tick]);
-  const { data: messages } = useFetch("/messages", [tick]);
+  const { data: alerts } = useFetch("/alerts", [tick]);
 
   if (!users || !shipments) {
     return <div className="card-box text-secondary">Loading driver profile…</div>;
@@ -31,9 +31,9 @@ function WorkerProfile() {
   const workerShipments = shipments
     .filter((shipment) => shipment.workerId === worker.id)
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  const workerReports = (messages || [])
-    .filter((message) => message.type === "worker_problem_report" && message.workerId === worker.id)
-    .sort((a, b) => new Date(b.sentAt || 0) - new Date(a.sentAt || 0));
+  const workerReports = (alerts || [])
+    .filter((alert) => alert.source === "worker_report" && alert.workerId === worker.id)
+    .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
   const shipmentCounts = {
     total: workerShipments.length,
     inTransit: workerShipments.filter((shipment) => shipment.displayStatus === "In Transit").length,
@@ -69,7 +69,7 @@ function WorkerProfile() {
 
       <section className="worker-reports-panel mb-4" aria-labelledby="worker-profile-reports-title">
         <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-          <h5 id="worker-profile-reports-title" className="card-title-text mb-0">Reports from {worker.name}</h5>
+          <h5 id="worker-profile-reports-title" className="card-title-text mb-0">Issues reported by {worker.name}</h5>
           <span className="badge rounded-pill text-bg-warning">{workerReports.length}</span>
         </div>
         {workerReports.length ? (
@@ -79,16 +79,16 @@ function WorkerProfile() {
                 <div className="worker-report-mark" aria-hidden="true"><i className="bi bi-exclamation-triangle" /></div>
                 <div className="worker-report-copy">
                   <div className="d-flex flex-wrap align-items-center gap-2">
-                    <strong>{report.category || "Problem report"}</strong>
+                    <strong>{report.type || "Problem report"}</strong>
                     {report.shipmentId && <span className="small text-secondary">{report.shipmentId}</span>}
                   </div>
                   <p className="mb-1">{report.message}</p>
-                  <small className="text-secondary">{report.sentAt ? new Date(report.sentAt).toLocaleString() : "Time unavailable"}</small>
+                  <small className="text-secondary">{report.createdAt ? new Date(report.createdAt).toLocaleString() : "Time unavailable"}</small>
                 </div>
               </article>
             ))}
           </div>
-        ) : <p className="text-secondary small mb-0">This worker has not submitted a report.</p>}
+        ) : <p className="text-secondary small mb-0">This worker has not reported an issue.</p>}
       </section>
 
       <section className="card-box" aria-labelledby="driver-shipments-title">

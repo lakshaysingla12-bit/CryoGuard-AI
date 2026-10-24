@@ -218,7 +218,25 @@ if (telemetryMatch && verb === "GET") {
 
   if (route === "/ai/overview") return getAIOverview();
 
-  if (route === "/alerts") {
+  if (route === "/alerts" && verb === "POST") {
+    const report = {
+      ...body,
+      id: body?.id || `ALT-${Date.now()}`,
+      createdAt: body?.createdAt || new Date().toISOString(),
+      resolved: false,
+    };
+    const response = await fetch("/api/alerts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(report),
+    });
+    if (!response.ok) throw new Error((await response.text()) || "Unable to report the issue.");
+    const savedReport = await response.json();
+    alerts = [savedReport, ...alerts];
+    return savedReport;
+  }
+
+  if (route === "/alerts" && verb === "GET") {
     let result = [...alerts];
 
     const status = params.get("status");
