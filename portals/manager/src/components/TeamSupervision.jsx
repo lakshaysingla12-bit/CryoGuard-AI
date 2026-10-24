@@ -13,7 +13,7 @@ function TeamSupervision() {
   const { data: users } = useFetch("/users");
   const { data: assignments, reload: reloadAssignments } = useFetch("/assignments", [tick]);
   const { data: shipments } = useFetch("/shipments", [tick]);
-  const { data: messages, reload: reloadMessages } = useFetch("/messages");
+  const { data: messages, reload: reloadMessages } = useFetch("/messages", [tick]);
   const [messagingWorker, setMessagingWorker] = useState(null);
   const [messageText, setMessageText] = useState("");
   const [messageError, setMessageError] = useState("");
@@ -33,6 +33,9 @@ function TeamSupervision() {
   }
 
   const workers = users.filter((user) => user.role === "Worker");
+  const workerReports = (messages || [])
+    .filter((message) => message.type === "worker_problem_report" && (!manager?.companyId || message.companyId === manager.companyId))
+    .sort((a, b) => new Date(b.sentAt || 0) - new Date(a.sentAt || 0));
   const teamAssignments = manager?.companyId
     ? assignments.filter((assignment) => assignment.companyId === manager.companyId || assignment.supervisorId === manager.id)
     : assignments;
@@ -163,6 +166,33 @@ function TeamSupervision() {
         </Link>
       </div>
 
+      <section className="worker-reports-panel mb-4" aria-labelledby="worker-reports-title">
+        <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+          <div>
+            <h6 id="worker-reports-title" className="mb-0">Reports from workers</h6>
+          </div>
+          <span className="badge rounded-pill text-bg-warning">{workerReports.length} {workerReports.length === 1 ? "report" : "reports"}</span>
+        </div>
+        {workerReports.length ? (
+          <div className="worker-reports-list">
+            {workerReports.slice(0, 5).map((report) => (
+              <article className="worker-report-row" key={report.id}>
+                <div className="worker-report-mark" aria-hidden="true"><i className="bi bi-exclamation-triangle" /></div>
+                <div className="worker-report-copy">
+                  <div className="d-flex flex-wrap align-items-center gap-2">
+                    <strong>{report.fromName || "Worker"}</strong>
+                    <span className="badge text-bg-secondary">{report.category || "Problem"}</span>
+                    {report.shipmentId && <span className="small text-secondary">{report.shipmentId}</span>}
+                  </div>
+                  <p className="mb-1">{report.message}</p>
+                  <small className="text-secondary">{report.sentAt ? new Date(report.sentAt).toLocaleString() : "Time unavailable"}</small>
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : <p className="text-secondary small mb-0">No reports yet.</p>}
+      </section>
+
       <div className="table-responsive">
         <table className="table align-middle mb-0 supervision-table">
           <colgroup>
@@ -184,7 +214,7 @@ function TeamSupervision() {
           <tbody>
             {rows.map(({ worker, assigned, completed, active, attention }) => {
               const progress = assigned.length ? Math.round((completed / assigned.length) * 100) : 0;
-              const latestMessage = messages?.filter((entry) => entry.workerId === worker.id)
+              const latestMessage = messages?.filter((entry) => entry.workerId === worker.id && entry.type !== "worker_problem_report")
                 .sort((a, b) => new Date(b.sentAt) - new Date(a.sentAt))[0];
               return (
                 <tr key={worker.id}>

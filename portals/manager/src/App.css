@@ -161,6 +161,9 @@ a {
 
 /* ---------- Top bar ---------- */
 .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -169,27 +172,6 @@ a {
   border-radius: 10px;
   padding: 0.8rem 1.25rem;
   gap: 1rem;
-}
-
-.search-box {
-  position: relative;
-  width: 100%;
-  max-width: 520px;
-}
-
-.search-box i {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-muted);
-}
-
-.search-box input {
-  padding-left: 40px;
-  background: #0c1a2b;
-  border-color: var(--border);
-  border-radius: 10px;
 }
 
 .icon-btn {
@@ -206,8 +188,9 @@ a {
 }
 
 .company-context {
-  min-width: 230px;
-  max-width: 310px;
+  min-width: 360px;
+  max-width: 440px;
+  flex: 0 1 auto;
   gap: 0.65rem;
   align-items: center;
   padding: 0.35rem 0.55rem;
@@ -243,11 +226,9 @@ a {
 }
 
 .company-context-copy strong {
-  max-width: 165px;
-  overflow: hidden;
+  max-width: none;
   color: inherit;
   font-size: 0.9rem;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -413,6 +394,39 @@ a {
   border-color: var(--accent);
   box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.15);
 }
+
+.dashboard-shipment-filter {
+  width: auto;
+  min-width: 138px;
+  color: #e2e8f0;
+}
+
+.dashboard-shipment-controls {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.dashboard-view-all {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: .35rem;
+  white-space: nowrap;
+}
+
+.worker-reports-panel {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: .75rem;
+  background: rgba(9, 16, 27, .45);
+}
+
+.worker-reports-panel h6 { color: #e5e9f0; font-weight: 700; }
+.worker-reports-list { display: grid; gap: .65rem; }
+.worker-report-row { display: flex; align-items: flex-start; gap: .75rem; padding: .75rem; border: 1px solid var(--border); border-radius: .6rem; background: var(--bg-card); }
+.worker-report-mark { display: grid; place-items: center; flex: 0 0 2rem; height: 2rem; border-radius: .5rem; color: #fbbf24; background: rgba(251, 191, 36, .1); }
+.worker-report-copy { min-width: 0; }
+.worker-report-copy p { margin-top: .35rem; overflow-wrap: anywhere; }
 
 /* ---------- Monitoring page ---------- */
 .vehicle-list {
@@ -684,7 +698,6 @@ html[data-theme="light"] .side-link.active { color: var(--accent); background: #
 
 html[data-theme="light"] .brand-icon,
 html[data-theme="light"] .icon-btn,
-html[data-theme="light"] .search-box input,
 html[data-theme="light"] .form-control,
 html[data-theme="light"] .form-select,
 html[data-theme="light"] .vehicle-item,

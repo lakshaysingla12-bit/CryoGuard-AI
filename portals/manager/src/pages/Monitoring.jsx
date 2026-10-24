@@ -7,6 +7,19 @@ import StatsRow from "../components/StatsRow.jsx";
 
 const statusLabel = { normal: "Normal", warning: "Warning", critical: "Critical" };
 
+function getTemperatureStatus(vehicle) {
+  const status = String(vehicle.tempStatus || "").toLowerCase();
+  if (statusLabel[status]) return status;
+
+  const temperature = Number(vehicle.temp ?? vehicle.temperature);
+  const min = Number(vehicle.minTemp);
+  const max = Number(vehicle.maxTemp);
+  if (Number.isFinite(temperature) && Number.isFinite(min) && Number.isFinite(max)) {
+    return temperature < min || temperature > max ? "warning" : "normal";
+  }
+  return "normal";
+}
+
 function Monitoring() {
   const { vehicles } = useLive();
   const [selectedId, setSelectedId] = useState("TRK-01");
@@ -15,10 +28,10 @@ function Monitoring() {
     .filter((v) => v.status === "In Transit")
     .sort((a, b) => {
       const priority = { critical: 0, warning: 1, normal: 2 };
-      return (priority[a.tempStatus] ?? 3) - (priority[b.tempStatus] ?? 3);
+      return (priority[getTemperatureStatus(a)] ?? 3) - (priority[getTemperatureStatus(b)] ?? 3);
     });
-  const needsAttention = onRoad.filter((v) => v.tempStatus === "warning" || v.tempStatus === "critical").length;
-  const criticalCount = onRoad.filter((v) => v.tempStatus === "critical").length;
+  const needsAttention = onRoad.filter((v) => ["warning", "critical"].includes(getTemperatureStatus(v))).length;
+  const criticalCount = onRoad.filter((v) => getTemperatureStatus(v) === "critical").length;
   // if the selected truck finished its trip, fall back to the first one
   const selected = onRoad.find((v) => v.id === selectedId) || onRoad[0];
   const formattedSpeed = selected?.speed == null || selected.speed === ""
@@ -63,7 +76,7 @@ function Monitoring() {
                 </div>
                 <div className="text-end">
                   <div>{v.temp}°C</div>
-                  <StatusBadge status={statusLabel[v.tempStatus]} />
+                  <StatusBadge status={statusLabel[getTemperatureStatus(v)]} />
                 </div>
               </button>
             ))}
@@ -82,7 +95,7 @@ function Monitoring() {
                 {selected.origin} → {selected.destination} · Driver {selected.driver} · {selected.progress}% of trip done
               </small>
             </div>
-            <StatusBadge status={statusLabel[selected.tempStatus]} />
+            <StatusBadge status={statusLabel[getTemperatureStatus(selected)]} />
           </div>
 
           <div className="row g-3">

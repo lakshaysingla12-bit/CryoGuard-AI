@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { api, downloadFile } from "../api/client";
 import { useLive } from "../context/LiveContext";
@@ -36,7 +36,7 @@ function Shipments() {
     .filter(
       (s) =>
         !text ||
-        [s.id, s.cargo, s.origin, s.sourceName, s.companyName, s.destination, s.facilityId, s.vehicleId, s.workerName, s.workerId].some((field) =>
+        [s.id, s.cargo, s.origin, s.originCity, s.sourceName, s.companyName, s.destination, s.destinationCity, s.facilityId, s.vehicleId, s.vehiclePlate, s.workerName, s.workerId].some((field) =>
           String(field || "").toLowerCase().includes(text)
         )
     );
@@ -153,7 +153,7 @@ function Shipments() {
                     <button
                       className="btn btn-outline-secondary btn-sm"
                       title="Download compliance report"
-                      onClick={() => downloadFile(`/reports/compliance/${s.id}`, `${s.id}-compliance.pdf`)}
+                      onClick={() => downloadFile(`/reports/compliance/${s.id}`, `${s.id}-compliance.pdf`, s)}
                     >
                       <i className="bi bi-file-earmark-pdf"></i>
                     </button>
@@ -185,11 +185,13 @@ function Shipments() {
 
 function NewShipmentForm({ hasIdleVehicle, onClose, onCreated }) {
   const { vehicles, showToast } = useLive();
+  const { user } = useAuth();
   const options = useFetch("/options");
 
   const [form, setForm] = useState({
     cargo: "Pharmaceuticals & Vaccines",
     origin: "Pune",
+    sourceId: "",
     destination: "Delhi",
     destinationFacilityId: "",
     vehicleId: "",
@@ -200,6 +202,22 @@ function NewShipmentForm({ hasIdleVehicle, onClose, onCreated }) {
   const [busy, setBusy] = useState(false);
 
   const idleVehicles = vehicles.filter((v) => v.status === "Idle");
+  const managerSource = options.data?.sources.find((source) => source.companyId === user?.companyId);
+
+  useEffect(() => {
+    if (!user?.companyId || !options.data?.sources.length) return;
+    const source = options.data.sources.find((entry) => entry.companyId === user.companyId);
+    if (!source) return;
+    const facility = options.data.facilities.find((entry) => entry.cargoType === source.cargoCategory);
+    setForm((current) => ({
+      ...current,
+      cargo: source.cargoCategory,
+      origin: source.location,
+      sourceId: source.id,
+      destination: facility?.location || current.destination,
+      destinationFacilityId: facility?.id || "",
+    }));
+  }, [user?.companyId, options.data]);
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -208,7 +226,7 @@ function NewShipmentForm({ hasIdleVehicle, onClose, onCreated }) {
   // picking a cargo fills in its normal temperature range
   function handleCargoChange(e) {
     const type = options.data.cargoTypes.find((c) => c.name === e.target.value);
-    const matchingSources = options.data.sources.filter((source) => source.cargoCategory === type.name);
+    const matchingSources = options.data.sources.filter((source) => source.cargoCategory === type.name && (!user?.companyId || source.companyId === user.companyId));
     const matchingFacilities = options.data.facilities.filter((facility) => facility.cargoType === type.name);
     const origin = matchingSources.some((source) => source.location === form.origin)
       ? form.origin
@@ -217,7 +235,7 @@ function NewShipmentForm({ hasIdleVehicle, onClose, onCreated }) {
       || matchingFacilities.find((facility) => facility.location === form.destination)
       || matchingFacilities[0];
     const destination = selectedFacility?.location || "";
-    setForm({ ...form, cargo: type.name, origin, destination, destinationFacilityId: selectedFacility?.id || "", minTemp: type.min, maxTemp: type.max });
+    setForm({ ...form, cargo: type.name, origin, sourceId: matchingSources.find((source) => source.location === origin)?.id || "", destination, destinationFacilityId: selectedFacility?.id || "", minTemp: type.min, maxTemp: type.max });
   }
 
   async function handleSubmit(e) {
@@ -247,7 +265,7 @@ function NewShipmentForm({ hasIdleVehicle, onClose, onCreated }) {
         <form onSubmit={handleSubmit}>
           <label className="form-label">Cargo</label>
           <select className="form-select mb-3" value={form.cargo} onChange={handleCargoChange}>
-            {options.data.cargoTypes.map((c) => (
+            {options.data.cargoTypes.filter((cargo) => !user?.companyId || options.data.sources.some((source) => source.companyId === user.companyId && source.cargoCategory === cargo.name)).map((c) => (
               <option key={c.name}>{c.name}</option>
             ))}
           </select>
@@ -255,11 +273,20 @@ function NewShipmentForm({ hasIdleVehicle, onClose, onCreated }) {
           <div className="row mb-3">
             <div className="col">
               <label className="form-label">Cargo source company</label>
-              <select className="form-select" name="origin" value={form.origin} onChange={handleChange}>
-                {options.data.sources.filter((source) => source.cargoCategory === form.cargo).map((source) => (
-                  <option key={source.id} value={source.location}>{source.companyName} · {source.name} · {source.location}</option>
-                ))}
-              </select>
+              {user?.companyId ? (
+                <input
+                  className="form-control"
+                  value={managerSource ? `${managerSource.companyName} · ${managerSource.name} · ${managerSource.location}` : "Loading company source…"}
+                  readOnly
+                  aria-label="Fixed cargo source company"
+                />
+              ) : (
+                <select className="form-select" name="origin" value={form.origin} onChange={handleChange}>
+                  {options.data.sources.filter((source) => source.cargoCategory === form.cargo).map((source) => (
+                    <option key={source.id} value={source.location}>{source.companyName} · {source.name} · {source.location}</option>
+                  ))}
+                </select>
+              )}
             </div>
             <div className="col">
               <label className="form-label">Receiving facility</label>

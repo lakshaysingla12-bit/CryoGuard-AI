@@ -10,11 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@maplibre/maplibre-gl-leaflet": "^0.1.4",
     "@fortawesome/fontawesome-svg-core": "^7.3.1",
     "@fortawesome/free-brands-svg-icons": "^7.3.1",
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
     "@fortawesome/react-fontawesome": "^3.5.0",
+    "@maplibre/maplibre-gl-leaflet": "^0.1.4",
+    "@reduxjs/toolkit": "^2.13.0",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.13.2",
     "canvas-confetti": "^1.9.4",
@@ -27,6 +28,7 @@
     "react-dom": "^19.2.8",
     "react-fontawesome": "^1.7.1",
     "react-leaflet": "^5.0.0",
+    "react-redux": "^9.3.0",
     "react-router-dom": "^7.18.3",
     "recharts": "^3.10.1",
     "socket.io-client": "^4.7.5"

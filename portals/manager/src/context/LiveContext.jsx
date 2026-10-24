@@ -32,17 +32,36 @@ export function LiveProvider({ children }) {
   const [tick, setTick] = useState(0);
   const [connected, setConnected] = useState(false);
   const [toasts, setToasts] = useState([]);
+  const [toastNotificationsEnabled, setToastNotificationsEnabled] = useState(() =>
+    localStorage.getItem("cryoguard_toast_notifications") !== "false"
+  );
   const seenAlertIds = useRef(null);
+
+  useEffect(() => {
+    api("/settings")
+      .then((settings) => {
+        if (typeof settings.toastNotifications === "boolean") {
+          setToastNotificationsEnabled(settings.toastNotifications);
+          localStorage.setItem("cryoguard_toast_notifications", String(settings.toastNotifications));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (!toastNotificationsEnabled) setToasts([]);
+  }, [toastNotificationsEnabled]);
 
   const dismissToast = useCallback((id) => {
     setToasts((current) => current.filter((toast) => toast.id !== id));
   }, []);
 
   const showToast = useCallback((alert) => {
+    if (!toastNotificationsEnabled) return;
     const toast = { ...alert, id: alert.id || `toast-${Date.now()}` };
     setToasts((current) => [...current, toast].slice(-4));
     window.setTimeout(() => dismissToast(toast.id), alert.duration || 4200);
-  }, [dismissToast]);
+  }, [dismissToast, toastNotificationsEnabled]);
 
   const refresh = useCallback(async () => {
     try {
@@ -90,6 +109,8 @@ export function LiveProvider({ children }) {
     setAlerts,
     showToast,
     toasts,
+    toastNotificationsEnabled,
+    setToastNotificationsEnabled,
     dismissToast,
     refresh,
   };
