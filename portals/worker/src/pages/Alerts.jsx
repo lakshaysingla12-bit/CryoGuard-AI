@@ -7,11 +7,13 @@ import PageHeader from "../components/Alerts/PageHeader.jsx";
 import StatusBadge from "../components/Alerts/StatusBadge.jsx";
 import "./Alerts.css";
 import LogoutButton from "../components/LogoutButton.jsx";
+import { useWorker } from "../context/WorkerContext.jsx";
 
 const levels = ["All", "Critical", "Warning"];
 
 function WorkerAlerts() {
   const { alertCount } = useLive();
+  const { worker } = useWorker();
 
   const [level, setLevel] = useState("All");
   const [showForm, setShowForm] = useState(false);
@@ -54,13 +56,21 @@ async function reportIssue(e) {
   try {
     await api("/alerts", {
       method: "POST",
-      body: JSON.stringify({
+      body: {
+        id: `ALT-${Date.now()}`,
+        source: "worker_report",
+        workerId: worker?.id || "",
+        workerName: worker?.name || "Worker",
+        companyId: worker?.companyId || "",
+        companyName: worker?.companyName || "",
         type: form.type,
         level: form.level,
         vehicleId: form.vehicleId.trim(),
         shipmentId: form.shipmentId.trim(),
         message: form.description.trim(),
-      }),
+        createdAt: new Date().toISOString(),
+        resolved: false,
+      },
     });
 
     setMessage("Issue reported successfully!");

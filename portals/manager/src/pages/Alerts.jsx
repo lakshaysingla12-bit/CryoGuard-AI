@@ -91,6 +91,9 @@ function Alerts() {
 
             <div className="flex-grow-1">
               <div className="fw-medium">{a.type}</div>
+              {a.source === "worker_report" && (
+                <small className="d-block text-info">Reported by {a.workerName || "Worker"}</small>
+              )}
               <small className="text-secondary">
                 {a.vehicleId} · {a.shipmentId} · {timeAgo(a.createdAt)}
               </small>

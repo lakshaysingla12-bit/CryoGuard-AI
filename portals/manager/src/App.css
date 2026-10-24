@@ -414,14 +414,6 @@ a {
   white-space: nowrap;
 }
 
-.worker-reports-panel {
-  padding: 1rem;
-  border: 1px solid var(--border);
-  border-radius: .75rem;
-  background: rgba(9, 16, 27, .45);
-}
-
-.worker-reports-panel h6 { color: #e5e9f0; font-weight: 700; }
 .worker-reports-list { display: grid; gap: .65rem; }
 .worker-report-row { display: flex; align-items: flex-start; gap: .75rem; padding: .75rem; border: 1px solid var(--border); border-radius: .6rem; background: var(--bg-card); }
 .worker-report-mark { display: grid; place-items: center; flex: 0 0 2rem; height: 2rem; border-radius: .5rem; color: #fbbf24; background: rgba(251, 191, 36, .1); }
