@@ -8810,8 +8810,8 @@
       "message": "Cargo temperature is outside its safe range. Inspect the cooling unit.",
       "level": "Critical",
       "createdAt": "2026-10-19T10:00:00.000Z",
-      "resolved": true,
-      "status": "resolved",
+      "resolved": false,
+      "status": "open",
       "hospitalId": "",
       "facilityId": "FAC-PUN-001",
       "facilityName": "Pune Frozen Foods Distribution Hub",
@@ -9122,8 +9122,8 @@
       "message": "Review the latest vehicle reading and confirm the shipment is safe.",
       "level": "Warning",
       "createdAt": "2026-10-15T12:48:00.000Z",
-      "resolved": true,
-      "status": "resolved",
+      "resolved": false,
+      "status": "open",
       "hospitalId": "",
       "facilityId": "FAC-PUN-001",
       "facilityName": "Pune Frozen Foods Distribution Hub",
@@ -9424,6 +9424,21 @@
       "companyManagerName": "Meera Rao",
       "originCity": "Bengaluru",
       "workerName": "Nitin Rao"
+    },
+    {
+      "id": "ALT-1792914518021",
+      "source": "worker_report",
+      "workerId": "wrk-mcpe-001-01",
+      "workerName": "Priya Singh",
+      "companyId": "MCPE-001",
+      "companyName": "Mumbai Coastal Protein Exports",
+      "type": "Vehicle",
+      "level": "Warning",
+      "vehicleId": "",
+      "shipmentId": "SHP-1021",
+      "message": "tire punctured might lead to delay in shipment.",
+      "createdAt": "2026-10-25T07:48:38.021Z",
+      "resolved": false
     }
   ],
   "inventoryItems": [

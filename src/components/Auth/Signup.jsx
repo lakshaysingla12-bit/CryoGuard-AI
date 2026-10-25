@@ -313,7 +313,7 @@ export default function Signup({
               >
                 <Truck size={15} color="#22c55e" />
                 <span style={{ fontWeight: 600 }}>Worker</span>
-                <span style={{ fontSize: "9px", color: "#94a3b8" }}>Priya (TRK-01)</span>
+                <span style={{ fontSize: "9px", color: "#94a3b8" }}>Priya · {DEMO_CREDENTIALS.worker.id}</span>
               </button>
 
               <button
@@ -389,7 +389,13 @@ export default function Signup({
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder={isLogin ? "manager@cryoguard.demo or cmgr-001" : "name@company.com"}
+              placeholder={isLogin
+                ? formData.role === "worker"
+                  ? `${DEMO_CREDENTIALS.worker.email} or ${DEMO_CREDENTIALS.worker.id}`
+                  : formData.role === "auditor"
+                    ? `${DEMO_CREDENTIALS.auditor.email} or ${DEMO_CREDENTIALS.auditor.id}`
+                    : `${DEMO_CREDENTIALS.manager.email} or ${DEMO_CREDENTIALS.manager.id}`
+                : "name@company.com"}
               className={errors.email ? "auth-input-error" : ""}
             />
             {errors.email && <span className="auth-error">{errors.email}</span>}

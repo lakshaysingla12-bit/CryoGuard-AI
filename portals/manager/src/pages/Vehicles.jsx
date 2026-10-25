@@ -5,6 +5,22 @@ import StatusBadge from "../components/StatusBadge.jsx";
 
 const statusLabel = { normal: "Normal", warning: "Warning", critical: "Critical", idle: "Idle" };
 
+function getVehicleStatus(vehicle) {
+  const vehicleStatus = String(vehicle.status || "").toLowerCase();
+  if (vehicleStatus === "idle") return "Idle";
+
+  const temperatureStatus = String(vehicle.tempStatus || "").toLowerCase();
+  if (statusLabel[temperatureStatus]) return statusLabel[temperatureStatus];
+
+  const temperature = Number(vehicle.temp ?? vehicle.temperature);
+  const min = Number(vehicle.minTemp);
+  const max = Number(vehicle.maxTemp);
+  if (Number.isFinite(temperature) && Number.isFinite(min) && Number.isFinite(max)) {
+    return temperature < min || temperature > max ? "Warning" : "Normal";
+  }
+  return vehicleStatus === "in transit" ? "Normal" : "Idle";
+}
+
 function Vehicles() {
   const { vehicles } = useLive();
 
@@ -57,7 +73,7 @@ function Vehicles() {
                         <small>{v.coolingHealth}%</small>
                       </div>
                     </td>
-                    <td><StatusBadge status={v.status === "Idle" ? "Idle" : statusLabel[v.tempStatus]} /></td>
+                    <td><StatusBadge status={getVehicleStatus(v)} /></td>
                   </tr>
                 );
               })}

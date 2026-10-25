@@ -272,6 +272,23 @@ export async function api(path, { method = "GET", body } = {}) {
     return alerts.slice(0, limit);
   }
 
+  const alertReviewMatch = route.match(/^\/alerts\/([^/]+)\/review$/);
+  if (alertReviewMatch && verb === "PATCH") {
+    const alert = await request(`/alerts/${encodeURIComponent(alertReviewMatch[1])}`);
+    const scope = getDemoScope();
+    if (scope && !matchesScope(alert, scope)) throw new Error("This alert is outside your company or facility.");
+    if (alert.source !== "worker_report") throw new Error("Only worker problem reports can be reviewed here.");
+    if (!["Accepted", "Rejected"].includes(body?.reviewStatus)) throw new Error("Choose Accept or Reject for this report.");
+    return request(`/alerts/${encodeURIComponent(alert.id)}`, {
+      method: "PATCH",
+      body: {
+        reviewStatus: body.reviewStatus,
+        reviewedAt: new Date().toISOString(),
+        reviewedBy: scope?.userId || "",
+      },
+    });
+  }
+
   const resolveMatch = route.match(/^\/alerts\/([^/]+)\/resolve$/);
   if (resolveMatch && verb === "PATCH") {
     const alert = await request(`/alerts/${encodeURIComponent(resolveMatch[1])}`);

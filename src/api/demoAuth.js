@@ -18,7 +18,7 @@ export const DEMO_CREDENTIALS = {
   worker: {
     role: "worker",
     email: "worker@cryoguard.demo",
-    id: "wrk-001",
+    id: "wrk-mcpe-001-01",
     password: "password123",
     name: "Priya Singh",
     companyId: "MCPE-001",

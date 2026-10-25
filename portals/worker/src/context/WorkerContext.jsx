@@ -76,7 +76,7 @@ export function WorkerProvider({ children }) {
       // Keep a local preview profile when no portal login exists.
     }
     return {
-      id: "wrk-001",
+      id: "wrk-mcpe-001-01",
       name: "Priya Singh",
       email: "worker@cryoguard.demo",
       phone: "+91 98765 10000",

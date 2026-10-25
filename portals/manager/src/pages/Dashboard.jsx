@@ -17,12 +17,11 @@ const shipmentFilterOptions = ["All", "In Transit", "Delayed", "Critical", "Deli
 
 function Dashboard() {
   const { user } = useAuth();
-  const { vehicles, summary, tick, alertCount } = useLive();
+  const { vehicles, alerts: liveAlerts, summary, tick } = useLive();
   const [selectedVehicleId, setSelectedVehicleId] = useState(null);
   const dispatch = useDispatch();
   const shipmentStatusFilter = useSelector((state) => state.dashboard.shipmentStatusFilter);
 
-  const alerts = useFetch("/alerts?status=open&limit=5", [alertCount]);
   const shipments = useFetch("/shipments", [tick]);
 
   const inTransitVehicles = useMemo(() => {
@@ -50,6 +49,9 @@ function Dashboard() {
   if (!summary) return <p className="text-secondary">Loading dashboard...</p>;
 
   const inTransit = (shipments.data || []).filter((s) => s.status === "In Transit").slice(0, 5);
+  const recentAlerts = [...(liveAlerts || [])]
+    .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+    .slice(0, 2);
   const visibleShipments = (shipments.data || [])
     .filter((shipment) => shipmentStatusFilter === "All" || shipment.displayStatus === shipmentStatusFilter)
     .slice(0, 5);
@@ -172,17 +174,20 @@ function Dashboard() {
               <Link to="/alerts" className="text-decoration-none small">View all</Link>
             </div>
 
-            {alerts.data?.length === 0 && (
-              <p className="text-secondary mt-4 text-center">No open alerts. All clear.</p>
+            {recentAlerts.length === 0 && (
+              <p className="text-secondary mt-4 text-center">No alerts to show.</p>
             )}
 
-            {alerts.data?.map((a) => (
+            {recentAlerts.map((a) => (
               <div className="alert-row" key={a.id}>
                 <i className={"bi alert-icon " + alertIcon(a.level)}></i>
                 <div className="flex-grow-1">
                   <div>{a.type}</div>
                   <small className="text-secondary">{a.vehicleId} · {timeAgo(a.createdAt)}</small>
                 </div>
+                <span className={`badge ${a.resolved ? "bg-secondary" : a.level === "Critical" ? "bg-danger" : "bg-warning text-dark"}`}>
+                  {a.resolved ? "Resolved" : a.level}
+                </span>
               </div>
             ))}
           </div>

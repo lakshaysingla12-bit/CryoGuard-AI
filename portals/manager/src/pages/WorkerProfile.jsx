@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { api } from "../api/client.js";
 import PageHeader from "../components/PageHeader.jsx";
 import StatsRow from "../components/StatsRow.jsx";
 import StatusBadge from "../components/StatusBadge.jsx";
@@ -9,10 +11,31 @@ import { formatDateTime } from "../utils";
 
 function WorkerProfile() {
   const { workerId } = useParams();
-  const { tick } = useLive();
+  const { tick, showToast } = useLive();
   const { data: users } = useFetch("/users");
   const { data: shipments, loading } = useFetch("/shipments", [tick]);
-  const { data: alerts } = useFetch("/alerts", [tick]);
+  const { data: alerts, reload: reloadAlerts } = useFetch("/alerts", [tick]);
+  const [reviewingReportId, setReviewingReportId] = useState(null);
+
+  async function reviewReport(report, reviewStatus) {
+    setReviewingReportId(report.id);
+    try {
+      await api(`/alerts/${encodeURIComponent(report.id)}/review`, {
+        method: "PATCH",
+        body: { reviewStatus },
+      });
+      await reloadAlerts();
+      showToast({
+        title: `Report ${reviewStatus.toLowerCase()}`,
+        message: `${report.type || "Worker report"} · ${report.workerName || "Worker"}`,
+        kind: "success",
+      });
+    } catch (error) {
+      showToast({ title: "Could not review report", message: error.message, kind: "error" });
+    } finally {
+      setReviewingReportId(null);
+    }
+  }
 
   if (!users || !shipments) {
     return <div className="card-box text-secondary">Loading driver profile…</div>;
@@ -77,13 +100,37 @@ function WorkerProfile() {
             {workerReports.map((report) => (
               <article className="worker-report-row" key={report.id}>
                 <div className="worker-report-mark" aria-hidden="true"><i className="bi bi-exclamation-triangle" /></div>
-                <div className="worker-report-copy">
+                <div className="worker-report-copy flex-grow-1">
                   <div className="d-flex flex-wrap align-items-center gap-2">
                     <strong>{report.type || "Problem report"}</strong>
                     {report.shipmentId && <span className="small text-secondary">{report.shipmentId}</span>}
                   </div>
                   <p className="mb-1">{report.message}</p>
                   <small className="text-secondary">{report.createdAt ? new Date(report.createdAt).toLocaleString() : "Time unavailable"}</small>
+                </div>
+                <div className="d-flex flex-wrap align-items-center gap-2 ms-auto">
+                  {report.reviewStatus ? (
+                    <StatusBadge status={report.reviewStatus} />
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-success"
+                        disabled={reviewingReportId === report.id}
+                        onClick={() => reviewReport(report, "Accepted")}
+                      >
+                        Accept
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-danger"
+                        disabled={reviewingReportId === report.id}
+                        onClick={() => reviewReport(report, "Rejected")}
+                      >
+                        Reject
+                      </button>
+                    </>
+                  )}
                 </div>
               </article>
             ))}

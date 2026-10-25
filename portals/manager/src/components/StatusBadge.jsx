@@ -18,6 +18,8 @@ const colors = {
   "Low stock": "warning",
   "In stock": "success",
   "Needs review": "warning",
+  Accepted: "success",
+  Rejected: "danger",
   Compliant: "success",
   "Non-compliant": "danger",
 };

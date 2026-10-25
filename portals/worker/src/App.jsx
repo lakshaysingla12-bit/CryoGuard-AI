@@ -24,9 +24,9 @@ function App() {
   if (String(session?.role || "").toLowerCase() !== "worker") {
     session = {
       role: "worker",
-      accountId: "wrk-001",
+      accountId: "wrk-mcpe-001-01",
       user: {
-        id: "wrk-001",
+        id: "wrk-mcpe-001-01",
         name: "Priya Singh",
         email: "worker@cryoguard.demo",
         phone: "+91 98765 10000",
@@ -43,9 +43,21 @@ function App() {
     };
     try {
       localStorage.setItem("cryoguard_demo_session", JSON.stringify(session));
-      localStorage.setItem("cryoguard_token", "demo-token:wrk-001:company:MCPE-001");
+      localStorage.setItem("cryoguard_token", "demo-token:wrk-mcpe-001-01:company:MCPE-001");
     } catch {
       // ignore
+    }
+  } else if (session.user?.id === "wrk-001") {
+    session = {
+      ...session,
+      accountId: "wrk-mcpe-001-01",
+      user: { ...session.user, id: "wrk-mcpe-001-01" },
+    };
+    try {
+      localStorage.setItem("cryoguard_demo_session", JSON.stringify(session));
+      localStorage.setItem("cryoguard_token", `demo-token:${session.user.id}:company:${session.user.companyId || "MCPE-001"}`);
+    } catch {
+      // Keep this tab working even when storage is unavailable.
     }
   }
 
