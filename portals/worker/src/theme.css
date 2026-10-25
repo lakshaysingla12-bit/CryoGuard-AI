@@ -1,5 +1,28 @@
-/* One source of truth: SettingsContext sets data-theme on html and body. */
-:root,
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  color-scheme: dark;
+  --w-bg: #0f1117;
+  --w-panel: #151a23;
+  --w-panel-soft: #0c1a2b;
+  --w-border: #1f2a3a;
+  --w-text: #e5e9f0;
+  --w-muted: #8b98a9;
+  --cg-bg: #0f1117;
+  --cg-panel: #151a23;
+  --cg-panel-soft: #0c1a2b;
+  --cg-border: #1f2a3a;
+  --cg-text: #e5e9f0;
+  --cg-muted: #8b98a9;
+  --cg-cyan: #38bdf8;
+  --ship-bg: #0f1117;
+  --ship-panel: #151a23;
+  --ship-border: #1f2a3a;
+  --ship-text: #e5e9f0;
+  --ship-muted: #8b98a9;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
 html[data-theme="light"], body[data-theme="light"] {
   color-scheme: light;
   --w-bg: #f8fafc;
@@ -23,23 +46,23 @@ html[data-theme="light"], body[data-theme="light"] {
 
 html[data-theme="dark"], body[data-theme="dark"] {
   color-scheme: dark;
-  --w-bg: #080f1d;
-  --w-panel: #111c2e;
-  --w-panel-soft: #17263b;
-  --w-border: #263750;
+  --w-bg: #0f1117;
+  --w-panel: #151a23;
+  --w-panel-soft: #0c1a2b;
+  --w-border: #1f2a3a;
   --w-text: #e2e8f0;
-  --w-muted: #9aabc0;
-  --cg-bg: #080f1d;
-  --cg-panel: #111c2e;
-  --cg-panel-soft: #17263b;
-  --cg-border: #263750;
+  --w-muted: #8b98a9;
+  --cg-bg: #0f1117;
+  --cg-panel: #151a23;
+  --cg-panel-soft: #0c1a2b;
+  --cg-border: #1f2a3a;
   --cg-text: #e2e8f0;
-  --cg-muted: #9aabc0;
-  --ship-bg: #080f1d;
-  --ship-panel: #111c2e;
-  --ship-border: #263750;
+  --cg-muted: #8b98a9;
+  --ship-bg: #0f1117;
+  --ship-panel: #151a23;
+  --ship-border: #1f2a3a;
   --ship-text: #e2e8f0;
-  --ship-muted: #9aabc0;
+  --ship-muted: #8b98a9;
 }
 
 html[data-theme="light"], body[data-theme="light"],
@@ -293,7 +316,7 @@ body[data-theme="dark"] .shipments-page .shipment-table td {
   border-color: var(--w-border) !important;
 }
 body[data-theme="dark"] .shipments-page .shipment-table tbody tr:hover {
-  background: #17263b !important;
+  background: #0c1a2b !important;
 }
 body[data-theme="dark"] .shipments-page :is(.shipment-table-toolbar, .shipment-table-footer) {
   border-color: var(--w-border) !important;
@@ -325,3 +348,6 @@ body[data-theme="dark"] .inventory-page .inventory-delete-btn {
 body[data-theme="dark"] .inventory-page .inventory-empty {
   color: var(--w-muted) !important;
 }
+
+.leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9); }
+html[data-theme='light'] .leaflet-tile-pane, body[data-theme='light'] .leaflet-tile-pane { filter: none; }

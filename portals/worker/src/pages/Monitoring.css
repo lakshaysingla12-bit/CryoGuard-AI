@@ -537,6 +537,111 @@
   background: var(--cg-cyan);
 }
 
+.monitoring-filters-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px 8px;
+  flex-wrap: nowrap;
+}
+
+.monitoring-filter-pill {
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 10px;
+  border: 1px solid var(--cg-border);
+  border-radius: 8px;
+  color: var(--cg-muted);
+  background: #fff;
+  font-size: 11px;
+  font-weight: 750;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.monitoring-filter-pill:hover {
+  border-color: #9bd8db;
+  color: var(--cg-cyan);
+}
+
+.monitoring-filter-pill.active {
+  border-color: var(--cg-cyan);
+  color: #fff;
+  background: var(--cg-cyan);
+}
+
+[data-theme="dark"] .monitoring-filter-pill,
+body[data-theme="dark"] .monitoring-filter-pill {
+  border-color: #1f2a3a;
+  color: #8b98a9;
+  background: #151a23;
+}
+
+[data-theme="dark"] .monitoring-filter-pill:hover,
+body[data-theme="dark"] .monitoring-filter-pill:hover {
+  border-color: #38bdf8;
+  color: #38bdf8;
+  background: #1a2230;
+}
+
+[data-theme="dark"] .monitoring-filter-pill.active,
+body[data-theme="dark"] .monitoring-filter-pill.active {
+  border-color: #38bdf8;
+  color: #ffffff;
+  background: #0284c7;
+}
+
+[data-theme="dark"] .monitoring-map-legend,
+body[data-theme="dark"] .monitoring-map-legend {
+  background: #151a23;
+  border-color: #1f2a3a;
+  color: #8b98a9;
+}
+
+.monitoring-map-legend {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: nowrap;
+  padding: 10px 14px;
+  margin-top: 12px;
+  background: var(--cg-panel-soft);
+  border: 1px solid var(--cg-border);
+  border-radius: 10px;
+  font-size: 12px;
+  color: var(--cg-muted);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.legend-icon-badge {
+  font-size: 13px;
+}
+
+.legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.dot-normal { background: #10b981; }
+.dot-warning { background: #f59e0b; }
+.dot-danger { background: #ef4444; }
+
 /* Vehicle list */
 .vehicle-list {
   display: flex;
@@ -967,8 +1072,8 @@
   }
 
   .vehicle-list-right {
-    flex-direction: column;
-    align-items: flex-end;
+    flex-direction: row;
+    align-items: center;
   }
 
   .vehicle-details-grid {

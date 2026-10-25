@@ -75,7 +75,21 @@ export function WorkerProvider({ children }) {
     } catch {
       // Keep a local preview profile when no portal login exists.
     }
-    return { name: "Rohit Kumar", email: "rohit@cryoguard.com", phone: "9876543210" };
+    return {
+      id: "wrk-001",
+      name: "Priya Singh",
+      email: "worker@cryoguard.demo",
+      phone: "+91 98765 10000",
+      role: "worker",
+      companyId: "MCPE-001",
+      companyName: "Mumbai Coastal Protein Exports",
+      companyManagerId: "cmgr-001",
+      companyManagerName: "Arvind Kapoor",
+      sourceName: "Mumbai Frozen Foods Processing Plant",
+      location: "Mumbai",
+      vehicleId: "TRK-01",
+      assignedShipmentId: "SHP-1021",
+    };
   });
 
   const hasDemoWorker = Boolean(worker?.id && worker?.companyId);

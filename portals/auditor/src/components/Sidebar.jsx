@@ -1,20 +1,27 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import {
   LayoutDashboard,
   Radio,
   ClipboardList,
   FileText,
-  ShieldCheck,
-  ChevronRight
+  PanelLeftClose,
+  PanelLeftOpen,
+  UserRound,
+  Settings,
+  Building2,
 } from "lucide-react";
-import { sound } from "../utils/soundFx";
 
 export default function Sidebar({
   activeView,
   onNavigate,
-  userProfile,
-  onOpenProfile,
+  isCollapsed = false,
+  onToggleCollapsed,
+  profile: propProfile,
 }) {
+  const reduxProfile = useSelector((state) => state.profile);
+  const profile = propProfile || reduxProfile;
+
   const navItems = [
     {
       id: "dashboard",
@@ -24,7 +31,7 @@ export default function Sidebar({
     {
       id: "tracking",
       icon: <Radio size={19} />,
-      label: "Live Tracking",
+      label: "Monitoring",
     },
     {
       id: "ledger",
@@ -38,45 +45,50 @@ export default function Sidebar({
     },
   ];
 
-  const profile = userProfile || {
-    name: "Dr. Elena Rostova",
-    designation: "PharmD · Chief Quality Inspector",
-  };
-  const initials = profile.name?.trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase() || "AU";
-
   return (
-    <aside className="sidebar">
-      {/* ── TOP: CryoGuard AI Brand with Logo ── */}
+    <aside className={`sidebar ${isCollapsed ? "sidebar--collapsed" : ""}`}>
+      {/* ── TOP: CryoGuard AI Brand with Logo & Collapse Toggle Button ── */}
       <div className="sidebar__brand">
-        <div className="sidebar__logo-ai">
-          <svg
-            className="cryo-logo-svg"
-            viewBox="0 0 32 32"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect width="32" height="32" rx="8" fill="var(--cyan)" fillOpacity="0.14" />
-            <path
-              d="M16 7V25M7 16H25M9.64 9.64L22.36 22.36M9.64 22.36L22.36 9.64"
-              stroke="var(--cyan)"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <circle cx="16" cy="16" r="2.8" fill="var(--cyan)" />
-          </svg>
-        </div>
-        <div className="sidebar__brand-text">
-          <div className="brand-title">
-            <span className="brand-name">CryoGuard</span>
-            <span className="brand-ai">AI</span>
+        <div className="sidebar__brand-identity">
+          <div className="sidebar__logo-ai">
+            <svg
+              className="cryo-logo-svg"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="32" height="32" rx="8" fill="var(--cyan)" fillOpacity="0.14" />
+              <path
+                d="M16 7V25M7 16H25M9.64 9.64L22.36 22.36M9.64 22.36L22.36 9.64"
+                stroke="var(--cyan)"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              <circle cx="16" cy="16" r="2.8" fill="var(--cyan)" />
+            </svg>
           </div>
-          <span className="brand-tagline">Receiving Desk · Bay 03</span>
+          <div className="sidebar__brand-text">
+            <div className="brand-title">
+              <span className="brand-name">CryoGuard</span>
+              <span className="brand-ai">AI</span>
+            </div>
+            <span className="brand-tagline">Clinical Quality Intake</span>
+          </div>
         </div>
+        <button
+          type="button"
+          className="sidebar-toggle"
+          onClick={onToggleCollapsed}
+          title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          {isCollapsed ? <PanelLeftOpen size={16} /> : <PanelLeftClose size={16} />}
+        </button>
       </div>
 
-      {/* ── 4 PRIMARY BUTTONS ── */}
+      {/* ── PRIMARY OPERATIONS NAVIGATION ── */}
       <nav className="sidebar__nav">
-        <div className="sidebar__nav-label">Navigation</div>
+        <div className="sidebar__nav-label">Operations</div>
         {navItems.map((item) => {
           const isActive = activeView === item.id;
           return (
@@ -85,10 +97,8 @@ export default function Sidebar({
               className={`sidebar__nav-item ${
                 isActive ? "sidebar__nav-item--active" : ""
               }`}
-              onClick={() => {
-                sound.click();
-                onNavigate(item.id);
-              }}
+              onClick={() => onNavigate(item.id)}
+              title={isCollapsed ? item.label : undefined}
             >
               <span className="sidebar__nav-icon">{item.icon}</span>
               <span className="sidebar__nav-text">{item.label}</span>
@@ -97,29 +107,53 @@ export default function Sidebar({
         })}
       </nav>
 
-      {/* ── BOTTOM: User Profile (Clickable to open full profile & facility modal) ── */}
+      {/* ── BOTTOM: Hospital Firm Card & Account Controls ── */}
       <div className="sidebar__profile">
-        <div
-          className="profile-card profile-card--interactive"
-          onClick={() => {
-            sound.click();
-            if (onOpenProfile) onOpenProfile();
-          }}
-          title="Click to inspect Officer Profile, Hospital Details & Security Settings"
-        >
-          <div className="profile-avatar">
-            <span className="avatar-initials">{initials}</span>
-            <span className="online-indicator" />
-          </div>
-          <div className="profile-info">
-            <div className="profile-name">{profile.name}</div>
-            <div className="profile-role">{profile.designation}</div>
-            <div className="profile-badge">
-              <ShieldCheck size={11} className="text-emerald" />
-              <span>GxP Authorized Operator</span>
+        {!isCollapsed && (
+          <div
+            className="sidebar__facility-card"
+            onClick={() => onNavigate("profile")}
+            title="Hospital facility identity - Click to view in My Profile"
+          >
+            <div className="sidebar__facility-badge">
+              <Building2 size={13} className="text-cyan" />
+              <span className="sidebar__facility-tag">Receiving Hub</span>
             </div>
+            <div className="sidebar__facility-name">
+              {profile?.firmName || "Pune Frozen Foods Distribution Hub"}
+            </div>
+            <div className="sidebar__facility-sub">Cold Storage & Distribution Facility</div>
           </div>
-          <ChevronRight size={14} className="profile-chevron text-dim" />
+        )}
+
+        <div className="sidebar__secondary-nav">
+          <div className="sidebar__nav-label">Account</div>
+          <button
+            type="button"
+            className={`sidebar__nav-item sidebar__nav-item--secondary ${
+              activeView === "profile" ? "sidebar__nav-item--active" : ""
+            }`}
+            onClick={() => onNavigate("profile")}
+            title={isCollapsed ? "My Profile" : undefined}
+          >
+            <span className="sidebar__nav-icon"><UserRound size={19} /></span>
+            <span className="sidebar__nav-text">My Profile</span>
+          </button>
+          <button
+            type="button"
+            className={`sidebar__nav-item sidebar__nav-item--secondary ${
+              activeView === "settings" ? "sidebar__nav-item--active" : ""
+            }`}
+            onClick={() => onNavigate("settings")}
+            title={isCollapsed ? "Settings" : undefined}
+          >
+            <span className="sidebar__nav-icon"><Settings size={19} /></span>
+            <span className="sidebar__nav-text">Settings</span>
+          </button>
+        </div>
+        <div className="sidebar__connection-status" title="Connected to Hospital Telemetry Gateway">
+          <span className="sidebar__connection-dot" />
+          <span className="sidebar__connection-text">Live data connected</span>
         </div>
       </div>
     </aside>

@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { useLive } from "../context/LiveContext.jsx";
@@ -13,13 +14,37 @@ import { useAuth } from "../context/AuthContext.jsx";
 function Dashboard() {
   const { user } = useAuth();
   const { vehicles, summary, tick, alertCount } = useLive();
+  const [selectedVehicleId, setSelectedVehicleId] = useState(null);
 
   const alerts = useFetch("/alerts?status=open&limit=5", [alertCount]);
   const shipments = useFetch("/shipments", [tick]);
 
+  const selectedVehicle = useMemo(() => {
+    if (!selectedVehicleId) return null;
+    return (vehicles || []).find(
+      (v) => v.id === selectedVehicleId || v.shipmentId === selectedVehicleId
+    ) || null;
+  }, [vehicles, selectedVehicleId]);
+
   if (!summary) return <p className="text-secondary">Loading dashboard...</p>;
 
   const inTransit = (shipments.data || []).filter((s) => s.status === "In Transit").slice(0, 5);
+
+  const inTransitVehicles = useMemo(() => {
+    return (vehicles || []).filter((v) => {
+      const st = String(v.status || v.tripStatus || "").trim().toLowerCase();
+      if (st.includes("deliver") || st.includes("dock") || st.includes("complet") || st.includes("idle")) {
+        return false;
+      }
+      return (
+        st.includes("transit") ||
+        st.includes("en route") ||
+        st.includes("on track") ||
+        (Number(v.progress || 0) > 0 && Number(v.progress || 0) < 100)
+      );
+    });
+  }, [vehicles]);
+
   const shipmentStatuses = [
     { label: "On track", value: summary.statusBreakdown["On track"] || 0, color: "#38bdf8" },
     { label: "Delayed", value: summary.statusBreakdown.Delayed || 0, color: "#fbbf24" },
@@ -93,7 +118,42 @@ function Dashboard() {
                 <span><i className="bi bi-circle-fill text-danger me-1"></i>Critical</span>
               </div>
             </div>
-            <FleetMap vehicles={vehicles} height={360} />
+            <FleetMap
+              vehicles={inTransitVehicles}
+              selectedId={selectedVehicleId}
+              onSelect={setSelectedVehicleId}
+              height={360}
+            />
+            {selectedVehicle && (
+              <div
+                className="mt-2 p-2 rounded d-flex align-items-center justify-content-between"
+                style={{
+                  background: "rgba(12, 26, 43, 0.95)",
+                  border: "1px solid rgba(56, 189, 248, 0.35)",
+                  fontSize: "12px",
+                }}
+              >
+                <div>
+                  <span className="text-info fw-bold me-2">🚚 Isolated Vehicle:</span>
+                  <span className="fw-bold text-light me-2">{selectedVehicle.id}</span>
+                  <span className="text-secondary me-2">({selectedVehicle.cargo})</span>
+                  <span className="badge bg-primary bg-opacity-25 text-info border border-info border-opacity-50 me-2">
+                    {selectedVehicle.route}
+                  </span>
+                  <span className="text-light">
+                    Temp: <strong>{selectedVehicle.temp ?? selectedVehicle.temperature}°C</strong> · Driver: {selectedVehicle.driver}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-info py-0 px-2"
+                  style={{ fontSize: "11px" }}
+                  onClick={() => setSelectedVehicleId(null)}
+                >
+                  Show All Fleet ✕
+                </button>
+              </div>
+            )}
           </div>
         </div>
 

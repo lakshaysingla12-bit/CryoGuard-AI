@@ -7,14 +7,15 @@
 // In-memory cache for reverse geocoded coordinates
 const addressCache = new Map();
 
-// Known Manhattan locations fallback for instant offline/zero-latency display
+// Known cold-chain hub locations fallback for instant offline/zero-latency display
 const KNOWN_LOCATIONS = {
-  "40.758,-73.9855": "Metro General Hospital · Receiving Bay 03 (W 45th St & 7th Ave)",
-  "40.758,-73.986": "Receiving Bay 03 · Gate A (W 45th St & 7th Ave, Manhattan)",
-  "40.758,-73.984": "Receiving Bay 03 · Gate C (Broadway & W 45th St, Manhattan)",
-  "40.745,-73.998": "7th Avenue & W 24th Street, Chelsea, New York, NY",
-  "40.735,-73.975": "1st Avenue & E 20th Street, Peter Cooper Village, New York, NY",
-  "40.755,-73.990": "Midtown South Fleet Corridor, Manhattan, New York, NY",
+  "18.5204,73.8567": "Pune Frozen Foods Distribution Hub · Inward Receiving Bay 01 (Hinjawadi, Pune)",
+  "18.8360,73.2580": "Mumbai-Pune Expressway (Khalapur Toll Plaza Corridor)",
+  "19.0760,72.8777": "Mumbai Frozen Foods Processing Plant (Kurla Industrial Hub, Mumbai)",
+  "17.6599,75.9064": "Pune-Solapur Highway Sector 4 (Approaching Solapur)",
+  "17.3850,78.4867": "Hyderabad Vaccine Dispatch Center (Gachibowli, Hyderabad)",
+  "21.1702,72.8311": "Surat Cold-Chain Processing Depot (Surat GIDC, Gujarat)",
+  "28.6139,77.2090": "Delhi Dairy Collection & Chilling Center (Patparganj, Delhi)",
 };
 
 /**

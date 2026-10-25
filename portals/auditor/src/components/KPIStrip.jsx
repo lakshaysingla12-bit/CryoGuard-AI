@@ -1,27 +1,30 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Package, ShieldCheck, AlertOctagon, Activity } from "lucide-react";
-import { sound } from "../utils/soundFx";
 
-export default function KPIStrip({ consignments, activeFilter, onFilterChange }) {
-  // Show the full facility queue; shipments may span multiple delivery dates.
-  const facilityConsignments = consignments;
-  const total = facilityConsignments.length;
-  const admitted = facilityConsignments.filter(
+export default function KPIStrip({ consignments: propConsignments, activeFilter, onFilterChange }) {
+  const reduxConsignments = useSelector((state) => state.consignments?.items);
+  const consignments = propConsignments || reduxConsignments || [];
+
+  // Compute for today's inbound consignments
+  const todaysConsignments = consignments.filter((c) => c.isToday !== false);
+  const total = todaysConsignments.length;
+  const admitted = todaysConsignments.filter(
     (c) => c.receiverDisposition === "ADMITTED"
   ).length;
-  const quarantined = facilityConsignments.filter(
+  const quarantined = todaysConsignments.filter(
     (c) => c.receiverDisposition === "QUARANTINED"
   ).length;
 
-  const totalExcursions = facilityConsignments.reduce(
+  const totalExcursions = todaysConsignments.reduce(
     (acc, c) => acc + c.transitExcursionCount,
     0
   );
-  const totalDataPoints = facilityConsignments.reduce(
+  const totalDataPoints = todaysConsignments.reduce(
     (acc, c) => acc + c.timeSeriesData.length,
     0
   );
-  const compliantPoints = facilityConsignments.reduce((acc, c) => {
+  const compliantPoints = todaysConsignments.reduce((acc, c) => {
     const inSpec = c.timeSeriesData.filter(
       (dp) =>
         dp.temp >= c.targetTempBand.min && dp.temp <= c.targetTempBand.max
@@ -34,7 +37,6 @@ export default function KPIStrip({ consignments, activeFilter, onFilterChange })
       : "100.0";
 
   const handleCardClick = (filterKey) => {
-    sound.click();
     if (onFilterChange) {
       onFilterChange(activeFilter === filterKey ? "ALL" : filterKey);
     }
@@ -51,13 +53,15 @@ export default function KPIStrip({ consignments, activeFilter, onFilterChange })
         role="button"
         tabIndex={0}
       >
-        <div className="kpi-card__top">
-          <div className="kpi-card__label">Inbound Assignments</div>
+        <div className="kpi-card__metric">
           <Package size={18} className="kpi-card__icon text-cyan" />
+          <div>
+            <div className="kpi-card__value">{total}</div>
+            <div className="kpi-card__label">Inbound Assignments</div>
+          </div>
         </div>
-        <div className="kpi-card__value">{total}</div>
         <div className="kpi-card__sub">
-          {facilityConsignments.filter((c) => c.receiverDisposition === "PENDING").length} awaiting quality check
+          {todaysConsignments.filter((c) => c.receiverDisposition === "PENDING").length} awaiting quality check
         </div>
       </div>
 
@@ -70,11 +74,13 @@ export default function KPIStrip({ consignments, activeFilter, onFilterChange })
         role="button"
         tabIndex={0}
       >
-        <div className="kpi-card__top">
-          <div className="kpi-card__label">Cleared &amp; Admitted</div>
+        <div className="kpi-card__metric">
           <ShieldCheck size={18} className="kpi-card__icon text-emerald" />
+          <div>
+            <div className="kpi-card__value">{admitted}</div>
+            <div className="kpi-card__label">Cleared &amp; Admitted</div>
+          </div>
         </div>
-        <div className="kpi-card__value">{admitted}</div>
         <div className="kpi-card__sub">Cleared for storage</div>
       </div>
 
@@ -87,11 +93,13 @@ export default function KPIStrip({ consignments, activeFilter, onFilterChange })
         role="button"
         tabIndex={0}
       >
-        <div className="kpi-card__top">
-          <div className="kpi-card__label">Rejected &amp; Quarantined</div>
+        <div className="kpi-card__metric">
           <AlertOctagon size={18} className="kpi-card__icon text-rose" />
+          <div>
+            <div className="kpi-card__value">{quarantined}</div>
+            <div className="kpi-card__label">Rejected &amp; Quarantined</div>
+          </div>
         </div>
-        <div className="kpi-card__value">{quarantined}</div>
         <div className="kpi-card__sub">
           {totalExcursions} excursion breach(es)
         </div>
@@ -106,11 +114,13 @@ export default function KPIStrip({ consignments, activeFilter, onFilterChange })
         role="button"
         tabIndex={0}
       >
-        <div className="kpi-card__top">
-          <div className="kpi-card__label">Thermal Compliance Integrity</div>
+        <div className="kpi-card__metric">
           <Activity size={18} className="kpi-card__icon text-amber" />
+          <div>
+            <div className="kpi-card__value">{compliancePercent}%</div>
+            <div className="kpi-card__label">Thermal Compliance Integrity</div>
+          </div>
         </div>
-        <div className="kpi-card__value">{compliancePercent}%</div>
         <div className="kpi-card__sub">
           {compliantPoints} / {totalDataPoints} data points compliant
         </div>

@@ -1,30 +1,12 @@
-import React, { useState } from "react";
-import { FileText, ShieldCheck, X, Copy, Check } from "lucide-react";
-import { sound } from "../utils/soundFx";
+import React from "react";
+import { FileText, ShieldCheck, X } from "lucide-react";
 
-export default function GRNPreviewModal({ consignment, onClose, onToast }) {
-  const [copied, setCopied] = useState(false);
+export default function GRNPreviewModal({ consignment, onClose }) {
   if (!consignment) return null;
 
   const c = consignment;
   const isAdmitted = c.receiverDisposition === "ADMITTED";
   const isQuarantined = c.receiverDisposition === "QUARANTINED";
-
-  const handleCopyHash = () => {
-    if (c.sha256Seal) {
-      navigator.clipboard.writeText(c.sha256Seal);
-      setCopied(true);
-      sound.click();
-      setTimeout(() => setCopied(false), 2000);
-      if (onToast) {
-        onToast({
-          type: "info",
-          title: "Hash Copied",
-          message: "SHA-256 seal copied to clipboard.",
-        });
-      }
-    }
-  };
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
@@ -47,9 +29,9 @@ export default function GRNPreviewModal({ consignment, onClose, onToast }) {
           <div className="grn-sheet">
             <div className="grn-sheet__header">
               <div>
-                <h2>METRO GENERAL HOSPITAL</h2>
-                <div className="sub">DEPARTMENT OF PHARMACY &amp; BIOMEDICAL QUALITY ASSURANCE</div>
-                <div className="meta">Receiving Bay 03 · Cold-Chain Quality Intake Portal</div>
+                <h2>{c.facilityName ? c.facilityName.toUpperCase() : "PUNE FROZEN FOODS DISTRIBUTION HUB"}</h2>
+                <div className="sub">DEPARTMENT OF QUALITY ASSURANCE &amp; COLD-CHAIN RECEIVING</div>
+                <div className="meta">Cold-Chain Quality Intake &amp; Regulatory Audit Portal</div>
               </div>
               <div className={`grn-sheet__stamp grn-sheet__stamp--${c.receiverDisposition.toLowerCase()}`}>
                 {isAdmitted ? "CLEARED & ADMITTED" : isQuarantined ? "REJECTED & QUARANTINED" : "PENDING INSPECTION"}
@@ -57,7 +39,7 @@ export default function GRNPreviewModal({ consignment, onClose, onToast }) {
             </div>
 
             <div className="grn-sheet__meta-grid">
-              <div><strong>Document Ref:</strong> GRN-{c.id}-{(c.sha256Seal || "00").slice(0, 8).toUpperCase()}</div>
+              <div><strong>Document Ref:</strong> GRN-{c.id}</div>
               <div><strong>Generated Date:</strong> {new Date().toLocaleDateString()} {new Date().toLocaleTimeString()}</div>
               <div><strong>Batch ID:</strong> <span className="mono">{c.id}</span></div>
               <div><strong>Vehicle ID:</strong> {c.vehicleId}</div>
@@ -99,18 +81,17 @@ export default function GRNPreviewModal({ consignment, onClose, onToast }) {
             <div className="grn-sheet__seal-box">
               <div className="seal-title">
                 <ShieldCheck size={14} className="text-emerald" />
-                <span>SHA-256 Cryptographic Hardware Ledger Seal</span>
+                <span>Intake Verification</span>
               </div>
-              <div className="seal-hash mono">{c.sha256Seal}</div>
               <div className="seal-status">
-                Status: Verified Immutable · Zero Data Tampering Detected
+                Status: Telemetry reviewed against the validated temperature band
               </div>
             </div>
 
             <div className="grn-sheet__signatures">
               <div className="sig-block">
-                <div className="sig-line">Dr. Elena Rostova, PharmD</div>
-                <div className="sig-role">Chief Quality Officer / Medical Pharmacist</div>
+                <div className="sig-line">{c.auditor || "Kabir Anand, Lead Auditor"}</div>
+                <div className="sig-role">Chief Quality Assurance Auditor &amp; Compliance Officer</div>
                 <div className="sig-cert">Electronic Signature Verified (21 CFR Part 11)</div>
               </div>
               <div className="sig-block">
@@ -121,11 +102,7 @@ export default function GRNPreviewModal({ consignment, onClose, onToast }) {
             </div>
           </div>
 
-          <div className="modal-actions" style={{ justifyContent: "space-between" }}>
-            <button type="button" className="btn-secondary" onClick={handleCopyHash}>
-              {copied ? <Check size={16} className="text-emerald" /> : <Copy size={16} />}
-              {copied ? "Hash Copied" : "Copy SHA-256 Seal"}
-            </button>
+          <div className="modal-actions" style={{ justifyContent: "flex-end" }}>
             <button type="button" className="btn-primary btn-primary--cyan" onClick={onClose}>
               Close Preview
             </button>

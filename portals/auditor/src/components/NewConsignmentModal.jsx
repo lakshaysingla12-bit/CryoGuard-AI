@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { PlusCircle, Truck, ThermometerSnowflake, X, FileText } from "lucide-react";
-import { calculateSHA256 } from "../utils/cryptoUtils";
-import { sound } from "../utils/soundFx";
 
 export default function NewConsignmentModal({ onClose, onAdd }) {
   const [drugName, setDrugName] = useState("Pembrolizumab Monoclonal Antibody (Keytruda)");
@@ -32,7 +30,7 @@ export default function NewConsignmentModal({ onClose, onAdd }) {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const batchId = `BATCH-${Math.floor(1000 + Math.random() * 9000)}`;
 
@@ -57,32 +55,34 @@ export default function NewConsignmentModal({ onClose, onAdd }) {
       drugName,
       category,
       origin,
+      destination: "Pune Frozen Foods Distribution Hub, Pune",
+      destinationCity: "Pune",
+      originCity: origin.split(",")[0].trim() || "Mumbai",
+      facilityName: "Pune Frozen Foods Distribution Hub",
+      auditor: "Kabir Anand",
       targetTempBand: { min: parseFloat(tempMin), max: parseFloat(tempMax), unit: "°C" },
       currentTemp: parseFloat(currentTemp),
       currentHumidity: parseInt(currentHumidity, 10),
       eta,
-      date: "2026-10-21",
+      date: new Date().toISOString().slice(0, 10),
       isToday: true,
       isDocked: eta.toLowerCase().includes("dock"),
       tripStatus: eta.toLowerCase().includes("dock") ? "COMPLETED" : "IN_TRANSIT",
-      dockLocation: "Bay 03 · Dock B",
+      dockLocation: "Allocated: Pune Bay 01 · Dock A",
       transitExcursionCount: 0,
       carrierDriver,
       receiverDisposition: "PENDING",
-      gps: { lat: 40.7580 + (Math.random() * 0.01 - 0.005), lng: -73.9855 + (Math.random() * 0.01 - 0.005) },
+      senderGps: { lat: 19.0760, lng: 72.8777 },
+      receiverGps: { lat: 18.5204, lng: 73.8567 },
+      gps: { lat: 18.8360 + (Math.random() * 0.01 - 0.005), lng: 73.2580 + (Math.random() * 0.01 - 0.005) },
       routeHistory: [
-        { lat: 40.710, lng: -74.015 },
-        { lat: 40.730, lng: -74.000 },
-        { lat: 40.745, lng: -73.992 },
-        { lat: 40.758, lng: -73.9855 },
+        { lat: 19.0760, lng: 72.8777 },
+        { lat: 18.8360, lng: 73.2580 },
+        { lat: 18.5204, lng: 73.8567 },
       ],
       timeSeriesData: timeSeries,
     };
 
-    const seal = await calculateSHA256(payload);
-    payload.sha256Seal = seal;
-
-    sound.success();
     onAdd(payload);
     onClose();
   };

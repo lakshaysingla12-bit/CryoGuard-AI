@@ -1,16 +1,22 @@
 import React, { useState } from "react";
-import { Search, Eye, Calendar, ClipboardList } from "lucide-react";
-import { sound } from "../utils/soundFx";
+import { useSelector } from "react-redux";
+import { Search, Calendar, ClipboardList } from "lucide-react";
 
 export default function IntakeLedger({
-  consignments,
+  consignments: propConsignments,
   activeId,
   onSelect,
   filterType,
 }) {
+  const reduxConsignments = useSelector((state) => state.consignments?.items);
+  const consignments = propConsignments || reduxConsignments || [];
+
   const [localSearch, setLocalSearch] = useState("");
 
-  const filtered = consignments.filter((c) => {
+  // MUST show ONLY today's cargos not the past ones
+  const todaysCargos = consignments.filter((c) => c.isToday !== false);
+
+  const filtered = todaysCargos.filter((c) => {
     const matchSearch =
       c.id.toLowerCase().includes(localSearch.toLowerCase()) ||
       c.drugName.toLowerCase().includes(localSearch.toLowerCase()) ||
@@ -32,7 +38,7 @@ export default function IntakeLedger({
             <h2>Master Intake Ledger</h2>
             <span className="today-badge">
               <Calendar size={11} />
-              All Facility Shipments
+              Today's Cargos Only
             </span>
           </div>
 
@@ -40,7 +46,7 @@ export default function IntakeLedger({
             <Search size={14} className="text-muted" />
             <input
               type="text"
-              placeholder="Search facility shipments..."
+              placeholder="Search today's cargos..."
               value={localSearch}
               onChange={(e) => setLocalSearch(e.target.value)}
             />
@@ -64,7 +70,7 @@ export default function IntakeLedger({
               {filtered.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="empty-table-cell">
-                    No matching shipments for this facility.
+                    No matching cargos received today.
                   </td>
                 </tr>
               ) : (
@@ -78,10 +84,7 @@ export default function IntakeLedger({
                     <tr
                       key={c.id}
                       className={isActive ? "row--active" : ""}
-                      onClick={() => {
-                        sound.click();
-                        onSelect(c.id);
-                      }}
+                      onClick={() => onSelect(c.id)}
                     >
                       <td>
                         <span className="batch-id mono">{c.id}</span>
@@ -135,9 +138,7 @@ export default function IntakeLedger({
                           className="btn-inspect"
                           onClick={(e) => {
                             e.stopPropagation();
-                            sound.click();
                             onSelect(c.id);
-                            // Scroll downward to cargo inspection panel
                             const el = document.getElementById("inspection-hub");
                             if (el) el.scrollIntoView({ behavior: "smooth" });
                           }}

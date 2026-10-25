@@ -4,6 +4,7 @@ import { resolve } from 'node:path'
 
 // https://vite.dev/config/
 export default defineConfig({
+  appType: 'mpa',
   plugins: [react()],
   server: {
     host: '0.0.0.0',

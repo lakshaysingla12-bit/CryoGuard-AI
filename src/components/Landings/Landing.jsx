@@ -5,7 +5,7 @@ import "../../App.css";
 import HeroFeatures from "./HeroFeatures";
 import ReviewsWhyUs from "./ReviewsWhyUs";
 import Signup from "../Auth/Signup"; // Correct relative path
-import { loginWithDemoAccount } from "../../api/demoAuth";
+import { loginWithDemoAccount, registerNewAccount } from "../../api/demoAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLayerGroup,
@@ -72,9 +72,14 @@ export default function Landing() {
     setAuthModal((prev) => ({ ...prev, isOpen: false }));
   };
 
-  const handleAuthenticate = async ({ role, identifier }) => {
-    const portalPath = await loginWithDemoAccount(role, identifier);
-    window.location.assign(portalPath);
+  const handleAuthenticate = async (payload) => {
+    if (payload.isSignup) {
+      const res = await registerNewAccount(payload);
+      window.location.assign(res.portalPath);
+    } else {
+      const portalPath = await loginWithDemoAccount(payload);
+      window.location.assign(portalPath);
+    }
   };
 
   const scrollToTop = (e) => {

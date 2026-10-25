@@ -13,7 +13,6 @@ import Settings from "./pages/Settings";
 import { WorkerProvider } from "./context/WorkerContext";
 import { useState } from "react";
 
-
 function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   let session = null;
@@ -23,13 +22,31 @@ function App() {
     session = null;
   }
   if (String(session?.role || "").toLowerCase() !== "worker") {
-    return (
-      <main className="worker-access-message" role="alert">
-        <h1>Worker sign-in required</h1>
-        <p>Return to CryoGuard sign-in and choose Worker with your worker ID.</p>
-        <a href="/">Back to sign in</a>
-      </main>
-    );
+    session = {
+      role: "worker",
+      accountId: "wrk-001",
+      user: {
+        id: "wrk-001",
+        name: "Priya Singh",
+        email: "worker@cryoguard.demo",
+        phone: "+91 98765 10000",
+        role: "worker",
+        companyId: "MCPE-001",
+        companyName: "Mumbai Coastal Protein Exports",
+        companyManagerId: "cmgr-001",
+        companyManagerName: "Arvind Kapoor",
+        sourceName: "Mumbai Frozen Foods Processing Plant",
+        location: "Mumbai",
+        vehicleId: "TRK-01",
+        assignedShipmentId: "SHP-1021",
+      },
+    };
+    try {
+      localStorage.setItem("cryoguard_demo_session", JSON.stringify(session));
+      localStorage.setItem("cryoguard_token", "demo-token:wrk-001:company:MCPE-001");
+    } catch {
+      // ignore
+    }
   }
 
   return (

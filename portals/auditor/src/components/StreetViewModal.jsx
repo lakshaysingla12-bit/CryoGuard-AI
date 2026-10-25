@@ -16,14 +16,13 @@ import {
   formatGpsCoords,
   getOsmAddress,
 } from "../utils/osmGeocode";
-import { sound } from "../utils/soundFx";
 
 export default function StreetViewModal({ location, consignment, onClose }) {
   const [copied, setCopied] = useState(false);
   const [address, setAddress] = useState("Resolving OpenStreetMap street address...");
 
-  const lat = location?.lat || consignment?.gps?.lat || 40.758;
-  const lng = location?.lng || consignment?.gps?.lng || -73.9855;
+  const lat = location?.lat || consignment?.gps?.lat || 18.5204;
+  const lng = location?.lng || consignment?.gps?.lng || 73.8567;
   const isHospital = location?.isHospital || !consignment;
 
   useEffect(() => {
@@ -37,7 +36,6 @@ export default function StreetViewModal({ location, consignment, onClose }) {
   }, [lat, lng]);
 
   const handleCopyCoords = () => {
-    sound.click();
     navigator.clipboard.writeText(`${lat}, ${lng}`);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -61,7 +59,7 @@ export default function StreetViewModal({ location, consignment, onClose }) {
               <h3>Open Street View &amp; Waypoint Inspector</h3>
               <p>
                 {isHospital
-                  ? "Metro General Hospital · Bay 03 Receiving Gate"
+                  ? "Pune Frozen Foods Distribution Hub · Inward Receiving Gate"
                   : `${consignment.id} (${consignment.vehicleId}) · Street Telemetry`}
               </p>
             </div>
@@ -106,7 +104,6 @@ export default function StreetViewModal({ location, consignment, onClose }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="street-pano-btn"
-                    onClick={() => sound.click()}
                   >
                     <Eye size={13} />
                     <span>Launch 360° Street Panorama</span>
@@ -150,7 +147,7 @@ export default function StreetViewModal({ location, consignment, onClose }) {
                   <div className="lbl">Transit &amp; Speed</div>
                   <div className="val text-amber font-bold">
                     {consignment.isDocked
-                      ? "Docked at Bay 03"
+                      ? "Docked at Terminal"
                       : `${consignment.currentSpeedKmh || "48"} km/h`}
                   </div>
                   <div className="sub">
@@ -169,7 +166,7 @@ export default function StreetViewModal({ location, consignment, onClose }) {
                   Active Inward Receiving Gate
                 </div>
                 <div className="sub">
-                  Pharmacy &amp; QA Biomedical Receiving Bay 03
+                  Pharmacy &amp; QA Biomedical Receiving Terminal
                 </div>
               </div>
             )}
@@ -186,7 +183,6 @@ export default function StreetViewModal({ location, consignment, onClose }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-api-link btn-api-link--primary"
-                onClick={() => sound.click()}
                 title="Launch Google Street View 360° Panorama"
               >
                 <Camera size={14} />
@@ -199,7 +195,6 @@ export default function StreetViewModal({ location, consignment, onClose }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-api-link"
-                onClick={() => sound.click()}
                 title="View coordinates on OpenStreetMap.org"
               >
                 <MapPin size={14} className="text-cyan" />
@@ -212,7 +207,6 @@ export default function StreetViewModal({ location, consignment, onClose }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-api-link"
-                onClick={() => sound.click()}
                 title="View street imagery on KartaView (OpenStreetView)"
               >
                 <Eye size={14} className="text-emerald" />

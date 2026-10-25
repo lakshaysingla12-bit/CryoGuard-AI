@@ -1,18 +1,65 @@
-import React, { useState, useEffect } from "react";
-import { Search, Clock, Building2, Sun, Moon, LogOut } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  Search,
+  Clock,
+  Building2,
+  Sun,
+  Moon,
+  Bell,
+  CheckCheck,
+  Trash2,
+  X,
+  CheckCircle2,
+  AlertTriangle,
+  AlertOctagon,
+  Info,
+} from "lucide-react";
+import { useTheme } from "../context/ThemeContext";
+import {
+  markAllRead,
+  markRead,
+  removeNotification,
+  clearAllNotifications,
+} from "../store";
 
 export default function TopBar({
   onGlobalSearch,
-  department,
-  firmName = "Metro General Hospital",
-  facilityId = "Bay 03",
-  theme = "dark",
-  onToggleTheme,
-  onLogout,
+  firmName: propFirmName,
+  department: propDepartment,
+  theme: propTheme,
+  onToggleTheme: propToggleTheme,
 }) {
+  const dispatch = useDispatch();
+  const { theme: contextTheme, toggleTheme: contextToggleTheme } = useTheme();
+  const theme = propTheme || contextTheme;
+  const onToggleTheme = propToggleTheme || contextToggleTheme;
+
+  const profile = useSelector((state) => state.profile);
+  const notifications = useSelector((state) => state.notifications?.items || []);
+  const unreadCount = notifications.filter((n) => n.unread).length;
+
+  const firmName = propFirmName || profile?.firmName || "Pune Frozen Foods Distribution Hub";
+  const department = propDepartment || profile?.department || "Quality Assurance & Inward Cold-Chain Verification";
+
   const [timeStr, setTimeStr] = useState("");
   const [dateStr, setDateStr] = useState("");
   const [searchValue, setSearchValue] = useState("");
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const notifRef = useRef(null);
+
+  // Close notifications dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (notifRef.current && !notifRef.current.contains(event.target)) {
+        setIsNotifOpen(false);
+      }
+    };
+    if (isNotifOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isNotifOpen]);
 
   useEffect(() => {
     const updateTime = () => {
@@ -55,9 +102,7 @@ export default function TopBar({
         </div>
         <div className="firm-details">
           <span className="firm-name">{firmName}</span>
-          <span className="firm-department">
-            {department || "Department of Pharmacy & Biomedical Quality Assurance"} · {facilityId}
-          </span>
+          <span className="firm-department">{department}</span>
         </div>
       </div>
 
@@ -67,7 +112,7 @@ export default function TopBar({
           <Search size={16} className="search-icon" />
           <input
             type="text"
-            placeholder="Search batch ID, drug, vehicle, driver..."
+            placeholder="Search batch ID, drug, vehicle, driver... (Press '/' to focus)"
             value={searchValue}
             onChange={handleSearchChange}
           />
@@ -85,9 +130,9 @@ export default function TopBar({
         </div>
       </div>
 
-      {/* 3. Controls: Theme Toggle & Live Time */}
+      {/* 3. Controls: Theme Toggle + Notification Bell Tab + Live Time */}
       <div className="topbar__controls">
-        {/* Dark / Light Theme Toggle Button */}
+        {/* Dark / Light Theme Toggle */}
         <button
           type="button"
           className="theme-toggle-btn"
@@ -113,6 +158,114 @@ export default function TopBar({
           </span>
         </button>
 
+        {/* ── Top Notification Tab & Dropdown ── */}
+        <div className="topbar__notif-wrap" ref={notifRef}>
+          <button
+            type="button"
+            className={`topbar__notif-btn ${isNotifOpen ? "topbar__notif-btn--active" : ""}`}
+            onClick={() => setIsNotifOpen((prev) => !prev)}
+            title="Notifications & Quality Alerts"
+            aria-label="Notifications"
+          >
+            <Bell size={17} className={unreadCount > 0 ? "text-cyan" : "text-muted"} />
+            {unreadCount > 0 && (
+              <span className="notif-badge-count">{unreadCount > 9 ? "9+" : unreadCount}</span>
+            )}
+          </button>
+
+          {isNotifOpen && (
+            <div className="notif-dropdown">
+              <div className="notif-dropdown__header">
+                <div className="notif-dropdown__title-group">
+                  <span className="notif-dropdown__title">Notifications</span>
+                  {unreadCount > 0 ? (
+                    <span className="notif-dropdown__badge">{unreadCount} new</span>
+                  ) : (
+                    <span className="notif-dropdown__badge notif-dropdown__badge--muted">All read</span>
+                  )}
+                </div>
+                <div className="notif-dropdown__actions">
+                  {unreadCount > 0 && (
+                    <button
+                      type="button"
+                      className="notif-action-btn"
+                      onClick={() => dispatch(markAllRead())}
+                      title="Mark all as read"
+                    >
+                      <CheckCheck size={13} />
+                      <span>Mark read</span>
+                    </button>
+                  )}
+                  {notifications.length > 0 && (
+                    <button
+                      type="button"
+                      className="notif-action-btn notif-action-btn--clear"
+                      onClick={() => dispatch(clearAllNotifications())}
+                      title="Clear all notifications"
+                    >
+                      <Trash2 size={13} />
+                      <span>Clear</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div className="notif-dropdown__list">
+                {notifications.length === 0 ? (
+                  <div className="notif-empty-state">
+                    <div className="notif-empty-icon">
+                      <Bell size={24} className="text-dim" />
+                    </div>
+                    <p className="notif-empty-title">No notifications</p>
+                    <span className="notif-empty-desc">
+                      Quality alerts, consignment intakes, and docking logs will appear here.
+                    </span>
+                  </div>
+                ) : (
+                  notifications.map((n) => {
+                    const iconMap = {
+                      success: <CheckCircle2 size={16} className="text-emerald" />,
+                      warning: <AlertTriangle size={16} className="text-amber" />,
+                      error: <AlertOctagon size={16} className="text-rose" />,
+                      info: <Info size={16} className="text-cyan" />,
+                    };
+
+                    return (
+                      <div
+                        key={n.id}
+                        className={`notif-item ${n.unread ? "notif-item--unread" : ""}`}
+                        onClick={() => dispatch(markRead(n.id))}
+                      >
+                        <div className="notif-item__icon">
+                          {iconMap[n.type] || iconMap.info}
+                        </div>
+                        <div className="notif-item__body">
+                          <div className="notif-item__header">
+                            <span className="notif-item__title">{n.title}</span>
+                            <span className="notif-item__time">{n.timestamp}</span>
+                          </div>
+                          <p className="notif-item__message">{n.message}</p>
+                        </div>
+                        <button
+                          type="button"
+                          className="notif-item__dismiss"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            dispatch(removeNotification(n.id));
+                          }}
+                          title="Dismiss notification"
+                        >
+                          <X size={13} />
+                        </button>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* Live Time & Date Card */}
         <div className="topbar__time-wrap">
           <div className="live-time-card">
@@ -123,10 +276,6 @@ export default function TopBar({
             </div>
           </div>
         </div>
-
-        <button type="button" className="portal-logout-btn topbar-logout-btn" onClick={onLogout} title="Log out" aria-label="Log out">
-          <LogOut size={18} aria-hidden="true" />
-        </button>
       </div>
     </header>
   );

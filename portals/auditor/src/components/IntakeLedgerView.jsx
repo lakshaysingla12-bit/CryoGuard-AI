@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { useSelector } from "react-redux";
 import {
   Calendar,
   Download,
@@ -10,28 +11,25 @@ import {
   Eye,
   RotateCcw,
   Clock,
-  CalendarRange
 } from "lucide-react";
-import { generateTripSummaryPDF } from "../utils/generateTripSummary";
-import { generateLedgerReportPDF } from "../utils/generateLedgerReport";
-import { exportToCSV } from "../utils/cryptoUtils";
-import { sound } from "../utils/soundFx";
+import { generateTripSummaryPDF, generateLedgerReportPDF, exportToCSV } from "../utils/reportUtils";
 
 export default function IntakeLedgerView({
-  consignments,
+  consignments: propConsignments,
   activeId,
   onSelect,
   onOpenAdmit,
   onOpenQuarantine,
   onToast,
 }) {
-  const todayISO = new Date().toISOString().slice(0, 10);
-  const yesterdayDate = new Date(`${todayISO}T00:00:00`);
-  yesterdayDate.setDate(yesterdayDate.getDate() - 1);
-  const yesterdayISO = yesterdayDate.toISOString().slice(0, 10);
+  const reduxConsignments = useSelector((state) => state.consignments?.items);
+  const consignments = propConsignments || reduxConsignments || [];
+
+  const todayISO = "2026-10-21";
+  const yesterdayISO = "2026-10-20";
 
   // Date Filter State: "today" (default) | "yesterday" | "specific" | "all"
-  const [dateMode, setDateMode] = useState("all");
+  const [dateMode, setDateMode] = useState("today");
   const [startDate, setStartDate] = useState(todayISO);
   const [endDate, setEndDate] = useState(todayISO);
 
@@ -124,7 +122,6 @@ export default function IntakeLedgerView({
 
   // Master Ledger Report PDF Download (All Entries)
   const handleDownloadLedgerReport = () => {
-    sound.click();
     generateLedgerReportPDF(displayTrips, dateRangeLabel);
     if (onToast) {
       onToast({
@@ -137,21 +134,19 @@ export default function IntakeLedgerView({
 
   // Master Ledger CSV Export
   const handleExportCSV = () => {
-    sound.click();
     const rows = [
-      ["Batch ID", "Trip Date", "Vehicle", "Drug Product", "Category", "Dock Location", "Arrival Temp (°C)", "Excursion Count", "Disposition", "Carrier Driver", "SHA-256 Seal"],
+      ["Batch ID", "Trip Date", "Vehicle", "Drug Product", "Category", "Dock Location", "Arrival Temp (°C)", "Excursion Count", "Disposition", "Carrier Driver"],
       ...displayTrips.map((c) => [
         c.id,
         c.date || "Today",
         c.vehicleId,
         c.drugName,
         c.category,
-        c.dockLocation || "Bay 03",
+        c.dockLocation || "Terminal",
         c.currentTemp,
         c.transitExcursionCount,
         c.receiverDisposition,
         c.carrierDriver,
-        c.sha256Seal,
       ]),
     ];
     exportToCSV(`GxP_Ledger_Entries_${Date.now()}.csv`, rows);
@@ -167,7 +162,6 @@ export default function IntakeLedgerView({
   // Individual Whole Trip Summary PDF Download
   const handleDownloadTripSummary = (e, consignment) => {
     e.stopPropagation();
-    sound.click();
     generateTripSummaryPDF(consignment);
     if (onToast) {
       onToast({
@@ -179,7 +173,6 @@ export default function IntakeLedgerView({
   };
 
   const handleSort = (field) => {
-    sound.click();
     if (sortField === field) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -214,7 +207,7 @@ export default function IntakeLedgerView({
         </div>
       </div>
 
-      {/* ── CALENDAR DATE & RANGE SELECTOR STRIP: ONLY TODAY, YESTERDAY, SPECIFIC DATES, ALL RECORDS ── */}
+      {/* ── CALENDAR DATE & RANGE SELECTOR STRIP ── */}
       <div className="calendar-filter-bar">
         <div className="calendar-filter-bar__top">
           <div className="cal-title">
@@ -225,37 +218,25 @@ export default function IntakeLedgerView({
           <div className="date-quick-chips">
             <button
               className={`chip-btn ${dateMode === "today" ? "chip-btn--active" : ""}`}
-              onClick={() => {
-                sound.click();
-                setDateMode("today");
-              }}
+              onClick={() => setDateMode("today")}
             >
               Today
             </button>
             <button
               className={`chip-btn ${dateMode === "yesterday" ? "chip-btn--active" : ""}`}
-              onClick={() => {
-                sound.click();
-                setDateMode("yesterday");
-              }}
+              onClick={() => setDateMode("yesterday")}
             >
               Yesterday
             </button>
             <button
               className={`chip-btn ${dateMode === "specific" ? "chip-btn--active" : ""}`}
-              onClick={() => {
-                sound.click();
-                setDateMode("specific");
-              }}
+              onClick={() => setDateMode("specific")}
             >
               Specific Dates
             </button>
             <button
               className={`chip-btn ${dateMode === "all" ? "chip-btn--active" : ""}`}
-              onClick={() => {
-                sound.click();
-                setDateMode("all");
-              }}
+              onClick={() => setDateMode("all")}
             >
               All Records
             </button>
@@ -265,7 +246,6 @@ export default function IntakeLedgerView({
             className="btn-reset-cal"
             title="Reset to Today"
             onClick={() => {
-              sound.click();
               setDateMode("today");
               setStartDate(todayISO);
               setEndDate(todayISO);
@@ -276,7 +256,6 @@ export default function IntakeLedgerView({
           </button>
         </div>
 
-        {/* ── SPECIFIC DATES: OPTION FOR DATE RANGE (IF FROM === TO, OBVIOUSLY SINGLE DAY) ── */}
         {dateMode === "specific" && (
           <div className="calendar-filter-bar__sub">
             <div className="cal-picker-row">
@@ -286,9 +265,7 @@ export default function IntakeLedgerView({
                   type="date"
                   className="cal-input"
                   value={startDate}
-                  onChange={(e) => {
-                    setStartDate(e.target.value);
-                  }}
+                  onChange={(e) => setStartDate(e.target.value)}
                   onClick={(e) => {
                     try {
                       e.target.showPicker?.();
@@ -305,9 +282,7 @@ export default function IntakeLedgerView({
                   type="date"
                   className="cal-input"
                   value={endDate}
-                  onChange={(e) => {
-                    setEndDate(e.target.value);
-                  }}
+                  onChange={(e) => setEndDate(e.target.value)}
                   onClick={(e) => {
                     try {
                       e.target.showPicker?.();
@@ -321,7 +296,6 @@ export default function IntakeLedgerView({
                 <button
                   className={`pill-date-chip ${startDate === todayISO && endDate === todayISO ? "pill-date-chip--active" : ""}`}
                   onClick={() => {
-                    sound.click();
                     setStartDate(todayISO);
                     setEndDate(todayISO);
                   }}
@@ -331,7 +305,6 @@ export default function IntakeLedgerView({
                 <button
                   className={`pill-date-chip ${startDate === yesterdayISO && endDate === yesterdayISO ? "pill-date-chip--active" : ""}`}
                   onClick={() => {
-                    sound.click();
                     setStartDate(yesterdayISO);
                     setEndDate(yesterdayISO);
                   }}
@@ -341,7 +314,6 @@ export default function IntakeLedgerView({
                 <button
                   className={`pill-date-chip ${startDate === "2026-10-19" && endDate === "2026-10-19" ? "pill-date-chip--active" : ""}`}
                   onClick={() => {
-                    sound.click();
                     setStartDate("2026-10-19");
                     setEndDate("2026-10-19");
                   }}
@@ -351,7 +323,6 @@ export default function IntakeLedgerView({
                 <button
                   className={`pill-date-chip ${startDate === "2026-10-15" && endDate === todayISO ? "pill-date-chip--active" : ""}`}
                   onClick={() => {
-                    sound.click();
                     setStartDate("2026-10-15");
                     setEndDate(todayISO);
                   }}
@@ -441,19 +412,13 @@ export default function IntakeLedgerView({
                     <div className="empty-actions">
                       <button
                         className="btn-secondary btn-sm"
-                        onClick={() => {
-                          sound.click();
-                          setDateMode("today");
-                        }}
+                        onClick={() => setDateMode("today")}
                       >
                         Switch to Today's Completed Cargos
                       </button>
                       <button
                         className="btn-primary btn-sm btn-primary--cyan"
-                        onClick={() => {
-                          sound.click();
-                          setDateMode("all");
-                        }}
+                        onClick={() => setDateMode("all")}
                       >
                         Show All Historical Cargos ({completedTrips.length})
                       </button>
@@ -469,16 +434,12 @@ export default function IntakeLedgerView({
                   c.currentTemp <= c.targetTempBand.max;
                 const isLocked = c.receiverDisposition !== "PENDING";
                 const isAdmitted = c.receiverDisposition === "ADMITTED";
-                const isQuarantined = c.receiverDisposition === "QUARANTINED";
 
                 return (
                   <tr
                     key={c.id}
                     className={isActive ? "row--active" : ""}
-                    onClick={() => {
-                      sound.click();
-                      onSelect(c.id);
-                    }}
+                    onClick={() => onSelect(c.id)}
                   >
                     <td>
                       <span className="batch-id mono">{c.id}</span>
@@ -489,7 +450,7 @@ export default function IntakeLedgerView({
                     <td>
                       <div className="vehicle-cell">
                         <div className="vid mono">{c.vehicleId}</div>
-                        <div className="origin text-cyan">{c.dockLocation || "Bay 03 · Dock B"}</div>
+                        <div className="origin text-cyan">{c.dockLocation || "Terminal · Dock B"}</div>
                       </div>
                     </td>
                     <td>
@@ -520,9 +481,6 @@ export default function IntakeLedgerView({
                       )}
                     </td>
 
-                    {/* ─────────────────────────────────────────────────────────
-                        MARK AS ACCEPTED OR REJECTED
-                        ───────────────────────────────────────────────────────── */}
                     <td>
                       {isLocked ? (
                         <span
@@ -558,9 +516,6 @@ export default function IntakeLedgerView({
                       <span className="text-secondary">{c.carrierDriver}</span>
                     </td>
 
-                    {/* ─────────────────────────────────────────────────────────
-                        WHOLE TRIP SUMMARY PDF BUTTON
-                        ───────────────────────────────────────────────────────── */}
                     <td style={{ textAlign: "right" }}>
                       <div className="row-actions" onClick={(e) => e.stopPropagation()}>
                         <button

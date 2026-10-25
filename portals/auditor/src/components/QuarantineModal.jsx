@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { AlertOctagon, ShieldAlert, X, FileWarning, Lock } from "lucide-react";
-import { sound } from "../utils/soundFx";
+import { AlertOctagon, ShieldAlert, X, FileWarning } from "lucide-react";
 
 export default function QuarantineModal({ consignment, onClose, onConfirm }) {
   const [reason, setReason] = useState(
@@ -11,10 +10,9 @@ export default function QuarantineModal({ consignment, onClose, onConfirm }) {
   const [capaCode, setCapaCode] = useState(`CAPA-DEV-${Date.now().toString().slice(-5)}`);
   const [quarantineBay, setQuarantineBay] = useState("Quarantine Isolation Vault Q-01 (Locked)");
   const [notifyQA, setNotifyQA] = useState(true);
-  const [operatorPin, setOperatorPin] = useState("8841");
   const [notes, setNotes] = useState(
     consignment.transitExcursionCount > 0
-      ? `Batch demonstrated ${consignment.transitExcursionCount} thermal breach(es). Temperature spiked to ${Math.max(...consignment.timeSeriesData.map(d => d.temp))}°C. Product integrity compromised.`
+      ? `Batch demonstrated ${consignment.transitExcursionCount} thermal breach(es). Temperature spiked to ${Math.max(...(consignment.timeSeriesData || []).map(d => d.temp), consignment.currentTemp)}°C. Product integrity compromised.`
       : "Visual inspection revealed non-conformance. Batch segregated for QA investigation."
   );
 
@@ -22,7 +20,6 @@ export default function QuarantineModal({ consignment, onClose, onConfirm }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    sound.alert();
     onConfirm(consignment.id, reason, capaCode, quarantineBay, notes, notifyQA);
     onClose();
   };
@@ -115,8 +112,8 @@ export default function QuarantineModal({ consignment, onClose, onConfirm }) {
                 <option value="Quarantine Isolation Vault Q-01 (Locked)">
                   Quarantine Isolation Vault Q-01 (Locked)
                 </option>
-                <option value="Cold Quarantine Bay Q-02 (2-8°C Controlled)">
-                  Cold Quarantine Bay Q-02 (2-8°C Controlled)
+                <option value="Cold Quarantine Unit Q-02 (2-8°C Controlled)">
+                  Cold Quarantine Unit Q-02 (2-8°C Controlled)
                 </option>
                 <option value="Ultra-Low Cryo Quarantine Chamber Q-Cryo">
                   Ultra-Low Cryo Quarantine Chamber Q-Cryo
